@@ -1,0 +1,18 @@
+#
+# configuration parameters
+#
+
+server.name     = plamienok.eu
+server.port     = 1324
+# server.debug    = true
+
+# path to database file
+database.file   = plamienok.db
+
+# this user will be admin !
+admin.email     = admin@mailinator.com
+admin.password  = secret
+
+mailgun.domain =
+mailgun.apikey =
+mailgun.publicApiKey =

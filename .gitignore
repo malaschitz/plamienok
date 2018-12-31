@@ -10,3 +10,16 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+# IDEA files
+/.idea
+
+# Rozne podklady od plamienok
+/podklady
+.idea/vcs.xml
+plamienok.db
+data/dgn.json
+data/lieky.json
+settings.properties
+www/.browserslistrc
+www/.eslintrc.js
