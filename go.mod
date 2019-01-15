@@ -24,7 +24,7 @@ require (
 	github.com/texttheater/golang-levenshtein v0.0.0-20180516184445-d188e65d659e
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v0.0.0-20170224212429-dcecefd839c4 // indirect
-	go.etcd.io/bbolt v1.3.0 // indirect
+	go.etcd.io/bbolt v1.3.0
 	golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9
 	golang.org/x/sys v0.0.0-20181213081344-73d4af5aa059 // indirect
 	golang.org/x/text v0.3.0

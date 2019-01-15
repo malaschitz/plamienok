@@ -22,9 +22,7 @@ func main() {
 
 	//user
 	password, err := utils.EncodePassword("secret")
-	if err != nil {
-		panic(err)
-	}
+	utils.CheckErr(err)
 	user := model.User{
 		Name:       "Tester",
 		Email:      "demo@mailinator.com",
@@ -36,9 +34,7 @@ func main() {
 		RolePsych:  true,
 	}
 	err = db.SaveUser(&user, "")
-	if err != nil {
-		panic(err)
-	}
+	utils.CheckErr(err)
 	//persons
 	for i := 0; i < 100; i++ {
 		fname, sname, birthdate, rc, sex := randomName()

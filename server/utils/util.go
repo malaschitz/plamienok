@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/json"
 	"fmt"
+	"github.com/labstack/gommon/log"
 	rnd "math/rand"
 	"regexp"
 	"strconv"
@@ -17,6 +18,12 @@ var emailCheck *regexp.Regexp
 func CheckErr(err error) {
 	if err != nil {
 		panic(err)
+	}
+}
+
+func LogErr(err error) {
+	if err != nil {
+		log.Info(err)
 	}
 }
 

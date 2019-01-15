@@ -2,6 +2,7 @@ package db
 
 import (
 	"errors"
+	"github.com/malaschitz/plamienok/server/utils"
 	"time"
 
 	"github.com/malaschitz/plamienok/server/model"
@@ -20,6 +21,18 @@ func UserByID(id string) (user model.User, err error) {
 func UserByEmail(email string) (user model.User, err error) {
 	err = _db.One("Email", email, &user)
 	return
+}
+
+func UserCount() int {
+	var users []model.User
+	utils.LogErr(_db.All(&users))
+	count := 0
+	for _, u := range users {
+		if u.Deleted == nil {
+			count++
+		}
+	}
+	return count
 }
 
 func ValidToken(tokenKey string) (user model.User, err error) {
