@@ -31,7 +31,7 @@ func Meniny(name string) Date {
 	options := levenshtein.DefaultOptions
 	options.SubCost = 1
 	nameR := []rune(name)
-	for n, _ := range meniny {
+	for n := range meniny {
 		l := levenshtein.DistanceForStrings([]rune(n), nameR, options)
 		if l < best {
 			best = l
@@ -430,6 +430,6 @@ func init() {
 	addMeniny("Silvester, Horst", 31, 12)
 }
 
-//Created by Richard Malaschitz malaschitz@gmail.com
+//Created by Richard Malaschitz
 //2018-12-27 17:07
 //Copyright (c) 2018. All Rights Reserved.

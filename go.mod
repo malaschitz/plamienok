@@ -30,5 +30,4 @@ require (
 	golang.org/x/text v0.3.0
 	google.golang.org/api v0.0.0-20181213000619-1327b224df06
 	google.golang.org/appengine v1.3.0 // indirect
-	gopkg.in/russross/blackfriday.v2 v2.0.1 // indirect
 )

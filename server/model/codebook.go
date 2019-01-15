@@ -98,6 +98,6 @@ type CiselnikPlatnost struct {
 	PlatnostDo time.Time
 }
 
-//Created by Richard Malaschitz malaschitz@gmail.com
+//Created by Richard Malaschitz
 //2018-12-28 13:51
 //Copyright (c) 2018. All Rights Reserved.

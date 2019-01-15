@@ -18,6 +18,6 @@ func SaveRelation(person, relative model.Person, relationship model.Relationship
 	return _db.Save(&pr)
 }
 
-//Created by Richard Malaschitz malaschitz@gmail.com
+//Created by Richard Malaschitz
 //2018-12-31 14:28
 //Copyright (c) 2018. All Rights Reserved.

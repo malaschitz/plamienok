@@ -35,7 +35,10 @@ func main() {
 		RoleSoc:    true,
 		RolePsych:  true,
 	}
-	db.SaveUser(&user, "")
+	err = db.SaveUser(&user, "")
+	if err != nil {
+		panic(err)
+	}
 	//persons
 	for i := 0; i < 100; i++ {
 		fname, sname, birthdate, rc, sex := randomName()
@@ -120,6 +123,6 @@ func randomBirthdate(women bool) (birthdate time.Time, rc string) {
 	return
 }
 
-//Created by Richard Malaschitz malaschitz@gmail.com
+//Created by Richard Malaschitz
 //2018-12-27 17:17
 //Copyright (c) 2018. All Rights Reserved.

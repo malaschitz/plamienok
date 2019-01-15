@@ -64,6 +64,6 @@ func init() {
 	}
 }
 
-//Created by Richard Malaschitz malaschitz@gmail.com
+//Created by Richard Malaschitz
 //26/10/2018 00:07
 //Copyright (c) 2018. All Rights Reserved.

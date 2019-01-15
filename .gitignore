@@ -16,10 +16,13 @@
 
 # Rozne podklady od plamienok
 /podklady
-.idea/vcs.xml
-plamienok.db
+
+# pracovne subory
+plamienok.db.lock
+settings.properties
 data/dgn.json
 data/lieky.json
-settings.properties
+plamienok.db
 www/.browserslistrc
 www/.eslintrc.js
+www/package-lock.json

@@ -5,28 +5,23 @@
             fixed
             clipped
             class="grey lighten-4"
-            app
-    >
+            app>
       <v-list
               dense
-              class="grey lighten-4"
-      >
+              class="grey lighten-4">
         <template v-for="(item, i) in items">
           <v-layout
                   v-if="item.heading"
                   :key="i"
                   row
-                  align-center
-          >
+                  align-center>
             <v-flex xs6>
               <v-subheader v-if="item.heading">
                 {{ item.heading }}
               </v-subheader>
             </v-flex>
-            <v-flex xs6 class="text-xs-right">
-              <v-btn small flat>edit</v-btn>
-            </v-flex>
           </v-layout>
+
           <v-divider
                   v-else-if="item.divider"
                   :key="i"
@@ -57,7 +52,7 @@
               solo-inverted
               flat
               hide-details
-              label="Search"
+              label="Hladať"
               prepend-inner-icon="search"
       ></v-text-field>
       <v-spacer></v-spacer>
@@ -81,20 +76,20 @@
         data: () => ({
             drawer: null,
             items: [
-                { icon: 'lightbulb_outline', text: 'Notes' },
-                { icon: 'touch_app', text: 'Reminders' },
+                { heading: 'Home care' },
+                { icon: 'lightbulb_outline  ', text: 'Návštevy' },
+                { icon: 'touch_app', text: 'Telefón' },
                 { divider: true },
-                { heading: 'Labels' },
-                { icon: 'add', text: 'Create new label' },
+                { heading: 'Poradňa' },
+                { icon: 'add', text: 'Stretnutia' },
                 { divider: true },
-                { icon: 'archive', text: 'Archive' },
-                { icon: 'delete', text: 'Trash' },
-                { divider: true },
-                { icon: 'settings', text: 'Settings' },
-                { icon: 'chat_bubble', text: 'Trash' },
-                { icon: 'help', text: 'Help' },
-                { icon: 'phonelink', text: 'App downloads' },
-                { icon: 'keyboard', text: 'Keyboard shortcuts' }
+                { heading: 'Štatistiky' },
+                { icon: 'settings', text: 'Hodiny' },
+                { icon: 'chat_bubble', text: 'Autá' },
+                { heading: 'Administrácia' },
+                { icon: 'phonelink', text: 'Užívatelia' },
+                { icon: 'keyboard', text: 'Autá' },
+                { icon: 'phonelink', text: 'Exporty' },
             ]
         }),
 

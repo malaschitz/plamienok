@@ -122,6 +122,6 @@ type VisitCGT struct {
 	Base `storm:"inline"`
 }
 
-//Created by Richard Malaschitz malaschitz@gmail.com
+//Created by Richard Malaschitz
 //2018-12-27 14:55
 //Copyright (c) 2018. All Rights Reserved.

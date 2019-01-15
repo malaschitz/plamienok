@@ -1,10 +1,10 @@
 package server
 
 import (
+	"flag"
 	"fmt"
-	"os"
-
 	"github.com/labstack/gommon/log"
+	"os"
 
 	"github.com/spf13/viper"
 )
@@ -23,16 +23,20 @@ var MailgunDomain = ""
 var MailgunApikey = ""
 var MailgunPublicApiKey = ""
 
+var wasInit = false
+
 func InitConst() {
-	configName := "settings"
-	if len(os.Args) > 1 {
-		configName = os.Args[1]
+	if wasInit {
+		return
 	}
+	configName := flag.String("properties", "settings.properties", "File with settings properties.")
+	flag.Parse()
 
 	v := viper.New()
-	v.SetConfigName(configName)
-	v.AddConfigPath(".")
-	v.SetConfigType("properties")
+	file, err := os.Open(*configName)
+	if err != nil {
+		panic(err)
+	}
 
 	// defaults
 	v.SetDefault("server.name", ServerName)
@@ -43,8 +47,8 @@ func InitConst() {
 	v.SetDefault("admin.password", AdminPassword)
 
 	// read
-	err := v.ReadInConfig() // Find and read the config file
-	if err != nil {         // Handle errors reading the config file
+	err = v.ReadConfig(file)
+	if err != nil { // Handle errors reading the config file
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
 	ServerName = v.GetString("server.name")
@@ -61,4 +65,6 @@ func InitConst() {
 	if ServerDebug {
 		log.SetLevel(log.DEBUG)
 	}
+
+	wasInit = true
 }
