@@ -4,18 +4,20 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/labstack/gommon/log"
-
 	"github.com/labstack/echo"
-	"github.com/malaschitz/plamienok/server"
+	"github.com/labstack/gommon/log"
+	"github.com/malaschitz/plamienok/server/constants"
 	"github.com/malaschitz/plamienok/server/controllers"
 	"github.com/malaschitz/plamienok/server/db"
 	"github.com/malaschitz/plamienok/server/routers"
+	"github.com/malaschitz/plamienok/server/service"
 )
 
 func main() {
-	server.InitConst()
-	log.Info("start server " + server.AppName)
+	constants.InitConst()
+	service.InitEmail()
+
+	log.Info("start server " + constants.AppName)
 	db.InitDB()
 
 	e := echo.New()
@@ -27,7 +29,7 @@ func main() {
 	r.Use(restrictUser)
 	routers.InitRestricted(r)
 
-	e.Logger.Fatal(e.Start(":" + server.ServerPort))
+	e.Logger.Fatal(e.Start(":" + constants.ServerPort))
 }
 
 func handleUser(next echo.HandlerFunc) echo.HandlerFunc {
@@ -41,10 +43,9 @@ func handleUser(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 		if token != "" {
 			user, err := db.ValidToken(token)
-			if err != nil {
-				return err
+			if err == nil {
+				vc.User = &user
 			}
-			vc.User = &user
 		}
 		return next(vc)
 	}
@@ -52,9 +53,10 @@ func handleUser(next echo.HandlerFunc) echo.HandlerFunc {
 
 func restrictUser(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
+		fmt.Println("restrict user", c.Request().URL)
 		p := c.(*controllers.PlContext)
 		if p.User == nil {
-			return echo.NewHTTPError(http.StatusForbidden, "Neprihlásený užívateľ")
+			return echo.NewHTTPError(http.StatusUnauthorized, "Neprihlásený užívateľ")
 		}
 		return next(c)
 	}

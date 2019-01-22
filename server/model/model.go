@@ -5,10 +5,9 @@ import (
 )
 
 type User struct {
-	Base     `storm:"inline"`
-	Name     string
-	Email    string `storm:"unique"`
-	Password string
+	Base  `storm:"inline"`
+	Name  string
+	Email string `storm:"unique"`
 
 	RoleAdmin  bool // administrator
 	RoleDoctor bool // doctor

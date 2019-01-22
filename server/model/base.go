@@ -19,7 +19,8 @@ type Base struct {
 type Token struct {
 	ID       string `storm:"id"`
 	UserID   string
-	Platnost time.Time
+	Created  time.Time
+	Validity time.Time
 }
 
 type Date struct {

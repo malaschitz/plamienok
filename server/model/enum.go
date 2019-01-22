@@ -1,6 +1,9 @@
 package model
 
 type Relationship string
+type Department int
+type Sex int
+type Property string
 
 const (
 	Father          Relationship = "father"
@@ -47,16 +50,17 @@ const (
 	HalfSister      Relationship = "half-sister"
 )
 
-type Department int
-
 const (
 	HC  Department = 0 // home care
 	CGT Department = 1 // centrum of grief therapy
 )
 
-type Sex int
-
 const (
 	Male   Sex = 0
 	Female Sex = 1
+)
+
+const (
+	PROPERTY_CODE6         Property = "bucket_code6"
+	PROPERTY_PASSWORD_HASH Property = "bucket_password_hash"
 )

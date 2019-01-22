@@ -18,6 +18,7 @@ func InitAccesible(e *echo.Echo) {
 	//public api
 	e.GET("/api/info", controllers.Info)
 	e.POST("/api/login", controllers.Login)
+	e.POST("/api/forgot", controllers.ForgottenPassword)
 	e.GET("/api/stats", controllers.Stats)
 
 }

@@ -2,22 +2,14 @@ package db
 
 import (
 	"encoding/json"
-	"github.com/malaschitz/plamienok/server/model"
 	"io/ioutil"
 	"os"
+
+	"github.com/malaschitz/plamienok/server/model"
 )
 
 var Diagnozy DiagnozyCache
 var Lieky LiekyCache
-
-func CacheSet(key, value string) {
-	_db.Set("cache", key, value)
-}
-
-func CacheGet(key string) (value string) {
-	_db.Get("cache", key, &value)
-	return
-}
 
 type DiagnozyCache struct {
 	Data []model.Diagnoza

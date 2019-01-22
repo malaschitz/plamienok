@@ -6,7 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/malaschitz/plamienok/server"
+	"github.com/malaschitz/plamienok/server/constants"
+
 	"github.com/malaschitz/plamienok/server/model"
 	"github.com/malaschitz/plamienok/server/utils"
 
@@ -17,16 +18,15 @@ var mNames, wNames, sNames []string
 
 // create demo data
 func main() {
-	server.InitConst()
+	constants.InitConst()
 	db.InitDB()
 
 	//user
-	password, err := utils.EncodePassword("secret")
+	passwordHash, err := utils.EncodePassword("secret")
 	utils.CheckErr(err)
 	user := model.User{
 		Name:       "Tester",
 		Email:      "demo@mailinator.com",
-		Password:   password,
 		RoleAdmin:  true,
 		RoleDoctor: true,
 		RoleNurse:  true,
@@ -35,6 +35,8 @@ func main() {
 	}
 	err = db.SaveUser(&user, "")
 	utils.CheckErr(err)
+	db.SetPassword(user.ID, passwordHash)
+
 	//persons
 	for i := 0; i < 100; i++ {
 		fname, sname, birthdate, rc, sex := randomName()

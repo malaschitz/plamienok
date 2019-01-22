@@ -23,7 +23,6 @@ new Vue({
         .get("/api/info")
         .then(response => {
           this.$store.version = response.data.Version;
-
           if (response.data.User) {
             this.$store.commit("login", {
               name: response.data.Student.Name,

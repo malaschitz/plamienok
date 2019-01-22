@@ -6,8 +6,7 @@
             clipped
             class="grey lighten-4"
             app>
-      <v-list
-              dense
+      <v-list dense
               class="grey lighten-4">
         <template v-for="(item, i) in items">
           <v-layout
@@ -31,8 +30,7 @@
           <v-list-tile
                   v-else
                   :key="i"
-                  @click=""
-          >
+                  :to="item.link">
             <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
@@ -47,6 +45,15 @@
     </v-navigation-drawer>
     <v-toolbar color="amber" app absolute clipped-left>
       <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
+
+          <v-img
+                  :src="require('./assets/logo-plamienok.png')"
+                  contain
+                  max-height="55"
+                  max-width="140"
+                  @click="dashboard()"
+          ></v-img>
+
       <span class="title ml-3 mr-5">Plamienok&nbsp;<span class="font-weight-light">App</span></span>
       <v-text-field
               solo-inverted
@@ -58,19 +65,17 @@
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-content>
-      <HelloWorld/>
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>
 
 <script>
-    import HelloWorld from './components/HelloWorld'
 
     export default {
         name: 'App',
 
         components: {
-            HelloWorld
         },
 
         data: () => ({
@@ -93,9 +98,17 @@
             ]
         }),
 
+        methods: {
+          dashboard: function() {
+            return this.$router.push('/');
+          }
+        },
+
         props: {
             source: String
         }
+
+
     }
 </script>
 
