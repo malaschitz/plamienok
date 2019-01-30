@@ -23,7 +23,7 @@ func main() {
 
 	//user
 	passwordHash, err := utils.EncodePassword("secret")
-	utils.CheckErr(err)
+	utils.PanicErr(err)
 	user := model.User{
 		Name:       "Tester",
 		Email:      "demo@mailinator.com",
@@ -34,8 +34,8 @@ func main() {
 		RolePsych:  true,
 	}
 	err = db.SaveUser(&user, "")
-	utils.CheckErr(err)
-	db.SetPassword(user.ID, passwordHash)
+	utils.LogErr(err)
+	db.SetNewPassword(user, passwordHash)
 
 	//persons
 	for i := 0; i < 100; i++ {

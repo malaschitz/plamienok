@@ -2,10 +2,11 @@ package test
 
 import (
 	"fmt"
-	"github.com/malaschitz/plamienok/server/model"
-	"github.com/malaschitz/plamienok/server/utils"
 	"testing"
 	"time"
+
+	"github.com/malaschitz/plamienok/server/model"
+	"github.com/malaschitz/plamienok/server/utils"
 )
 
 func TestEncoding(t *testing.T) {

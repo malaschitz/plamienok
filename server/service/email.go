@@ -10,7 +10,6 @@ var mg mailgun.Mailgun
 var hrms hermes.Hermes
 
 func SendCode(email, name, code6 string) (err error) {
-
 	e := hermes.Email{
 		Body: hermes.Body{
 			Name:         name,

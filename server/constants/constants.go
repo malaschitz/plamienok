@@ -28,6 +28,7 @@ var MailgunPublicApiKey = ""
 var TokenDuration = time.Hour * 4
 
 var ERR_NO_USER = errors.New("Používateľ s daným emailom neexistuje.")
+var ERR_WRONG_CODE = errors.New("Nesprávny alebo neplatný overovací kód.")
 
 var wasInit = false
 

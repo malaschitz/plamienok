@@ -25,8 +25,8 @@ new Vue({
           this.$store.version = response.data.Version;
           if (response.data.User) {
             this.$store.commit("login", {
-              name: response.data.Student.Name,
-              email: response.data.Student.Email,
+              name: response.data.User.Name,
+              email: response.data.User.Email,
             });
           }
         }).catch(error => console.log(error));

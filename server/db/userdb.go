@@ -2,6 +2,7 @@ package db
 
 import (
 	"errors"
+	"log"
 	"strings"
 	"time"
 
@@ -46,24 +47,21 @@ func Login(email string, password string) (user model.User, token string, err er
 	if err != nil {
 		return
 	}
-	var test bool
-	passwordHash := GetPassword(user.ID)
-	test, err = utils.ComparePasswordAndHash(password, passwordHash)
-	if err != nil {
-		return
-	}
-	if !test {
+	if !PasswordCheck(user, password) {
 		err = errors.New("Nesprávne heslo")
 		return
 	}
-
-	t := model.Token{ID: utils.UUID(), UserID: user.ID, Created: time.Now(), Validity: time.Now().Add(constants.TokenDuration)}
-	err = _db.Save(&t)
-	if err != nil {
-		return
-	}
-	token = t.ID
+	token = CreateToken(user.ID)
 	return
+}
+
+func CreateToken(userid string) string {
+	t := model.Token{ID: utils.UUID(), UserID: userid, Created: time.Now(), Validity: time.Now().Add(constants.TokenDuration)}
+	err := _db.Save(&t)
+	if err != nil {
+		utils.LogErr(err)
+	}
+	return t.ID
 }
 
 func ValidToken(tokenKey string) (user model.User, err error) {
@@ -79,5 +77,40 @@ func ValidToken(tokenKey string) (user model.User, err error) {
 	token.Validity = time.Now().Add(constants.TokenDuration)
 	_db.Save(token) //error is not important
 	user, err = UserByID(token.UserID)
+	return
+}
+
+func SetNewPassword(user model.User, password string) {
+	hash, err := utils.EncodePassword(password)
+	if err != nil {
+		log.Panic(err)
+	}
+	setPassword(user.ID, hash)
+}
+
+func PasswordCheck(user model.User, password string) bool {
+	hash := getPassword(user.ID)
+	test, err := utils.ComparePasswordAndHash(password, hash)
+	if err != nil {
+		log.Panic(err)
+	}
+	return test
+}
+
+func SetCode6(key string, value model.Code6) {
+	_db.Set(string(model.PROPERTY_CODE6), key, value)
+}
+
+func GetCode6(key string) (value model.Code6) {
+	_db.Get(string(model.PROPERTY_CODE6), key, &value)
+	return
+}
+
+func setPassword(key string, value string) {
+	_db.Set(string(model.PROPERTY_PASSWORD_HASH), key, value)
+}
+
+func getPassword(key string) (value string) {
+	_db.Get(string(model.PROPERTY_PASSWORD_HASH), key, &value)
 	return
 }

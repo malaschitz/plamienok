@@ -4,26 +4,27 @@ import (
 	"crypto/rand"
 	"encoding/json"
 	"fmt"
-	"github.com/labstack/gommon/log"
 	rnd "math/rand"
 	"regexp"
 	"strconv"
 	"time"
+
+	"github.com/labstack/gommon/log"
 
 	"github.com/oklog/ulid"
 )
 
 var emailCheck *regexp.Regexp
 
-func CheckErr(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 func LogErr(err error) {
 	if err != nil {
 		log.Info(err)
+	}
+}
+
+func PanicErr(err error) {
+	if err != nil {
+		log.Panic(err)
 	}
 }
 
@@ -48,7 +49,7 @@ func RandomCode() string {
 	return code
 }
 
-func Jprint(o interface{}) {
+func JsonPrint(o interface{}) {
 	j, err := json.MarshalIndent(o, "#", "   ")
 	if err != nil {
 		fmt.Println("###", err)

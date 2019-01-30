@@ -16,7 +16,13 @@ export default new Vuex.Store({
       state.name = data.name;
       state.email = data.email;
       state.logged = true;
-    }
+    },
+
+    logout(state) {
+      state.name = "";
+      state.email = "";
+      state.logged = false;
+    },
   },
 
   actions: {
