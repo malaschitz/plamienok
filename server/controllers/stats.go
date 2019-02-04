@@ -6,12 +6,14 @@ import (
 )
 
 func Stats(c echo.Context) error {
-	stats := struct {
-		Users  int
-		Visits int
-	}{
-		Users:  db.UserCount(),
-		Visits: db.VisitCount(),
+	s := []stats{
+		stats{"Počet užívateľov", db.UserCount()},
+		stats{"Počet návštev", db.VisitCount()},
 	}
-	return okApiResponse(c, stats)
+	return okApiResponse(c, s)
+}
+
+type stats struct {
+	Text  string
+	Value int
 }

@@ -173,11 +173,11 @@
               <v-list dense>
                 <v-list-tile
                   v-for="stat in stats"
-                  :key="stat.text"
+                  :key="stat.Text"
                 >
-                  <v-list-tile-content>{{ stat.text }}:</v-list-tile-content>
+                  <v-list-tile-content>{{ stat.Text }}:</v-list-tile-content>
                   <v-list-tile-content class="align-end">
-                    {{ stat.count }}
+                    {{ stat.Value }}
                   </v-list-tile-content>
                 </v-list-tile>
               </v-list>
@@ -218,20 +218,7 @@
             ],
             password: '',
             password2: '',
-            stats: [
-                {
-                    text: 'Počet užívateľov',
-                    count: 21
-                },
-                {
-                    text: 'Počet klientov',
-                    count: 12
-                },
-                {
-                    text: 'Výjazdy za minulý týždeň',
-                    count: 13
-                },
-            ],
+            stats: [],
             forgotMode: false,
             show1: false,
             show2: false,
@@ -348,6 +335,17 @@
             back: function () {
                 this.forgotMode = false;
             }
+        },
+
+        mounted: function() {
+          console.log("mounted 2");
+          this.$axios.get("/api/stats").then(response => {
+                    console.log(response);
+                    this.stats = response.data;
+                  }
+          ).catch(response => {
+            console.log("Chyba",response);
+          });
         }
     }
 </script>

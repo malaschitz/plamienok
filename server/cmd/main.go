@@ -34,7 +34,6 @@ func main() {
 
 func handleUser(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		fmt.Println("handle user", c.Request().URL)
 		vc := &controllers.PlContext{Context: c}
 		var token string
 		z := c.Request().Header["Token"]
@@ -47,6 +46,7 @@ func handleUser(next echo.HandlerFunc) echo.HandlerFunc {
 				vc.User = &user
 			}
 		}
+		fmt.Println("handle user", c.Request().URL, token)
 		return next(vc)
 	}
 }
