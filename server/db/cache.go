@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"time"
 
+	"github.com/labstack/gommon/log"
 	"github.com/malaschitz/plamienok/server/model"
 )
 
@@ -20,6 +22,7 @@ type LiekyCache struct {
 }
 
 func ImportCache(dir string) {
+	t := time.Now()
 	// import lieky
 	jsonFile, err := os.Open(dir + string(os.PathSeparator) + "lieky.json")
 	if err != nil {
@@ -63,6 +66,7 @@ func ImportCache(dir string) {
 		}
 		index++
 	}
+	log.Printf("Import Cache %v", time.Since(t))
 }
 
 //Created by Richard Malaschitz

@@ -9,6 +9,7 @@ export default new Vuex.Store({
     name: "",
     logged: false,
     email: "",
+    alert: "",
   },
 
   mutations: {
@@ -23,6 +24,10 @@ export default new Vuex.Store({
       state.email = "";
       state.logged = false;
     },
+
+    alert(state, data) {
+      state.alert = data;
+    }
   },
 
   actions: {

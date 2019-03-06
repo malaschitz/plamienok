@@ -77,10 +77,15 @@
         prepend-inner-icon="search"
       />
       <v-spacer />
-      <v-menu v-if="$store.state.logged" :nudge-width="100">
+      <v-menu
+        v-if="$store.state.logged"
+        :nudge-width="100"
+      >
         <v-toolbar-title slot="activator">
-          <span>{{$store.state.name}} ({{$store.state.email}})</span>
-          <v-icon dark>arrow_drop_down</v-icon>
+          <span>{{ $store.state.name }} ({{ $store.state.email }})</span>
+          <v-icon dark>
+            arrow_drop_down
+          </v-icon>
         </v-toolbar-title>
 
         <v-list>
@@ -113,7 +118,8 @@
             drawer: null,
             items: [
                 { heading: 'Home care' },
-                { icon: 'lightbulb_outline  ', text: 'Návštevy' },
+                { icon: 'child_care', text: 'Deti', link: '/persons'},
+                { icon: 'lightbulb_outline', text: 'Návštevy' },
                 { icon: 'touch_app', text: 'Telefón' },
                 { divider: true },
                 { heading: 'Poradňa' },
@@ -123,8 +129,8 @@
                 { icon: 'settings', text: 'Hodiny' },
                 { icon: 'chat_bubble', text: 'Autá' },
                 { heading: 'Administrácia' },
-                { icon: 'phonelink', text: 'Užívatelia' },
-                { icon: 'keyboard', text: 'Autá' },
+                { icon: 'group', text: 'Užívatelia', link: '/users' },
+                { icon: 'directions_car', text: 'Autá', link: '/cars' },
                 { icon: 'phonelink', text: 'Exporty' },
             ]
         }),
@@ -142,11 +148,31 @@
           },
         },
 
+        computed: {
+            alertMessage: function() {
+              return this.$store.state.alert
+            }
+        },
+
+        watch: {
+            alertMessage: function(val) {
+              if (val !== "") {
+                console.log("ALERT", val);
+              }
+              this.$store.commit("alert","");
+            }
+        },
+
+        mounted: function() {
+          console.log("APP MOUNTED");
+        },
+
         props: {
-            source: String
-        }
-
-
+            source: {
+              type: String,
+              default: ""
+            }
+        },
     }
 </script>
 

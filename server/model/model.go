@@ -29,7 +29,7 @@ type Person struct {
 	Death           *Date
 	DeathPlace      string
 	PlamPrijatie    *Date
-	PlamPrepustenie *Date
+	PlamPrepustenie *Date  // nie je uz v Plamienku
 	RC              string // Rodne Cislo
 	DGNkod          string
 	DGNpopis        string
@@ -45,6 +45,9 @@ type Person struct {
 	Alergia         string
 	ZP              string // Zdravotna poistovna
 	DennyRezim      string
+
+	//index
+	FullText string
 }
 
 type PersonRelation struct {
@@ -55,7 +58,9 @@ type PersonRelation struct {
 }
 
 type Car struct {
-	Base `storm:"inline"`
+	Base  `storm:"inline"`
+	Name  string
+	Popis string
 }
 
 type Visit struct {
@@ -84,6 +89,13 @@ type VisitHome struct {
 	SocialnePoradenstvo string
 }
 
+type VisitPhone struct {
+	Visit  `storm:"inline"`
+	UserID string
+	Tema   string
+	Smer   bool // true ak volal plamienok
+}
+
 type LabVysledky struct {
 	Base     `storm:"inline"`
 	PersonID string
@@ -108,13 +120,6 @@ type Work struct { // vykaz prace
 	Date    Date
 	Minutes int
 	Popis   string
-}
-
-type VisitPhone struct {
-	Visit  `storm:"inline"`
-	UserID string
-	Tema   string
-	Smer   bool // true ak volal plamienok
 }
 
 type VisitCGT struct {

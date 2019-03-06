@@ -1,6 +1,8 @@
 package db
 
 import (
+	"time"
+
 	"github.com/asdine/storm"
 	"github.com/labstack/gommon/log"
 	"github.com/malaschitz/plamienok/server/constants"
@@ -35,5 +37,24 @@ func InitDB() {
 			log.Panic(err)
 		}
 	}
+
+	//reindex fulltext
+	{
+		t := time.Now()
+		var persons []*model.Person
+		err = _db.All(&persons)
+		if err != nil {
+			panic(err)
+		}
+		for _, p := range persons {
+			fullText(p)
+			err = _db.Save(p)
+			if err != nil {
+				panic(err)
+			}
+		}
+		log.Printf("Fulltext reindex: %v", time.Since(t))
+	}
+
 	ImportCache("data")
 }

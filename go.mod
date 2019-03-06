@@ -4,6 +4,7 @@ replace gopkg.in/russross/blackfriday.v2 v2.0.1 => github.com/russross/blackfrid
 
 require (
 	github.com/asdine/storm v2.1.2+incompatible
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/facebookgo/ensure v0.0.0-20160127193407-b4ab57deab51 // indirect
 	github.com/facebookgo/stack v0.0.0-20160209184415-751773369052 // indirect
 	github.com/facebookgo/subset v0.0.0-20150612182917-8dac2c3c4870 // indirect
@@ -11,7 +12,7 @@ require (
 	github.com/gobuffalo/envy v1.6.11 // indirect
 	github.com/google/uuid v1.1.0 // indirect
 	github.com/jmoiron/sqlx v1.2.0
-	github.com/labstack/echo v3.3.5+incompatible
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.2.8
 	github.com/mailgun/mailgun-go v1.1.1
 	github.com/matcornic/hermes v1.2.0

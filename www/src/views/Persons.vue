@@ -1,0 +1,307 @@
+<!--
+  - Developed by Richard Malaschitz on 3/4/19 8:04 PM
+  - Last modified 3/4/19 8:04 PM
+  - Copyright (c) 2019. All right reserved.
+  -
+  -->
+
+<template>
+  <v-container fluid>
+    <v-toolbar
+      flat
+      color="white"
+    >
+      <v-toolbar-title>Deti, príbuzní, iné osoby</v-toolbar-title>
+      <v-spacer />
+      <v-dialog
+        v-model="dialog"
+        max-width="500px"
+      >
+        <v-btn
+          slot="activator"
+          color="primary"
+          dark
+          class="mb-2"
+        >
+          Nový
+        </v-btn>
+        <v-card>
+          <v-form
+            ref="carform"
+            v-model="valid"
+            lazy-validation
+          >
+            <v-card-title>
+              <span class="headline">Nová osoba</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <v-flex
+                    xs12
+                    sm8
+                    md6
+                  >
+                    <v-text-field
+                      v-model="editedItem.firstname"
+                      label="Názov"
+                      :rules="[rules.required]"
+                      required
+                    />
+                  </v-flex>
+                  <v-flex
+                    xs12
+                    sm8
+                    md6
+                  >
+                    <v-text-field
+                      v-model="editedItem.surname"
+                      label="Názov"
+                      :rules="[rules.required]"
+                      required
+                    />
+                  </v-flex>
+                  <v-flex
+                    xs12
+                    sm6
+                    md4
+                  >
+                    <v-menu
+                      v-model="menuDatePicker"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      lazy
+                      transition="scale-transition"
+                      offset-y
+                      full-width
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on }">
+                        <v-text-field
+                          v-model="editedItem.birthdate"
+                          label="Picker without buttons"
+                          prepend-icon="event"
+                          readonly
+                          v-on="on"
+                        />
+                      </template>
+                      <v-date-picker
+                        v-model="editedItem.birthdate"
+                        @input="menuDatePicker = false"
+                      />
+                    </v-menu>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer />
+              <v-btn color="blue darken-1" flat @click="close">
+                Zrušiť
+              </v-btn>
+              <v-btn color="blue darken-1" flat @click="save">
+                Uložiť
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card>
+      </v-dialog>
+    </v-toolbar>
+
+    <v-layout>
+      <v-flex xs12 md4>
+        <v-text-field v-model="filter.fulltext" label="Hľadať" @change="readData"/>
+      </v-flex>
+      <v-flex xs12 md4>
+        <v-text-field v-model="filter.fulltext" label="Hľadať" @change="readData"/>
+      </v-flex>
+
+    </v-layout>
+
+    <v-data-table
+      :headers="headers"
+      :pagination.sync="pagination"
+      :items="persons"
+      class="elevation-1"
+      rows-per-page-text="Počet riadkov"
+    >
+      <template
+        slot="items"
+        slot-scope="props"
+      >
+        <td class="text-xs-left">
+          {{ props.item.FirstName }} {{ props.item.Surname }}
+        </td>
+        <td class="text-xs-right">
+          {{ props.item.BirthDate.Day }}. {{ props.item.BirthDate.Month }}. {{ props.item.BirthDate.Year }}
+        </td>
+        <td class="text-xs-left">
+          <v-chip
+            v-if="props.item.IsHC"
+            color="primary"
+            text-color="white"
+            small
+          >
+            HC
+          </v-chip>
+          <v-chip
+            v-if="props.item.IsCGT"
+            color="primary"
+            text-color="white"
+            small
+          >
+            CGT
+          </v-chip>
+          <v-chip
+            v-if="props.item.Death"
+            color="black"
+            text-color="white"
+            small
+          >
+            {{ props.item.Death.Month }}.{{ props.item.Death.Year }}
+          </v-chip>
+        </td>
+        <td>
+          {{ pocetDni( props.item) }}
+        </td>
+        <td class="justify-center layout px-0">
+          <v-icon
+            small
+            class="mr-2"
+            @click="edit(props.item)"
+          >
+            edit
+          </v-icon>
+        </td>
+      </template>
+    </v-data-table>
+  </v-container>
+</template>
+
+<script>
+    import '../helper.js';
+
+    export default {
+        name: "Persons",
+
+        data: () => ({
+          headers: [
+            {text: 'Meno', value: 'Surname', align: 'left',  sortable: false},
+            {text: 'Narodený', value: 'Birthdate', align: 'right', sortable: false},
+            {text: 'Info', sortable: false},
+            {text: 'Počet dní', sortable: false},
+            {text: 'Akcie', sortable: false}],
+          persons: [],
+          pagination: {rowsPerPage:10},
+          editedIndex: -1,
+          editedItem: {
+            firstname: '',
+            surname: '',
+            birthdate: new Date().toISOString().substr(0, 10),
+          },
+          dialog: false,
+          rules: {
+            required: value => !!value || 'Required.',
+          },
+          valid: true,
+          filter: {
+            fulltext: '',
+            oddelenie: '',
+            stav: '',
+          },
+          menuDatePicker: false,
+        }),
+
+        computed: {
+
+        },
+
+        watch: {
+          dialog (val) {
+            val || this.close()
+          }
+        },
+
+        methods: {
+          edit: function(item) {
+              console.log('edit item',item);
+              this.$router.push("/person/" + item.ID)
+          },
+
+          close: function() {
+            this.dialog = false
+            setTimeout(() => {
+              this.editedItem = Object.assign({}, this.defaultItem)
+              this.editedIndex = -1
+            }, 300)
+          },
+
+          save: function() {
+            if (!this.$refs.carform.validate()) {
+              return;
+            }
+
+            this.$axios.post("/r/api/person",this.editedItem).then(response => {
+              if (response.status == 202) {
+                this.$store.commit("alert","Chyba: " + response.data.Error);
+              } else { //OK
+                this.editedItem = response.data;
+
+                if (this.editedIndex > -1) {
+                  Object.assign(this.cars[this.editedIndex], this.editedItem)
+                } else {
+                  this.cars.push(this.editedItem)
+                }
+
+                this.close()
+              }
+            }).catch(response => {
+              console.log('WRONG',response);
+              this.$store.commit("alert","Chyba: " + response);
+            });
+          },
+
+          readData: function() {
+            this.$axios.post('/r/api/persons',this.filter).then(response => {
+              console.log('OK',response);
+              if (response.status == 202) {
+                this.$store.commit("alert","Chyba: " + response.data.Error);
+              } else {
+                this.persons = response.data;
+              }
+            }).catch(response => {
+              console.log('WRONG',response);
+              this.$store.commit("alert","Chyba: " + response);
+            });
+          },
+
+          pocetDni: function(person) {
+              if (person.PlamPrijatie) {
+                  var firstDate = new Date(person.PlamPrijatie.Year,person.PlamPrijatie.Month,person.PlamPrijatie.Day);
+                  var secondDate = new Date();
+                  if (person.PlamPrepustenie) {
+                      secondDate = new Date(person.PlamPrepustenie.Year,person.PlamPrepustenie.Month,person.PlamPrepustenie.Day);
+                  }
+                  var days = this.$root.days_between(firstDate, secondDate);
+                  return days;
+              } else {
+                  return '-';
+              }
+          },
+
+        },
+
+        mounted: function() {
+          console.log("mounted persons");
+          this.readData();
+        },
+
+
+    }
+</script>
+
+<style scoped>
+
+</style>

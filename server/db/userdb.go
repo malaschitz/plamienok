@@ -29,15 +29,24 @@ func UserByEmail(email string) (user model.User, err error) {
 	return
 }
 
-func UserCount() int {
-	var users []model.User
-	utils.LogErr(_db.All(&users))
-	count := 0
-	for _, u := range users {
-		if u.Deleted == nil {
-			count++
+func Users(all bool) (users []model.User, err error) {
+	var z []model.User
+	err = _db.All(&z)
+	if all {
+		users = z
+	} else {
+		for _, u := range z {
+			if u.Deleted == nil {
+				users = append(users, u)
+			}
 		}
 	}
+	return
+}
+
+func UserCount() int {
+	count, err := _db.Count(&model.User{})
+	utils.LogErr(err)
 	return count
 }
 

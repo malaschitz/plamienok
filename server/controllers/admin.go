@@ -126,7 +126,6 @@ func CheckCode6(c echo.Context) error {
 }
 
 func errorApiResponse(c echo.Context, err error) error {
-	log.Println("ERROR", err)
 	return c.JSON(http.StatusAccepted, struct{ Error string }{Error: err.Error()})
 }
 

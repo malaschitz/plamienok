@@ -27,4 +27,18 @@ func InitAccesible(e *echo.Echo) {
 func InitRestricted(e *echo.Group) {
 	//api
 	e.GET("/api/status", controllers.Status)
+
+	//users
+	e.GET("/api/users", controllers.Users)
+	e.POST("/api/user", controllers.UserPost)
+	e.DELETE("/api/user/:id", controllers.UserDelete)
+
+	//cars
+	e.GET("/api/cars", controllers.Cars)
+	e.POST("/api/car", controllers.CarPost)
+	e.DELETE("/api/car/:id", controllers.CarDelete)
+
+	//persons
+	e.POST("/api/persons", controllers.Persons)
+	e.GET("/api/person/:id", controllers.Person)
 }

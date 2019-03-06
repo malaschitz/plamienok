@@ -3,8 +3,9 @@ import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import axios from "axios";
-import VueAxios from "vue-axios";
+import axios from "axios"
+import VueAxios from "vue-axios"
+import myMixin from './helper.js'
 
 Vue.use(VueAxios, axios);
 Vue.prototype.$axios = axios;
@@ -16,8 +17,15 @@ new Vue({
 
   render: h => h(App),
 
-  mounted: function() {
+  created: function() {
     this.$axios.defaults.headers.common["token"] = localStorage.token;
+
+      this.$axios.interceptors.response.use(undefined, function (error) {
+          if(error.response.status === 401) {
+              window.location = '/';
+              return Promise.reject(error);
+          }
+      });
 
     this.$axios
         .get("/api/info")
@@ -30,5 +38,9 @@ new Vue({
             });
           }
         }).catch(error => console.log(error));
-  }
+  },
+
+    mixins: [myMixin],
+
 }).$mount('#app')
+

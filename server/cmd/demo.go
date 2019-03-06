@@ -46,9 +46,40 @@ func main() {
 			BirthDate: birthdate,
 			RC:        rc,
 			Sex:       sex,
-			IsHC:      true,
-			IsCGT:     false,
+			IsHC:      rand.Intn(2) == 0,
+			IsCGT:     rand.Intn(2) == 0,
 		}
+		//in plamienok
+		if p.IsHC || p.IsCGT {
+			days := rand.Intn(500) + 100
+			d := time.Now().Add(-time.Hour * 24 * time.Duration(days))
+			p.PlamPrijatie = &model.Date{
+				Day:   d.Day(),
+				Month: d.Month(),
+				Year:  d.Year(),
+			}
+			if rand.Intn(3) == 0 {
+				days := rand.Intn(200)
+				d2 := d.Add(time.Hour * 24 * time.Duration(days))
+				p.PlamPrepustenie = &model.Date{
+					Day:   d2.Day(),
+					Month: d2.Month(),
+					Year:  d2.Year(),
+				}
+			}
+		}
+		//is dead
+		if rand.Intn(10) == 1 {
+			days := rand.Intn(50) + 10
+			d := time.Now().Add(-time.Hour * 24 * time.Duration(days))
+			p.Death = &model.Date{
+				Day:   d.Day(),
+				Month: d.Month(),
+				Year:  d.Year(),
+			}
+
+		}
+
 		db.SavePerson(&p, user.ID)
 		//mother
 		fname = wNames[rand.Intn(len(wNames))]
@@ -63,11 +94,19 @@ func main() {
 			RC:        rc,
 			Sex:       sex,
 			IsHC:      false,
-			IsCGT:     false,
+			IsCGT:     rand.Intn(5) == 1,
 		}
 		db.SavePerson(&mother, user.ID)
 		db.SaveRelation(p, mother, model.Mother, user.ID)
 	}
+
+	//cars
+	car := model.Car{Name: "Šedá Octavia", Popis: "BA 319 OD. Pozor ! Trochu pokazená predovka !!"}
+	db.SaveCar(&car, user.ID)
+	car = model.Car{Name: "Mazda 5", Popis: "BA 028 TI. 7-miestna"}
+	db.SaveCar(&car, user.ID)
+	car = model.Car{Name: "Octavia červená", Popis: "BA 458 OD. V kufri je úplná výbava."}
+	db.SaveCar(&car, user.ID)
 }
 
 func randomName() (fname string, sname string, birthdate model.Date, rc string, sex model.Sex) {
