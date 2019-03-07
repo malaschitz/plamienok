@@ -45,11 +45,15 @@ type Person struct {
 	Laboratoria     string
 	Alergia         string
 	ZP              string // Zdravotna poistovna
-	DennyRezim      string
-	Ciel            string
 
 	//index
 	FullText string
+}
+
+type Ciel struct {
+	Base     `storm:"inline"`
+	PersonID string `storm:"index"`
+	Ciel     string
 }
 
 type PersonRelation struct {
@@ -68,7 +72,7 @@ type Car struct {
 // stretnutie psych
 type Session struct {
 	Base        `storm:"inline"`
-	UserID      string
+	UserID      string   `storm:"index"`
 	Persons     []string //zoznam PersonID
 	Datum       DateTime
 	Duration    int //minutes
@@ -92,10 +96,9 @@ type VisitHome struct {
 	Visit               `storm:"inline"`
 	VyjazdFrom          *time.Time
 	VyjazdTo            *time.Time
-	IsPlanned           bool // planovana navsteva
-	CarID               string
+	IsPlanned           bool   // planovana navsteva
+	CarID               string `storm:"index"`
 	Vysetrenie          string
-	Ciele               string
 	MaterialnaPomoc     string
 	SocialnePoradenstvo string
 }

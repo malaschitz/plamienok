@@ -41,10 +41,17 @@ func PersonsFiltered(filter dto.PersonFilter) (persons []model.Person, err error
 				}
 			}
 		}
+		//clients
+		if (filter.Clients == "d" && !p.IsPatient) || (filter.Clients == "p" && p.IsPatient) {
+			test = false
+		}
+
+		//append ?
 		if test {
 			persons = append(persons, p)
 		}
 	}
+
 	//sort
 	sort.Slice(persons, func(i, j int) bool {
 		return persons[j].Updated.After(persons[i].Updated)

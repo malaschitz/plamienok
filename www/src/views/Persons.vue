@@ -115,7 +115,13 @@
         <v-text-field v-model="filter.fulltext" label="Hľadať" @change="readData" />
       </v-flex>
       <v-flex xs12 md4 class="mr-1">
-        <v-select :items="filterClients" label="Klienti" @change="readData" />
+        <v-select :items="filterClients" v-model="filter.clients" label="Klienti" @change="readData" />
+      </v-flex>
+      <v-flex xs12 md4 class="mr-1">
+        <v-select :items="filterOddelenie" v-model="filter.oddelenie" label="Oddelenie" @change="readData" />
+      </v-flex>
+      <v-flex xs12 md4 class="mr-1">
+        <v-select :items="filterStav" v-model="filter.stav" label="Stav" @change="readData" />
       </v-flex>
     </v-layout>
 
@@ -213,10 +219,20 @@
           },
           menuDatePicker: false,
           filterClients: [
-              {text: 'Deti, klienti', value: 'd'},
-              {text: 'Príbuzní', value: 'p'},
-              {text: 'Všetci', value: 'a'},
-          ]
+                {text: 'Deti, klienti', value: 'd'},
+                {text: 'Príbuzní', value: 'p'},
+                {text: '-', value: 'a'},
+            ],
+          filterOddelenie: [
+              {text: 'HomeCare', value: 'hc'},
+              {text: 'CGT', value: 'cgt'},
+              {text: '-', value: 'a'},
+          ],
+          filterStav: [
+              {text: 'Prijatý v Plamienku', value: 'hc'},
+              {text: 'Od', value: 'cgt'},
+              {text: 'Zomrel', value: 'a'},
+          ],
         }),
 
         computed: {
