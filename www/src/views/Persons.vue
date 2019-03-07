@@ -32,7 +32,7 @@
             lazy-validation
           >
             <v-card-title>
-              <span class="headline">Nová osoba</span>
+              <span class="headline">Nové dieťa (klient)</span>
             </v-card-title>
 
             <v-card-text>
@@ -45,7 +45,7 @@
                   >
                     <v-text-field
                       v-model="editedItem.firstname"
-                      label="Názov"
+                      label="Meno"
                       :rules="[rules.required]"
                       required
                     />
@@ -57,7 +57,7 @@
                   >
                     <v-text-field
                       v-model="editedItem.surname"
-                      label="Názov"
+                      label="Priezvisko"
                       :rules="[rules.required]"
                       required
                     />
@@ -80,7 +80,7 @@
                       <template v-slot:activator="{ on }">
                         <v-text-field
                           v-model="editedItem.birthdate"
-                          label="Picker without buttons"
+                          label="Dátum narodenia"
                           prepend-icon="event"
                           readonly
                           v-on="on"
@@ -204,7 +204,12 @@
           editedItem: {
             firstname: '',
             surname: '',
-            birthdate: new Date().toISOString().substr(0, 10),
+            birthdate: '',
+          },
+          defaultItem: {
+              firstname: '',
+              surname: '',
+              birthdate: '',
           },
           dialog: false,
           rules: {
@@ -229,9 +234,10 @@
               {text: '-', value: 'a'},
           ],
           filterStav: [
-              {text: 'Prijatý v Plamienku', value: 'hc'},
-              {text: 'Od', value: 'cgt'},
-              {text: 'Zomrel', value: 'a'},
+              {text: 'Prijatý v Plamienku', value: 'p'},
+              {text: 'Odídený', value: 'o'},
+              {text: 'Zomretý', value: 'z'},
+              {text: '-', value: 'a'},
           ],
         }),
 
@@ -268,15 +274,8 @@
               if (response.status == 202) {
                 this.$store.commit("alert","Chyba: " + response.data.Error);
               } else { //OK
-                this.editedItem = response.data;
-
-                if (this.editedIndex > -1) {
-                  Object.assign(this.cars[this.editedIndex], this.editedItem)
-                } else {
-                  this.cars.push(this.editedItem)
-                }
-
                 this.close()
+                this.$router.push("/person/" + response.data.ID);
               }
             }).catch(response => {
               console.log('WRONG',response);

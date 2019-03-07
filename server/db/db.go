@@ -38,8 +38,8 @@ func InitDB() {
 		}
 	}
 
-	//reindex fulltext
-	{
+	go func() {
+		//reindex fulltext
 		t := time.Now()
 		var persons []*model.Person
 		err = _db.All(&persons)
@@ -54,7 +54,9 @@ func InitDB() {
 			}
 		}
 		log.Printf("Fulltext reindex: %v", time.Since(t))
-	}
 
-	ImportCache("data")
+		//cache
+		ImportCache("data")
+	}()
+
 }

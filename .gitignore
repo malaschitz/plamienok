@@ -24,5 +24,4 @@ data/dgn.json
 data/lieky.json
 plamienok.db
 www/.browserslistrc
-www/.eslintrc.js
 www/package-lock.json

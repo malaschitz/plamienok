@@ -20,8 +20,7 @@ func PersonByID(id string) (person model.Person, err error) {
 }
 
 func PersonsFiltered(filter dto.PersonFilter) (persons []model.Person, err error) {
-	utils.JsonPrint(filter)
-
+	persons = make([]model.Person, 0)
 	var z []model.Person
 	z, err = Persons()
 	if err != nil {
@@ -31,18 +30,31 @@ func PersonsFiltered(filter dto.PersonFilter) (persons []model.Person, err error
 		test := true
 		//fulltext test
 		if filter.FullText != "" {
-			test = false
 			fullTexts := utils.RemoveDiacritics(filter.FullText)
 			z := strings.Split(fullTexts, " ")
 			for _, f := range z {
-				if strings.Contains(p.FullText, f) {
-					test = true
+				if !strings.Contains(p.FullText, f) {
+					test = false
 					break
 				}
 			}
 		}
 		//clients
 		if (filter.Clients == "d" && !p.IsPatient) || (filter.Clients == "p" && p.IsPatient) {
+			test = false
+		}
+		//oddelenie
+		if (filter.Oddelenie == "hc" && !p.IsHC) || (filter.Oddelenie == "cgt" && !p.IsCGT) {
+			test = false
+		}
+		//stav
+		if filter.Stav == "p" && !(p.PlamPrijatie != nil && p.PlamPrepustenie == nil) {
+			test = false
+		}
+		if filter.Stav == "o" && p.PlamPrepustenie == nil {
+			test = false
+		}
+		if filter.Stav == "z" && p.Death == nil {
 			test = false
 		}
 
@@ -56,7 +68,6 @@ func PersonsFiltered(filter dto.PersonFilter) (persons []model.Person, err error
 	sort.Slice(persons, func(i, j int) bool {
 		return persons[j].Updated.After(persons[i].Updated)
 	})
-
 	return
 }
 
