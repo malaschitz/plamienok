@@ -6,7 +6,42 @@
   -->
 
 <template>
-  <h1>Detail osoby {{ $route.params.id }}</h1>
+  <v-container fluid>
+    <v-tabs
+      v-model="active"
+      color="blue"
+      dark
+      slider-color="yellow"
+    >
+      <v-tab key="0" ripple>
+        Základné údaje
+      </v-tab>
+      <v-tab key="1" ripple>
+        Zdravotné údaje
+      </v-tab>
+      <v-tab key="2" ripple>
+        Návštevy
+      </v-tab>
+      <v-tab key="3" ripple>
+        Telefonáty
+      </v-tab>
+      <v-tab key="4" ripple>
+        Stretnutia
+      </v-tab>
+
+      <v-tab-item key="0">
+        <v-card flat>
+          <v-card-text>Základné údaje</v-card-text>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item key="1">
+        <v-card flat>
+          <v-card-text>údaje</v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
+  </v-container>
 </template>
 
 <script>
@@ -17,6 +52,7 @@
           person: {
               ID: '',
           },
+          active: 0,
         }),
 
         methods: {
