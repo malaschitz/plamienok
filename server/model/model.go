@@ -20,6 +20,7 @@ type Person struct {
 	Base            `storm:"inline"`
 	IsHC            bool // could be patient or key person, could be relative
 	IsCGT           bool // client of CGT
+	IsPatient       bool // je patient inak je iba pribuzny alebo kontakt
 	FirstName       string
 	Surname         string
 	BirthDate       Date
@@ -45,6 +46,7 @@ type Person struct {
 	Alergia         string
 	ZP              string // Zdravotna poistovna
 	DennyRezim      string
+	Ciel            string
 
 	//index
 	FullText string
@@ -63,6 +65,16 @@ type Car struct {
 	Popis string
 }
 
+// stretnutie psych
+type Session struct {
+	Base        `storm:"inline"`
+	UserID      string
+	Osoby       []string //zoznam PersonID
+	Datum       DateTime
+	Duration    int //minutes
+	Description string
+}
+
 type Visit struct {
 	Base           `storm:"inline"`
 	VisitFrom      *time.Time
@@ -77,12 +89,11 @@ type Visit struct {
 }
 
 type VisitHome struct {
-	Visit      `storm:"inline"`
-	VyjazdFrom *time.Time
-	VyjazdTo   *time.Time
-	IsPlanned  bool // planovana navsteva
-	CarID      string
-
+	Visit               `storm:"inline"`
+	VyjazdFrom          *time.Time
+	VyjazdTo            *time.Time
+	IsPlanned           bool // planovana navsteva
+	CarID               string
 	Vysetrenie          string
 	Ciele               string
 	MaterialnaPomoc     string
@@ -107,16 +118,12 @@ type Medikacie struct {
 	PersonID string
 	SUKL     string
 	Popis    string
-}
-
-type Ciele struct {
-	Base     `storm:"inline"`
-	PersonID string
-	Popis    string
+	DatumOd  Date
 }
 
 type Work struct { // vykaz prace
 	Base    `storm:"inline"`
+	UserID  string
 	Date    Date
 	Minutes int
 	Popis   string

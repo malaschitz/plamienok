@@ -48,6 +48,7 @@ func main() {
 			Sex:       sex,
 			IsHC:      rand.Intn(2) == 0,
 			IsCGT:     rand.Intn(2) == 0,
+			IsPatient: true,
 		}
 		//in plamienok
 		if p.IsHC || p.IsCGT {
@@ -95,6 +96,7 @@ func main() {
 			Sex:       sex,
 			IsHC:      false,
 			IsCGT:     rand.Intn(5) == 1,
+			IsPatient: false,
 		}
 		db.SavePerson(&mother, user.ID)
 		db.SaveRelation(p, mother, model.Mother, user.ID)

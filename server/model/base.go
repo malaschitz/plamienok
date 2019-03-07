@@ -29,6 +29,12 @@ type Date struct {
 	Day   int
 }
 
+type DateTime struct {
+	Date
+	Hour   int
+	Minute int
+}
+
 type Log struct {
 	ID       string `storm:"id"`
 	Created  time.Time
