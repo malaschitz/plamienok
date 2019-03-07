@@ -2,7 +2,6 @@ package model
 
 import (
 	"strings"
-	"time"
 
 	"github.com/texttheater/golang-levenshtein/levenshtein"
 )
@@ -17,7 +16,7 @@ func addMeniny(names string, day int, month int) {
 			if meniny[n].Day > 0 { //duplicity
 				continue
 			}
-			meniny[n] = Date{Day: day, Month: time.Month(month)}
+			meniny[n] = Date{Day: day, Month: month}
 		}
 	}
 }

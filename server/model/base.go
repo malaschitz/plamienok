@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/malaschitz/plamienok/server/utils"
@@ -25,7 +26,7 @@ type Token struct {
 
 type Date struct {
 	Year  int
-	Month time.Month
+	Month int
 	Day   int
 }
 
@@ -65,8 +66,19 @@ func (u User) String() string {
 func Time2Date(t time.Time) Date {
 	d := Date{
 		Year:  t.Year(),
-		Month: t.Month(),
+		Month: int(t.Month()),
 		Day:   t.Day(),
 	}
 	return d
+}
+
+// format 2002-02-20
+func String2Date(a string) (date Date) {
+	if len(a) < 10 {
+		return
+	}
+	date.Year, _ = strconv.Atoi(a[:4])
+	date.Month, _ = strconv.Atoi(a[5:7])
+	date.Day, _ = strconv.Atoi(a[8:10])
+	return
 }

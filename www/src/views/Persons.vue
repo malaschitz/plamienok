@@ -27,7 +27,7 @@
         </v-btn>
         <v-card>
           <v-form
-            ref="carform"
+            ref="personform"
             v-model="valid"
             lazy-validation
           >
@@ -84,6 +84,8 @@
                           prepend-icon="event"
                           readonly
                           v-on="on"
+                          :rules="[rules.required]"
+                          required
                         />
                       </template>
                       <v-date-picker
@@ -266,7 +268,7 @@
           },
 
           save: function() {
-            if (!this.$refs.carform.validate()) {
+            if (!this.$refs.personform.validate()) {
               return;
             }
 

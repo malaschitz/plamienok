@@ -66,7 +66,7 @@ func PersonsFiltered(filter dto.PersonFilter) (persons []model.Person, err error
 
 	//sort
 	sort.Slice(persons, func(i, j int) bool {
-		return persons[j].Updated.After(persons[i].Updated)
+		return persons[i].Updated.After(persons[j].Updated)
 	})
 	return
 }
