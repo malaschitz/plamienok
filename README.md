@@ -11,3 +11,4 @@ Aplikácia využíva API aplikácie pre ordinácie: www.ordinácia.eu
 # Číselníky
 
 Súbory v adresári data je nutné rozzipovať. 
+
