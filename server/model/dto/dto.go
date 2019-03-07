@@ -4,6 +4,7 @@ type PersonFilter struct {
 	FullText  string
 	Oddelenie string
 	Stav      string
+	Clients   string
 }
 
 //Created by Richard Malaschitz malaschitz@gmail.com

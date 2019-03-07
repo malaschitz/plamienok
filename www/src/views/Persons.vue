@@ -111,13 +111,12 @@
     </v-toolbar>
 
     <v-layout>
-      <v-flex xs12 md4>
-        <v-text-field v-model="filter.fulltext" label="Hľadať" @change="readData"/>
+      <v-flex xs12 md4 class="mr-1">
+        <v-text-field v-model="filter.fulltext" label="Hľadať" @change="readData" />
       </v-flex>
-      <v-flex xs12 md4>
-        <v-text-field v-model="filter.fulltext" label="Hľadať" @change="readData"/>
+      <v-flex xs12 md4 class="mr-1">
+        <v-select :items="filterClients" label="Klienti" @change="readData" />
       </v-flex>
-
     </v-layout>
 
     <v-data-table
@@ -208,10 +207,16 @@
           valid: true,
           filter: {
             fulltext: '',
+            clients: '',
             oddelenie: '',
             stav: '',
           },
           menuDatePicker: false,
+          filterClients: [
+              {text: 'Deti, klienti', value: 'd'},
+              {text: 'Príbuzní', value: 'p'},
+              {text: 'Všetci', value: 'a'},
+          ]
         }),
 
         computed: {
@@ -285,7 +290,7 @@
                       secondDate = new Date(person.PlamPrepustenie.Year,person.PlamPrepustenie.Month,person.PlamPrepustenie.Day);
                   }
                   var days = this.$root.days_between(firstDate, secondDate);
-                  return days;
+                  return days + " dní";
               } else {
                   return '-';
               }

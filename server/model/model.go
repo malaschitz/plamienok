@@ -69,7 +69,7 @@ type Car struct {
 type Session struct {
 	Base        `storm:"inline"`
 	UserID      string
-	Osoby       []string //zoznam PersonID
+	Persons     []string //zoznam PersonID
 	Datum       DateTime
 	Duration    int //minutes
 	Description string
@@ -77,8 +77,8 @@ type Session struct {
 
 type Visit struct {
 	Base           `storm:"inline"`
-	VisitFrom      *time.Time
-	VisitTo        *time.Time
+	Datum          DateTime
+	Duration       int //minutes
 	Popis          string
 	IsZdravotna    bool
 	IsSprevadzanie bool

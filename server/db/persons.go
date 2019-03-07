@@ -20,6 +20,8 @@ func PersonByID(id string) (person model.Person, err error) {
 }
 
 func PersonsFiltered(filter dto.PersonFilter) (persons []model.Person, err error) {
+	utils.JsonPrint(filter)
+
 	var z []model.Person
 	z, err = Persons()
 	if err != nil {
