@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: "Meds",
+  name: "Diagnoses",
 
   data: () => ({
     headers: [

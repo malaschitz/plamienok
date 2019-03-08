@@ -123,7 +123,7 @@
                 { icon: 'touch_app', text: 'Telefón' },
                 { divider: true },
                 { heading: 'Poradňa' },
-                { icon: 'add', text: 'Stretnutia' },
+                { icon: 'calendar_today', text: 'Stretnutia', link: '/sessions' },
                 { divider: true },
                 { heading: 'Štatistiky' },
                 { icon: 'settings', text: 'Hodiny' },
