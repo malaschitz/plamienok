@@ -26,19 +26,12 @@ func PersonsFiltered(filter dto.PersonFilter) (persons []model.Person, err error
 	if err != nil {
 		return
 	}
+	//
+	ftFilter := utils.FullTextCreate(filter.FullText)
 	for _, p := range z {
 		test := true
 		//fulltext test
-		if filter.FullText != "" {
-			fullTexts := utils.RemoveDiacritics(filter.FullText)
-			z := strings.Split(fullTexts, " ")
-			for _, f := range z {
-				if !strings.Contains(p.FullText, f) {
-					test = false
-					break
-				}
-			}
-		}
+		test = utils.FullTextTest(ftFilter, p.FullText)
 		//clients
 		if (filter.Clients == "d" && !p.IsPatient) || (filter.Clients == "p" && p.IsPatient) {
 			test = false

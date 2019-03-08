@@ -56,8 +56,9 @@ const (
 )
 
 const (
-	Male   Sex = 0
-	Female Sex = 1
+	Unknown Sex = 0
+	Male    Sex = 1
+	Female  Sex = 2
 )
 
 const (

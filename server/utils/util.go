@@ -73,6 +73,27 @@ func RemoveDiacritics(s string) string {
 	return strings.ToLower(b.String())
 }
 
+func FullTextCreate(filter string) []string {
+	f := RemoveDiacritics(filter)
+	return strings.Split(f, " ")
+}
+
+func FullTextTest(filter []string, a string) bool {
+	if len(filter) == 0 {
+		return true
+	}
+	if len(filter) == 1 && filter[0] == "" {
+		return true
+	}
+	b := RemoveDiacritics(a)
+	for _, f := range filter {
+		if !strings.Contains(b, f) {
+			return false
+		}
+	}
+	return true
+}
+
 func init() {
 	rnd.Seed(time.Now().UnixNano())
 }

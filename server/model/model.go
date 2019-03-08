@@ -23,16 +23,16 @@ type Person struct {
 	IsPatient       bool // je patient inak je iba pribuzny alebo kontakt
 	FirstName       string
 	Surname         string
-	BirthDate       Date
+	BirthDate       *Date
 	Sex             Sex
 	BornPlace       string
 	Meniny          *Date
 	Death           *Date
 	DeathPlace      string
 	PlamPrijatie    *Date
-	PlamPrepustenie *Date  // nie je uz v Plamienku
-	RC              string // Rodne Cislo
-	DGNkod          string
+	PlamPrepustenie *Date    // nie je uz v Plamienku
+	RC              string   // Rodne Cislo
+	DGN             []string //kody diagnoz
 	DGNpopis        string
 	AddrStreet      string
 	AddrCity        string

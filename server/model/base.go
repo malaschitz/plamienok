@@ -73,12 +73,22 @@ func Time2Date(t time.Time) Date {
 }
 
 // format 2002-02-20
-func String2Date(a string) (date Date) {
+func String2Date(a string) (date *Date) {
 	if len(a) < 10 {
-		return
+		return nil
 	}
+	date = &Date{}
 	date.Year, _ = strconv.Atoi(a[:4])
 	date.Month, _ = strconv.Atoi(a[5:7])
 	date.Day, _ = strconv.Atoi(a[8:10])
+	return
+}
+
+func Date2String(date *Date) (a string) {
+	if date == nil {
+		a = ""
+	} else {
+		a = fmt.Sprintf("%04d-%02d-%02d", date.Year, date.Month, date.Day)
+	}
 	return
 }

@@ -4,7 +4,10 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"sort"
 	"time"
+
+	"github.com/malaschitz/plamienok/server/utils"
 
 	"github.com/labstack/gommon/log"
 	"github.com/malaschitz/plamienok/server/model"
@@ -19,6 +22,20 @@ type DiagnozyCache struct {
 
 type LiekyCache struct {
 	Data []model.Liek
+}
+
+func GetDiagnozy(filter string, max int) []model.Diagnoza {
+	dgns := make([]model.Diagnoza, 0)
+	ftFilter := utils.FullTextCreate(filter)
+	for _, d := range Diagnozy.Data {
+		if utils.FullTextTest(ftFilter, d.Skratka+" "+d.Popis) {
+			dgns = append(dgns, d)
+		}
+		if len(dgns) == max {
+			break
+		}
+	}
+	return dgns
 }
 
 func ImportCache(dir string) {
@@ -66,6 +83,9 @@ func ImportCache(dir string) {
 		}
 		index++
 	}
+	sort.Slice(Diagnozy.Data, func(i, j int) bool {
+		return Diagnozy.Data[i].Skratka < Diagnozy.Data[j].Skratka
+	})
 	log.Printf("Import Cache %v", time.Since(t))
 }
 
