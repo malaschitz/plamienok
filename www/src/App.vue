@@ -129,6 +129,8 @@
                 { icon: 'settings', text: 'Hodiny' },
                 { icon: 'chat_bubble', text: 'Autá' },
                 { heading: 'Administrácia' },
+                { icon: 'receipt', text: 'Lieky', link: '/meds' },
+                { icon: 'pan_tool', text: 'Diagnózy', link: '/diagnoses' },
                 { icon: 'group', text: 'Užívatelia', link: '/users' },
                 { icon: 'directions_car', text: 'Autá', link: '/cars' },
                 { icon: 'phonelink', text: 'Exporty' },

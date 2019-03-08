@@ -22,6 +22,9 @@ func InitAccesible(e *echo.Echo) {
 	e.POST("/api/checkCode6", controllers.CheckCode6)
 	e.GET("/api/stats", controllers.Stats)
 
+	//ciselniky
+	e.GET("/api/meds", controllers.Meds)
+	e.GET("/api/diagnoses", controllers.Diagnoses)
 }
 
 func InitRestricted(e *echo.Group) {

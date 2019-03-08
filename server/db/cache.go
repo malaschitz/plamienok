@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/labstack/gommon/log"
@@ -19,6 +20,44 @@ type DiagnozyCache struct {
 
 type LiekyCache struct {
 	Data []model.Liek
+}
+
+func GetLieky(filterBy string) (lieky []model.Liek) {
+	lieky = make([]model.Liek, 0)
+	filters := strings.Split(strings.ToLower(filterBy), " ")
+	for _, l := range Lieky.Data {
+		test := true
+		for _, f := range filters {
+			search := strings.ToLower(l.Nazov)
+			test = test && strings.Contains(search, f)
+		}
+		if test {
+			lieky = append(lieky, l)
+			if len(lieky) >= 20 {
+				break
+			}
+		}
+	}
+	return
+}
+
+func GetDiagnozy(filterBy string) (diagnozy []model.Diagnoza) {
+	diagnozy = make([]model.Diagnoza, 0)
+	filters := strings.Split(strings.ToLower(filterBy), " ")
+	for _, d := range Diagnozy.Data {
+		test := true
+		for _, f := range filters {
+			search := strings.ToLower(d.Skratka) + strings.ToLower(d.Popis)
+			test = test && strings.Contains(search, f)
+		}
+		if test {
+			diagnozy = append(diagnozy, d)
+			if len(diagnozy) >= 20 {
+				break
+			}
+		}
+	}
+	return
 }
 
 func ImportCache(dir string) {
@@ -68,7 +107,3 @@ func ImportCache(dir string) {
 	}
 	log.Printf("Import Cache %v", time.Since(t))
 }
-
-//Created by Richard Malaschitz
-//23/10/2018 15:32
-//Copyright (c) 2018. All Rights Reserved.
