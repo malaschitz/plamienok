@@ -7,10 +7,9 @@ import (
 	"sort"
 	"time"
 
-	"github.com/malaschitz/plamienok/server/utils"
-
 	"github.com/labstack/gommon/log"
 	"github.com/malaschitz/plamienok/server/model"
+	"github.com/malaschitz/plamienok/server/utils"
 )
 
 var Diagnozy DiagnozyCache
@@ -36,6 +35,20 @@ func GetDiagnozy(filter string, max int) []model.Diagnoza {
 		}
 	}
 	return dgns
+}
+
+func GetLieky(filterBy string, max int) (lieky []model.Liek) {
+	lieky = make([]model.Liek, 0)
+	ftFiler := utils.FullTextCreate(filterBy)
+	for _, l := range Lieky.Data {
+		if utils.FullTextTest(ftFiler, l.Nazov+" "+l.KodSukl) {
+			lieky = append(lieky, l)
+		}
+		if len(lieky) == max {
+			break
+		}
+	}
+	return
 }
 
 func ImportCache(dir string) {
@@ -88,7 +101,3 @@ func ImportCache(dir string) {
 	})
 	log.Printf("Import Cache %v", time.Since(t))
 }
-
-//Created by Richard Malaschitz
-//23/10/2018 15:32
-//Copyright (c) 2018. All Rights Reserved.

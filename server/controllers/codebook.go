@@ -1,18 +1,25 @@
 package controllers
 
 import (
+	"strconv"
+
 	"github.com/labstack/echo"
 	"github.com/malaschitz/plamienok/server/db"
 )
 
-func Diagnozy(c echo.Context) error {
-	filter := c.QueryParam("filter")
-	max := 10
-	dgns := db.GetDiagnozy(filter, max)
-	return okApiResponse(c, dgns)
-
+func Meds(c echo.Context) error {
+	filterBy := c.QueryParam("filter")
+	meds := db.GetLieky(filterBy, 20)
+	return okApiResponse(c, meds)
 }
 
-//Created by Richard Malaschitz malaschitz@gmail.com
-//2019-03-08 22:39
-//Copyright (c) 2018. All Rights Reserved.
+func Diagnoses(c echo.Context) error {
+	filterBy := c.QueryParam("filter")
+	maxS := c.QueryParam("max")
+	max, err := strconv.Atoi(maxS)
+	if err != nil || max == 0 {
+		max = 20
+	}
+	dgs := db.GetDiagnozy(filterBy, max)
+	return okApiResponse(c, dgs)
+}

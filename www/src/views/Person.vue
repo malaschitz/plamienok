@@ -240,11 +240,13 @@
                     :search-input.sync="search"
                     chips
                     clearable
-                    hide-details
+                    hide-no-data
                     hide-selected
                     item-text="Popis"
                     item-value="ID"
                     label="Zadanie diagnózy"
+                    no-filter
+                    
                   >
                     <template v-slot:no-data>
                       <v-list-tile>
@@ -354,10 +356,11 @@
                 this.isLoading = true
 
                 // Lazily load input items
-                fetch('/api/diagnozy?filter=' + val)
+                fetch('/api/diagnoses?filter=' + val)
                     .then(res => res.json())
                     .then(res => {
-                        this.items = res.data
+                        this.items = res;
+                        console.log('Items ' + this.items.length);
                     })
                     .catch(err => {
                         console.log(err)

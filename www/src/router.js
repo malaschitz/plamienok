@@ -2,6 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Dashboard from "./views/Dashboard";
 import Users from "./views/Users";
+import Meds from "./views/Meds";
+import Diagnoses from "./views/Diagnoses";
+import Sessions from "./views/Sessions";
 import Cars from "./views/Cars";
 import Persons from "./views/Persons"
 import Person from "./views/Person"
@@ -27,6 +30,9 @@ export default new Router({
     },
     {path: '/users', name:'users', component: Users},
     {path: '/cars', name:'cars', component: Cars},
+    {path: '/meds', name:'meds', component: Meds},
+    {path: '/diagnoses', name:'diagnoses', component: Diagnoses},
+    {path: '/sessions', name:'sessions', component: Sessions},
     {path: '/persons', name: 'persons', component: Persons},
     {path: '/person/:id', name: 'person', component: Person}
 
