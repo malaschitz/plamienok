@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Dashboard from "./views/Dashboard";
 import Users from "./views/Users";
+import Tasks from "./views/Tasks";
 import Meds from "./views/Meds";
 import Diagnoses from "./views/Diagnoses";
 import Sessions from "./views/Sessions";
@@ -29,6 +30,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {path: '/users', name:'users', component: Users},
+    {path: '/tasks', name:'tasks', component: Tasks},
     {path: '/cars', name:'cars', component: Cars},
     {path: '/meds', name:'meds', component: Meds},
     {path: '/diagnoses', name:'diagnoses', component: Diagnoses},

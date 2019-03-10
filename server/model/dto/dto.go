@@ -35,6 +35,12 @@ type VisitDto struct {
 	DtoDatum string
 }
 
+type CielDto struct {
+	model.Ciel
+	UserName string
+	IsDeleted bool
+}
+
 //Created by Richard Malaschitz malaschitz@gmail.com
 //2019-03-04 20:06
 //Copyright (c) 2018. All Rights Reserved.

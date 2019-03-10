@@ -119,6 +119,7 @@
             items: [
                 { heading: 'Home care' },
                 { icon: 'child_care', text: 'Deti', link: '/persons'},
+                { icon: 'done', text: 'Ciele', link: '/tasks'},
                 { icon: 'lightbulb_outline', text: 'Návštevy' },
                 { icon: 'touch_app', text: 'Telefón' },
                 { divider: true },
