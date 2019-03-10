@@ -206,7 +206,10 @@
             </v-layout>
             <h3>Príbuzní</h3>
 
-            {{ person.DtoRelatives }}
+            <v-flex v-for="(dr,index) in person.DtoRelatives">
+              {{index+1}}. {{dr.Relationship}} {{dr.FirstName}} {{dr.Surname}}
+            </v-flex>
+
 
             <v-layout>
               <v-btn color="info" @click="saveBase">
@@ -313,7 +316,7 @@
             </v-btn>
           </v-toolbar>
           <v-data-table
-            :headers="[{text:'Dátum', value:'DtoDatum'},{text:'Typ', value:'DtoTyp'},{text:'Popis', value:'Popis'},{text:'Detailný Popis', value:'PopisDetail'},{text:'Akcie', scrollable: false}]"
+            :headers="[{text:'Dátum', value:'DtoDatum'},{text:'Typ', value:'DtoTyp'},{text:'Popis', value:'Popis'},{text:'Detailný Popis', value:'PopisDetail'},{text:'Akcie', scrollable: false, value:'ID'}]"
             :items="visits"
             :items-per-page="20"
             class="elevation-1"
@@ -360,7 +363,9 @@
         name: "Person",
 
         data: () => ({
-          person: {},
+          person: {
+            DtoRelatives: [],
+          },
           visits: [],
           sessions: [],
           active: 0,

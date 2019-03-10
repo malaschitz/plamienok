@@ -45,6 +45,7 @@ func InitRestricted(e *echo.Group) {
 	//persons
 	e.POST("/api/persons", controllers.Persons)
 	e.GET("/api/persons", controllers.PersonsAll)
+	e.GET("/api/persons/tasks", controllers.PersonsTasks)
 	e.GET("/api/person/:id", controllers.Person)
 	e.POST("/api/person", controllers.PersonPost)
 	e.PUT("/api/person", controllers.PersonPut)
@@ -55,4 +56,8 @@ func InitRestricted(e *echo.Group) {
 
 	//visits
 	e.GET("/api/visits/:id", controllers.Visits)
+
+	//tasks
+	e.GET("/api/tasks/:id", controllers.Ciele)
+	e.POST("/api/task", controllers.CielPost)
 }

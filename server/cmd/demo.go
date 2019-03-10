@@ -88,27 +88,53 @@ func main() {
 			}
 
 		}
-
 		db.SavePerson(&p, user.ID)
+
 		//mother
-		fname = wNames[rand.Intn(len(wNames))]
-		sname = sNames[rand.Intn(len(sNames))] + "ová"
-		b, rc := randomBirthdate(true)
-		sex = model.Female
-		b = b.Add(-time.Hour * 24 * 365 * 30)
-		birthdate = model.Time2Date(b)
-		mother := model.Person{
-			FirstName: fname,
-			Surname:   sname,
-			BirthDate: &birthdate,
-			RC:        rc,
-			Sex:       sex,
-			IsHC:      false,
-			IsCGT:     rand.Intn(5) == 1,
-			IsPatient: false,
+		var mother model.Person
+		{
+			fname = wNames[rand.Intn(len(wNames))]
+			sname = sNames[rand.Intn(len(sNames))] + "ová"
+			b, rc := randomBirthdate(true)
+			sex = model.Female
+			b = b.Add(-time.Hour * 24 * 365 * 30)
+			birthdate = model.Time2Date(b)
+			mother = model.Person{
+				FirstName: fname,
+				Surname:   sname,
+				BirthDate: &birthdate,
+				RC:        rc,
+				Sex:       sex,
+				IsHC:      false,
+				IsCGT:     rand.Intn(5) == 1,
+				IsPatient: false,
+			}
+			db.SavePerson(&mother, user.ID)
+			db.SaveRelation(p, mother, model.Mother, user.ID)
 		}
-		db.SavePerson(&mother, user.ID)
-		db.SaveRelation(p, mother, model.Mother, user.ID)
+
+		//father
+		var father model.Person
+		{
+			fname = mNames[rand.Intn(len(mNames))]
+			sname = sNames[rand.Intn(len(sNames))]
+			b, rc := randomBirthdate(false)
+			sex = model.Male
+			b = b.Add(-time.Hour * 24 * 365 * 30)
+			birthdate = model.Time2Date(b)
+			father = model.Person{
+				FirstName: fname,
+				Surname:   sname,
+				BirthDate: &birthdate,
+				RC:        rc,
+				Sex:       sex,
+				IsHC:      false,
+				IsCGT:     rand.Intn(5) == 1,
+				IsPatient: false,
+			}
+			db.SavePerson(&father, user.ID)
+			db.SaveRelation(p, father, model.Father, user.ID)
+		}
 
 		//visits
 		if p.IsHC {
@@ -136,7 +162,7 @@ func main() {
 						IsPoUmrti:      false,
 						Users:          []string{user.ID},
 						PersonID:       p.ID,
-						Persons:        []string{mother.ID},
+						Persons:        []string{mother.ID, father.ID},
 					},
 					VyjazdFrom:          model.Time2DateTime(dV),
 					VyjazdTo:            model.Time2DateTime(dZ),

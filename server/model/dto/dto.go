@@ -22,8 +22,7 @@ type PersonDto struct {
 type RelativeDto struct {
 	ID           string
 	Relationship model.Relationship
-	Firstname    string
-	Surname      string
+	Person       model.Person
 }
 
 type TextValueDto struct {
@@ -41,6 +40,12 @@ type VisitDto struct {
 	model.Visit
 	DtoTyp   string // H - Home P - Phone
 	DtoDatum string
+}
+
+type CielDto struct {
+	model.Ciel
+	UserName  string
+	IsDeleted bool
 }
 
 //Created by Richard Malaschitz malaschitz@gmail.com
