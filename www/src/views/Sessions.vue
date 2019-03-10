@@ -29,7 +29,8 @@
             :weekdays="[1, 2, 3, 4, 5, 6, 0]"
             v-model="start"
             :end="end"
-            class="elevation-1">
+            class="elevation-1"
+          >
             <template v-slot:day="{ date }">
               <template v-for="event in eventsMap[date]">
                 <v-chip small :key="event.ID" @click="editSession(event)">
@@ -150,7 +151,8 @@
                       hide-no-data
                       item-value="value"
                       item-text="text"
-                      :rules="[rules.required]" />
+                      :rules="[rules.required]"
+                    />
                   </v-flex>
                 </v-layout>
               </v-form>
