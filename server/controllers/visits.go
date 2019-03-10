@@ -7,7 +7,6 @@ import (
 
 // return all visists for user
 func Visits(c echo.Context) error {
-	p := c.(*PlContext)
 	id := c.Param("id")
 	person, err := db.PersonByID(id)
 	if err == nil {
