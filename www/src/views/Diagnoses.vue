@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-toolbar flat color="white">
       <v-toolbar-title>Diagnózy</v-toolbar-title>
-      <v-spacer/>
+      <v-spacer />
       <v-text-field
         v-model="filter"
         flat
@@ -21,11 +21,14 @@
       rows-per-page-text="Počet riadkov"
     >
       <tr slot="items" slot-scope="props">
-        <td class="text-xs-left">{{ props.item.Skratka }}</td>
-        <td class="text-xs-left">{{ props.item.Popis }}</td>
+        <td class="text-xs-left">
+          {{ props.item.Skratka }}
+        </td>
+        <td class="text-xs-left">
+          {{ props.item.Popis }}
+        </td>
       </tr>
     </v-data-table>
-
   </v-container>
 </template>
 

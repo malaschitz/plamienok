@@ -231,36 +231,38 @@
                   clearable
                 />
               </v-flex>
-                <v-flex xs12 md8 sm6>
-                  <v-text-field v-model="person.Odoslal" label="Odosielajúci lekár" />
-                </v-flex>
-                <v-flex xs12 md12 sm12>
-                  <v-autocomplete
-                    v-model="person.DGN"
-                    :items="dgns"
-                    chips
-                    clearable
-                    label="Zadanie diagnózy"
-                    cache-items
-                    hide-no-data
-                    hide-details
-                    multiple
-                  >
-                  </v-autocomplete>
-                </v-flex>
-                <v-flex xs12 md12 sm12>
-                  <v-text-field v-model="person.DGNpopis" label="Bližší popis diagnózy" />
-                </v-flex>
+              <v-flex xs12 md8 sm6>
+                <v-text-field v-model="person.Odoslal" label="Odosielajúci lekár" />
+              </v-flex>
+              <v-flex xs12 md12 sm12>
+                <v-autocomplete
+                  v-model="person.DGN"
+                  :items="dgns"
+                  chips
+                  clearable
+                  label="Zadanie diagnózy"
+                  cache-items
+                  hide-no-data
+                  hide-details
+                  multiple
+                />
+              </v-flex>
+              <v-flex xs12 md12 sm12>
+                <v-text-field v-model="person.DGNpopis" label="Bližší popis diagnózy" />
+              </v-flex>
+              <v-flex xs12 md12 sm12>
+                <v-text-field v-model="person.DGNpopis" label="Bližší popis diagnózy" />
+              </v-flex>
 
 
-                <v-btn color="info" @click="saveZP">
-                  Uložiť
-                </v-btn>
+              <v-btn color="info" @click="saveZP">
+                Uložiť
+              </v-btn>
 
-                <v-btn color="warning" @click="readData">
-                  Refresh
-                </v-btn>
-                          </v-layout>
+              <v-btn color="warning" @click="readData">
+                Refresh
+              </v-btn>
+            </v-layout>
           </v-container>
         </v-form>
       </v-tab-item>

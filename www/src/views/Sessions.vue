@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-toolbar flat color="white">
       <v-toolbar-title>Stretnutia</v-toolbar-title>
-      <v-spacer/>
+      <v-spacer />
     </v-toolbar>
 
     <v-layout wrap>
@@ -11,7 +11,9 @@
           <v-icon>keyboard_arrow_left</v-icon>
         </v-btn>
       </v-flex>
-      <v-flex sm8 xs12 class="text-xs-center">{{ calendarTitle }}</v-flex>
+      <v-flex sm8 xs12 class="text-xs-center">
+        {{ calendarTitle }}
+      </v-flex>
       <v-flex sm2 xs12 class="text-sm-right text-xs-center">
         <v-btn @click="$refs.calendar.next()">
           <v-icon>keyboard_arrow_right</v-icon>
@@ -28,7 +30,7 @@
             v-model="start"
             :end="end"
             class="elevation-1"
-          ></v-calendar>
+          />
         </v-sheet>
       </v-flex>
       <v-flex xs12 class="text-sm-right">
@@ -83,9 +85,13 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-spacer/>
-            <v-btn color="blue darken-1" flat @click="close">Zrušiť</v-btn>
-            <v-btn color="blue darken-1" flat @click="save">Uložiť</v-btn>
+            <v-spacer />
+            <v-btn color="blue darken-1" flat @click="close">
+              Zrušiť
+            </v-btn>
+            <v-btn color="blue darken-1" flat @click="save">
+              Uložiť
+            </v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
