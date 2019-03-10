@@ -94,6 +94,12 @@ func PersonsCount() int {
 	return count
 }
 
+func Relatives(person model.Person) ([]model.PersonRelation, error) {
+	var relations []model.PersonRelation
+	err := _db.Find("PersonID", person.ID, &relations)
+	return relations, err
+}
+
 //Created by Richard Malaschitz
 //2018-12-31 14:28
 //Copyright (c) 2018. All Rights Reserved.

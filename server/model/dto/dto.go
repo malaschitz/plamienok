@@ -16,6 +16,14 @@ type PersonDto struct {
 	DtoDeath           string
 	DtoPlamPrijatie    string
 	DtoPlamPrepustenie string
+	DtoRelatives       []RelativeDto
+}
+
+type RelativeDto struct {
+	ID           string
+	Relationship model.Relationship
+	Firstname    string
+	Surname      string
 }
 
 type TextValueDto struct {

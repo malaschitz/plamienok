@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+
 	"github.com/labstack/echo"
 	"github.com/malaschitz/plamienok/server/db"
 	"github.com/malaschitz/plamienok/server/model"
@@ -88,5 +90,24 @@ func personToDto(person model.Person) dto.PersonDto {
 	d.DtoDeath = model.Date2String(person.Death)
 	d.DtoPlamPrijatie = model.Date2String(person.PlamPrijatie)
 	d.DtoPlamPrepustenie = model.Date2String(person.PlamPrepustenie)
+	//relatives
+	relatives, err := db.Relatives(person)
+	fmt.Println(relatives)
+	fmt.Println(err)
+	d.DtoRelatives = make([]dto.RelativeDto, 0)
+	for _, r := range relatives {
+		relative, err := db.PersonByID(r.RelativeID)
+		if err != nil {
+			continue
+		}
+		dr := dto.RelativeDto{
+			ID:           r.ID,
+			Relationship: r.Relationship,
+			Firstname:    relative.FirstName,
+			Surname:      relative.Surname,
+		}
+		d.DtoRelatives = append(d.DtoRelatives, dr)
+	}
+
 	return d
 }

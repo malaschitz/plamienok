@@ -203,7 +203,12 @@
               <v-flex xs12 md4 sm6>
                 <v-text-field v-model="person.AddrPSC" label="PSČ" mask="### ##" />
               </v-flex>
+            </v-layout>
+            <h3>Príbuzní</h3>
 
+            {{ person.DtoRelatives }}
+
+            <v-layout>
               <v-btn color="info" @click="saveBase">
                 Uložiť
               </v-btn>
