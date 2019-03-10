@@ -36,6 +36,16 @@ type DateTime struct {
 	Minute int
 }
 
+func (dt DateTime) After(d2 DateTime) bool {
+	n1 := dt.Year*10000 + dt.Month*100 + dt.Day
+	n2 := d2.Year*10000 + d2.Month*100 + d2.Day
+	if n1 > n2 {
+		return true
+	} else {
+		return false
+	}
+}
+
 type Log struct {
 	ID       string `storm:"id"`
 	Created  time.Time
@@ -70,6 +80,19 @@ func Time2Date(t time.Time) Date {
 		Day:   t.Day(),
 	}
 	return d
+}
+
+func Time2DateTime(t time.Time) DateTime {
+	dt := DateTime{
+		Date{
+			Year:  t.Year(),
+			Month: int(t.Month()),
+			Day:   t.Day(),
+		},
+		t.Hour(),
+		t.Minute(),
+	}
+	return dt
 }
 
 // format 2002-02-20

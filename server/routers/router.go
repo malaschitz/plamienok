@@ -52,4 +52,7 @@ func InitRestricted(e *echo.Group) {
 	//sessions
 	e.GET("/api/sessions", controllers.Sessions)
 	e.POST("/api/session", controllers.SessionPost)
+
+	//visits
+	e.GET("/api/visits/:id", controllers.Visits)
 }

@@ -22,10 +22,7 @@
         Zdravotné údaje
       </v-tab>
       <v-tab key="2" ripple>
-        Návštevy
-      </v-tab>
-      <v-tab key="3" ripple>
-        Telefonáty
+        Návštevy, Telefonáty
       </v-tab>
       <v-tab key="4" ripple>
         Poradňa
@@ -248,12 +245,45 @@
                 />
               </v-flex>
               <v-flex xs12 md12 sm12>
-                <v-text-field v-model="person.DGNpopis" label="Bližší popis diagnózy" />
+                <v-textarea
+                  auto-grow
+                  box
+                  color="deep-purple"
+                  rows="1"
+                  v-model="person.DGNpopis"
+                  label="Bližší popis diagnózy"
+                />
               </v-flex>
               <v-flex xs12 md12 sm12>
-                <v-text-field v-model="person.DGNpopis" label="Bližší popis diagnózy" />
+                <v-textarea
+                  auto-grow
+                  box
+                  color="deep-purple"
+                  rows="1"
+                  v-model="person.LekarPKontaktu"
+                  label="Lekár prvého kontaku"
+                />
               </v-flex>
-
+              <v-flex xs12 md12 sm12>
+                <v-textarea
+                  auto-grow
+                  box
+                  color="deep-purple"
+                  rows="1"
+                  v-model="person.Alergia"
+                  label="Popis alergií"
+                />
+              </v-flex>
+              <v-flex xs12 md12 sm12>
+                <v-textarea
+                  auto-grow
+                  box
+                  color="deep-purple"
+                  rows="1"
+                  v-model="person.Laboratoria"
+                  label="Kontakt na laboratóriá"
+                />
+              </v-flex>
 
               <v-btn color="info" @click="saveZP">
                 Uložiť
@@ -268,15 +298,19 @@
       </v-tab-item>
 
       <v-tab-item key="2">
-        <v-card flat>
-          <v-card-text>Návštevy</v-card-text>
-        </v-card>
-      </v-tab-item>
+        <v-container fluid>
+          <v-toolbar flat color="white">
+            <v-btn>Nová</v-btn>
+          </v-toolbar>
+          <v-data-table
+            :headers="[{text:'Dátum', value:'Datum'},{text:'Typ', value:'Typ'}]"
+            :items="visits"
+            :items-per-page="20"
+            class="elevation-1"
+          >
+          </v-data-table>
 
-      <v-tab-item key="3">
-        <v-card flat>
-          <v-card-text>Telefonáty</v-card-text>
-        </v-card>
+        </v-container>
       </v-tab-item>
 
       <v-tab-item key="4">
@@ -294,6 +328,8 @@
 
         data: () => ({
           person: {},
+          visits: [],
+          sessions: [],
           active: 0,
           valid: false,
 
@@ -332,6 +368,19 @@
                     console.log('WRONG',response);
                     this.$store.commit("alert","Chyba: " + response);
                 });
+
+                this.$axios.get('/r/api/visists/' + this.$route.params.id).then(response => {
+                    console.log('OK',response);
+                    if (response.status == 202) {
+                        this.$store.commit("alert","Chyba: " + response.data.Error);
+                    } else {
+                        this.visits = response.data;
+                    }
+                }).catch(response => {
+                    console.log('WRONG',response);
+                    this.$store.commit("alert","Chyba: " + response);
+                });
+
             },
 
             readDgns: function() {

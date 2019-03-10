@@ -29,6 +29,11 @@ type SessionDto struct {
 	UserName string
 }
 
+type VisitDto struct {
+	model.Visit
+	Typ string // H - Home P - Phone
+}
+
 //Created by Richard Malaschitz malaschitz@gmail.com
 //2019-03-04 20:06
 //Copyright (c) 2018. All Rights Reserved.
