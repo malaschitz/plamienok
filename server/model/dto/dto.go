@@ -23,6 +23,12 @@ type TextValueDto struct {
 	Value string `json:"value"`
 }
 
+type SessionDto struct {
+	model.Session
+	DtoDatum string
+	UserName string
+}
+
 //Created by Richard Malaschitz malaschitz@gmail.com
 //2019-03-04 20:06
 //Copyright (c) 2018. All Rights Reserved.

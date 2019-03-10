@@ -84,11 +84,33 @@ func String2Date(a string) (date *Date) {
 	return
 }
 
+func String2DateTime(a string) (date *DateTime) {
+	if len(a) < 16 {
+		return nil
+	}
+	date = &DateTime{}
+	date.Day, _ = strconv.Atoi(a[:2])
+	date.Month, _ = strconv.Atoi(a[3:5])
+	date.Year, _ = strconv.Atoi(a[6:10])
+	date.Hour, _ = strconv.Atoi(a[11:13])
+	date.Minute, _ = strconv.Atoi(a[14:16])
+	return
+}
+
 func Date2String(date *Date) (a string) {
 	if date == nil {
 		a = ""
 	} else {
 		a = fmt.Sprintf("%04d-%02d-%02d", date.Year, date.Month, date.Day)
+	}
+	return
+}
+
+func DateTime2String(date *DateTime) (a string) {
+	if date == nil {
+		a = ""
+	} else {
+		a = fmt.Sprintf("%04d-%02d-%02d %02d:%02d", date.Year, date.Month, date.Day, date.Hour, date.Minute)
 	}
 	return
 }

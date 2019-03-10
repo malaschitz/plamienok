@@ -34,6 +34,7 @@ new Vue({
           if (response.data.User) {
             this.$store.commit("login", {
               name: response.data.User.Name,
+              id: response.data.User.ID,
               email: response.data.User.Email,
             });
           }

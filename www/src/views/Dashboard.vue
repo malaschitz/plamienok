@@ -323,9 +323,11 @@
             },
 
             loginSave: function(data) {
+              console.log('loginSave', data.User)
               this.$store.commit("login", {
                 name: data.User.Name,
-                email: data.User.Email,
+                id: data.User.ID,
+                email: data.User.Email
               });
               localStorage.token = data.Token;
               this.$axios.defaults.headers.common["token"] = localStorage.token;

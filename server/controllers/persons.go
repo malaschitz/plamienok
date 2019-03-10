@@ -21,6 +21,19 @@ func Persons(c echo.Context) error {
 	}
 }
 
+func PersonsAll(c echo.Context) error {
+	persons, err := db.Persons()
+	ret := make([]dto.TextValueDto, 0)
+	for _, p := range persons {
+		p := dto.TextValueDto{Text: p.FirstName + " " + p.Surname, Value: p.ID}
+		ret = append(ret, p)
+	}
+	if err != nil {
+		return errorApiResponse(c, err)
+	}
+	return okApiResponse(c, ret)
+}
+
 func Person(c echo.Context) error {
 	id := c.Param("id")
 	person, err := db.PersonByID(id)
