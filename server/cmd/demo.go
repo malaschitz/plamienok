@@ -128,8 +128,8 @@ func main() {
 							},
 							Hour: d.Hour(), Minute: d.Minute()},
 						Duration:       rand.Intn(100) + 45,
-						Tema:           "Plánovaná Návšteva",
-						Popis:          "Návšteva prebehla v poriadku.",
+						Popis:          "Plánovaná Návšteva",
+						PopisDetail:    "Návšteva prebehla v poriadku. Toto je dlhší popis, ktorý môže obsahovať veĺmi dlhý text na niekoľko riadkov alebo odstavcov.",
 						IsZdravotna:    true,
 						IsSprevadzanie: false,
 						IsSocial:       rand.Intn(2) == 0,
@@ -142,11 +142,12 @@ func main() {
 					VyjazdTo:            model.Time2DateTime(dZ),
 					IsPlanned:           rand.Intn(2) == 0,
 					CarID:               car.ID,
-					Vysetrenie:          "Vyšetrenie prebehlo v poriadku.",
-					MaterialnaPomoc:     "Materiálna pomoc bola poskytnutá",
-					SocialnePoradenstvo: "Sociálne poradenstvo bolo poskytnuté",
+					Vysetrenie:          "Vyšetrenie prebehlo v poriadku. Toto je dlhší popis, ktorý môže obsahovať veĺmi dlhý text na niekoľko riadkov alebo odstavcov.",
+					MaterialnaPomoc:     "Materiálna pomoc bola poskytnutá. Toto je dlhší popis, ktorý môže obsahovať veĺmi dlhý text na niekoľko riadkov alebo odstavcov.",
+					SocialnePoradenstvo: "Sociálne poradenstvo bolo poskytnuté. Toto je dlhší popis, ktorý môže obsahovať veĺmi dlhý text na niekoľko riadkov alebo odstavcov.",
 				}
-				db.SaveVisitHome(vh, user.ID)
+				err = db.SaveVisitHome(vh, user.ID)
+				utils.PanicErr(err)
 
 				vp := model.VisitPhone{
 					Visit: model.Visit{
@@ -156,8 +157,8 @@ func main() {
 							},
 							Hour: d.Hour(), Minute: d.Minute()},
 						Duration:       rand.Intn(100) + 45,
-						Tema:           "Neplánovaný telefonát",
-						Popis:          "Návšteva prebehla v poriadku.",
+						Popis:          "Neplánovaný telefonát",
+						PopisDetail:    "Telefonický rozhovor prebehol v poriadku. Toto je dlhší popis, ktorý môže obsahovať veĺmi dlhý text na niekoľko riadkov alebo odstavcov.",
 						IsZdravotna:    true,
 						IsSprevadzanie: false,
 						IsSocial:       rand.Intn(2) == 0,
@@ -168,8 +169,8 @@ func main() {
 					},
 					Smer: rand.Intn(2) == 0,
 				}
-				db.SaveVisitPhone(vp, user.ID)
-
+				err = db.SaveVisitPhone(vp, user.ID)
+				utils.PanicErr(err)
 			}
 
 		}

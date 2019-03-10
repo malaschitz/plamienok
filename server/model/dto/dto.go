@@ -25,7 +25,8 @@ type TextValueDto struct {
 
 type VisitDto struct {
 	model.Visit
-	Typ string // H - Home P - Phone
+	DtoTyp   string // H - Home P - Phone
+	DtoDatum string
 }
 
 //Created by Richard Malaschitz malaschitz@gmail.com

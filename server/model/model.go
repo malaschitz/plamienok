@@ -79,8 +79,8 @@ type Visit struct {
 	Base           `storm:"inline"`
 	Datum          DateTime
 	Duration       int //minutes
-	Tema           string
 	Popis          string
+	PopisDetail    string
 	IsZdravotna    bool
 	IsSprevadzanie bool
 	IsSocial       bool

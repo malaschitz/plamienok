@@ -174,11 +174,7 @@
           {{ pocetDni( props.item) }}
         </td>
         <td class="justify-center layout px-0">
-          <v-icon
-            small
-            class="mr-2"
-            @click="edit(props.item)"
-          >
+          <v-icon class="mr-2" @click="$router.push('/person/' + props.item.ID)">
             edit
           </v-icon>
         </td>
@@ -254,11 +250,6 @@
         },
 
         methods: {
-          edit: function(item) {
-              console.log('edit item',item);
-              this.$router.push("/person/" + item.ID)
-          },
-
           close: function() {
             this.dialog = false
             setTimeout(() => {

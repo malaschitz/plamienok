@@ -300,16 +300,44 @@
       <v-tab-item key="2">
         <v-container fluid>
           <v-toolbar flat color="white">
-            <v-btn>Nová</v-btn>
+            <v-btn @click="newVisit('H')">
+              <v-icon>home</v-icon> Nová návšteva
+            </v-btn>
+            <v-btn @click="newVisit('P')">
+              <v-icon>phone</v-icon> Nový telefonát
+            </v-btn>
           </v-toolbar>
           <v-data-table
-            :headers="[{text:'Dátum', value:'Datum'},{text:'Typ', value:'Typ'}]"
+            :headers="[{text:'Dátum', value:'DtoDatum'},{text:'Typ', value:'DtoTyp'},{text:'Popis', value:'Popis'},{text:'Detailný Popis', value:'PopisDetail'},{text:'Akcie', scrollable: false}]"
             :items="visits"
             :items-per-page="20"
             class="elevation-1"
           >
+            <template v-slot:items="props">
+              <td class="text-xs-left">
+                {{ props.item.DtoDatum }}
+              </td>
+              <td class="text-xs-left">
+                <v-icon v-if="props.item.DtoTyp == 'H'">
+                  home
+                </v-icon>
+                <v-icon v-if="props.item.DtoTyp == 'P'">
+                  phone
+                </v-icon>
+              </td>
+              <td class="text-xs-left text-no-wrap">
+                {{ props.item.Popis }}
+              </td>
+              <td class="text-xs-left text-no-wrap text-truncate" style="max-width: 200px;">
+                {{ props.item.PopisDetail }}
+              </td>
+              <td>
+                <v-icon class="mr-2" @click="editVisit(props.item)">
+                  edit
+                </v-icon>
+              </td>
+            </template>
           </v-data-table>
-
         </v-container>
       </v-tab-item>
 
@@ -369,7 +397,7 @@
                     this.$store.commit("alert","Chyba: " + response);
                 });
 
-                this.$axios.get('/r/api/visists/' + this.$route.params.id).then(response => {
+                this.$axios.get('/r/api/visits/' + this.$route.params.id).then(response => {
                     console.log('OK',response);
                     if (response.status == 202) {
                         this.$store.commit("alert","Chyba: " + response.data.Error);
@@ -427,6 +455,22 @@
                     console.log('WRONG',response);
                     this.$store.commit("alert","Chyba: " + response);
                 });
+            },
+
+            editVisit: function(item) {
+                if (item.Typ == 'H') {
+                    this.$router.push('/visitHome/' + item.ID)
+                } else {
+                    this.$router.push('/visitPhone/' + item.ID)
+                }
+            },
+
+            newVisit: function(typ) {
+                if (typ == 'H') {
+                    this.$router.push('/visitHome/new')
+                } else {
+                    this.$router.push('/visitPhone/new')
+                }
             },
         },
 
