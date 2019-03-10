@@ -9,7 +9,7 @@ import (
 
 func Meds(c echo.Context) error {
 	filterBy := c.QueryParam("filter")
-	meds := db.GetLieky(filterBy, 20)
+	meds := db.GetLieky(filterBy, 200)
 	return okApiResponse(c, meds)
 }
 
@@ -18,7 +18,7 @@ func Diagnoses(c echo.Context) error {
 	maxS := c.QueryParam("max")
 	max, err := strconv.Atoi(maxS)
 	if err != nil || max == 0 {
-		max = 20
+		max = 200
 	}
 	dgs := db.GetDiagnozy(filterBy, max)
 	return okApiResponse(c, dgs)

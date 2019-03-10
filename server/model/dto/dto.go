@@ -23,6 +23,12 @@ type TextValueDto struct {
 	Value string `json:"value"`
 }
 
+type SessionDto struct {
+	model.Session
+	DtoDatum string
+	UserName string
+}
+
 type VisitDto struct {
 	model.Visit
 	DtoTyp   string // H - Home P - Phone
