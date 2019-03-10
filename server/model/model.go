@@ -1,9 +1,5 @@
 package model
 
-import (
-	"time"
-)
-
 type User struct {
 	Base  `storm:"inline"`
 	Name  string
@@ -83,19 +79,21 @@ type Visit struct {
 	Base           `storm:"inline"`
 	Datum          DateTime
 	Duration       int //minutes
+	Tema           string
 	Popis          string
 	IsZdravotna    bool
 	IsSprevadzanie bool
 	IsSocial       bool
 	IsPoUmrti      bool
 	Users          []string //id uzivatel
-	Persons        []string
+	PersonID       string   //hlavna osoba
+	Persons        []string //dalsi ucastnici
 }
 
 type VisitHome struct {
 	Visit               `storm:"inline"`
-	VyjazdFrom          *time.Time
-	VyjazdTo            *time.Time
+	VyjazdFrom          DateTime
+	VyjazdTo            DateTime
 	IsPlanned           bool   // planovana navsteva
 	CarID               string `storm:"index"`
 	Vysetrenie          string
@@ -104,10 +102,8 @@ type VisitHome struct {
 }
 
 type VisitPhone struct {
-	Visit  `storm:"inline"`
-	UserID string
-	Tema   string
-	Smer   bool // true ak volal plamienok
+	Visit `storm:"inline"`
+	Smer  bool // true ak volal plamienok
 }
 
 type LabVysledky struct {

@@ -25,7 +25,7 @@ func main() {
 	passwordHash, err := utils.EncodePassword("secret")
 	utils.PanicErr(err)
 	user := model.User{
-		Name:       "Tester",
+		Name:       "MUDr. Ján Malý",
 		Email:      "demo@mailinator.com",
 		RoleAdmin:  true,
 		RoleDoctor: true,
@@ -37,13 +37,21 @@ func main() {
 	utils.LogErr(err)
 	db.SetNewPassword(user, passwordHash)
 
+	//cars
+	car := model.Car{Name: "Šedá Octavia", Popis: "BA 319 OD. Pozor ! Trochu pokazená predovka !!"}
+	db.SaveCar(&car, user.ID)
+	car = model.Car{Name: "Mazda 5", Popis: "BA 028 TI. 7-miestna"}
+	db.SaveCar(&car, user.ID)
+	car = model.Car{Name: "Octavia červená", Popis: "BA 458 OD. V kufri je úplná výbava."}
+	db.SaveCar(&car, user.ID)
+
 	//persons
 	for i := 0; i < 100; i++ {
 		fname, sname, birthdate, rc, sex := randomName()
 		p := model.Person{
 			FirstName: fname,
 			Surname:   sname,
-			BirthDate: birthdate,
+			BirthDate: &birthdate,
 			RC:        rc,
 			Sex:       sex,
 			IsHC:      rand.Intn(2) == 0,
@@ -56,7 +64,7 @@ func main() {
 			d := time.Now().Add(-time.Hour * 24 * time.Duration(days))
 			p.PlamPrijatie = &model.Date{
 				Day:   d.Day(),
-				Month: d.Month(),
+				Month: int(d.Month()),
 				Year:  d.Year(),
 			}
 			if rand.Intn(3) == 0 {
@@ -64,7 +72,7 @@ func main() {
 				d2 := d.Add(time.Hour * 24 * time.Duration(days))
 				p.PlamPrepustenie = &model.Date{
 					Day:   d2.Day(),
-					Month: d2.Month(),
+					Month: int(d2.Month()),
 					Year:  d2.Year(),
 				}
 			}
@@ -75,7 +83,7 @@ func main() {
 			d := time.Now().Add(-time.Hour * 24 * time.Duration(days))
 			p.Death = &model.Date{
 				Day:   d.Day(),
-				Month: d.Month(),
+				Month: int(d.Month()),
 				Year:  d.Year(),
 			}
 
@@ -88,10 +96,11 @@ func main() {
 		b, rc := randomBirthdate(true)
 		sex = model.Female
 		b = b.Add(-time.Hour * 24 * 365 * 30)
+		birthdate = model.Time2Date(b)
 		mother := model.Person{
 			FirstName: fname,
 			Surname:   sname,
-			BirthDate: model.Time2Date(b),
+			BirthDate: &birthdate,
 			RC:        rc,
 			Sex:       sex,
 			IsHC:      false,
@@ -100,15 +109,73 @@ func main() {
 		}
 		db.SavePerson(&mother, user.ID)
 		db.SaveRelation(p, mother, model.Mother, user.ID)
+
+		//visits
+		if p.IsHC {
+			for i := 0; i < 5; i++ {
+				days := rand.Intn(500) + 100
+				minutes := rand.Intn(24 * 60)
+				d := time.Now().Add(-time.Hour * 24 * time.Duration(days))
+				d = d.Add(-time.Minute * time.Duration(minutes))
+				dV := d.Add(-time.Minute * 30)
+				dZ := d.Add(time.Minute * 120)
+
+				vh := model.VisitHome{
+					Visit: model.Visit{
+						Datum: model.DateTime{
+							Date: model.Date{
+								Day: d.Day(), Month: int(d.Month()), Year: d.Year(),
+							},
+							Hour: d.Hour(), Minute: d.Minute()},
+						Duration:       rand.Intn(100) + 45,
+						Tema:           "Plánovaná Návšteva",
+						Popis:          "Návšteva prebehla v poriadku.",
+						IsZdravotna:    true,
+						IsSprevadzanie: false,
+						IsSocial:       rand.Intn(2) == 0,
+						IsPoUmrti:      false,
+						Users:          []string{user.ID},
+						PersonID:       p.ID,
+						Persons:        []string{mother.ID},
+					},
+					VyjazdFrom:          model.Time2DateTime(dV),
+					VyjazdTo:            model.Time2DateTime(dZ),
+					IsPlanned:           rand.Intn(2) == 0,
+					CarID:               car.ID,
+					Vysetrenie:          "Vyšetrenie prebehlo v poriadku.",
+					MaterialnaPomoc:     "Materiálna pomoc bola poskytnutá",
+					SocialnePoradenstvo: "Sociálne poradenstvo bolo poskytnuté",
+				}
+				db.SaveVisitHome(vh, user.ID)
+
+				vp := model.VisitPhone{
+					Visit: model.Visit{
+						Datum: model.DateTime{
+							Date: model.Date{
+								Day: d.Day(), Month: int(d.Month()), Year: d.Year(),
+							},
+							Hour: d.Hour(), Minute: d.Minute()},
+						Duration:       rand.Intn(100) + 45,
+						Tema:           "Neplánovaný telefonát",
+						Popis:          "Návšteva prebehla v poriadku.",
+						IsZdravotna:    true,
+						IsSprevadzanie: false,
+						IsSocial:       rand.Intn(2) == 0,
+						IsPoUmrti:      false,
+						Users:          []string{user.ID},
+						PersonID:       p.ID,
+						Persons:        []string{mother.ID},
+					},
+					Smer: rand.Intn(2) == 0,
+				}
+				db.SaveVisitPhone(vp, user.ID)
+
+			}
+
+		}
+
 	}
 
-	//cars
-	car := model.Car{Name: "Šedá Octavia", Popis: "BA 319 OD. Pozor ! Trochu pokazená predovka !!"}
-	db.SaveCar(&car, user.ID)
-	car = model.Car{Name: "Mazda 5", Popis: "BA 028 TI. 7-miestna"}
-	db.SaveCar(&car, user.ID)
-	car = model.Car{Name: "Octavia červená", Popis: "BA 458 OD. V kufri je úplná výbava."}
-	db.SaveCar(&car, user.ID)
 }
 
 func randomName() (fname string, sname string, birthdate model.Date, rc string, sex model.Sex) {
