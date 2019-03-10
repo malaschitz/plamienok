@@ -23,3 +23,8 @@ func Diagnoses(c echo.Context) error {
 	dgs := db.GetDiagnozy(filterBy, max)
 	return okApiResponse(c, dgs)
 }
+
+func DiagnosesAll(c echo.Context) error {
+	dgs := db.GetDiagnozyAll()
+	return okApiResponse(c, dgs)
+}

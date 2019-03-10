@@ -7,6 +7,8 @@ import (
 	"sort"
 	"time"
 
+	"github.com/malaschitz/plamienok/server/model/dto"
+
 	"github.com/labstack/gommon/log"
 	"github.com/malaschitz/plamienok/server/model"
 	"github.com/malaschitz/plamienok/server/utils"
@@ -33,6 +35,15 @@ func GetDiagnozy(filter string, max int) []model.Diagnoza {
 		if len(dgns) == max {
 			break
 		}
+	}
+	return dgns
+}
+
+func GetDiagnozyAll() []dto.TextValueDto {
+	dgns := make([]dto.TextValueDto, 0)
+	for _, d := range Diagnozy.Data {
+		d := dto.TextValueDto{Text: d.Popis, Value: d.Skratka}
+		dgns = append(dgns, d)
 	}
 	return dgns
 }

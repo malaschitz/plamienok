@@ -25,6 +25,7 @@ func InitAccesible(e *echo.Echo) {
 	//ciselniky
 	e.GET("/api/meds", controllers.Meds)
 	e.GET("/api/diagnoses", controllers.Diagnoses)
+	e.GET("/api/diagnosesAll", controllers.DiagnosesAll)
 }
 
 func InitRestricted(e *echo.Group) {

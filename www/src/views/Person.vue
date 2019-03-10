@@ -226,64 +226,32 @@
               <v-flex xs12 md4 sm6>
                 <v-select
                   v-model="person.ZP"
-                  :items="[{value:'',text: '-'},{value:'VZP',text: 'Všeobecná ZP'},{value:'dovera',text: 'Dôvera'},{value:'union',text: 'Union'}]"
-                  label=""
+                  :items="[{value:'VZP',text: 'Všeobecná ZP'},{value:'dovera',text: 'Dôvera'},{value:'union',text: 'Union'}]"
+                  label="Zdravotná poisťovňa"
+                  clearable
                 />
+              </v-flex>
                 <v-flex xs12 md8 sm6>
                   <v-text-field v-model="person.Odoslal" label="Odosielajúci lekár" />
                 </v-flex>
                 <v-flex xs12 md12 sm12>
                   <v-autocomplete
-                    v-model="model"
-                    :items="items"
-                    :loading="isLoading"
-                    :search-input.sync="search"
+                    v-model="person.DGN"
+                    :items="dgns"
                     chips
                     clearable
-                    hide-no-data
-                    hide-selected
-                    item-text="Popis"
-                    item-value="ID"
                     label="Zadanie diagnózy"
-                    no-filter
-                    
+                    cache-items
+                    hide-no-data
+                    hide-details
+                    multiple
                   >
-                    <template v-slot:no-data>
-                      <v-list-tile>
-                        <v-list-tile-title>
-                          Vyhľadávanie diagnózy
-                        </v-list-tile-title>
-                      </v-list-tile>
-                    </template>
-                    <template v-slot:selection="{ item, selected }">
-                      <v-chip
-                        :selected="selected"
-                        color="blue-grey"
-                        class="white--text"
-                      >
-                        <v-icon left>
-                          mdi-coin
-                        </v-icon>
-                        <span v-text="item.Popis" />
-                      </v-chip>
-                    </template>
-                    <template v-slot:item="{ item }">
-                      <v-list-tile-avatar
-                        color="indigo"
-                        class="headline font-weight-light white--text"
-                      >
-                        {{ item.Skratka.charAt(0) }}
-                      </v-list-tile-avatar>
-                      <v-list-tile-content>
-                        <v-list-tile-title v-text="item.Popis" />
-                        <v-list-tile-sub-title v-text="item.Skratka" />
-                      </v-list-tile-content>
-                      <v-list-tile-action>
-                        <v-icon>mdi-coin</v-icon>
-                      </v-list-tile-action>
-                    </template>
                   </v-autocomplete>
                 </v-flex>
+                <v-flex xs12 md12 sm12>
+                  <v-text-field v-model="person.DGNpopis" label="Bližší popis diagnózy" />
+                </v-flex>
+
 
                 <v-btn color="info" @click="saveZP">
                   Uložiť
@@ -292,8 +260,7 @@
                 <v-btn color="warning" @click="readData">
                   Refresh
                 </v-btn>
-              </v-flex>
-            </v-layout>
+                          </v-layout>
           </v-container>
         </v-form>
       </v-tab-item>
@@ -342,31 +309,12 @@
             menuDatePicker3: false,
             menuDatePicker4: false,
 
-            isLoading: false,
-            items: [],
-            model: null,
-            search: null
+            dgns: [],
 
         }),
 
         watch: {
-            search(val) {
-                console.log(val);
 
-                this.isLoading = true
-
-                // Lazily load input items
-                fetch('/api/diagnoses?filter=' + val)
-                    .then(res => res.json())
-                    .then(res => {
-                        this.items = res;
-                        console.log('Items ' + this.items.length);
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-                    .finally(() => (this.isLoading = false))
-            }
         },
 
         methods: {
@@ -377,6 +325,20 @@
                         this.$store.commit("alert","Chyba: " + response.data.Error);
                     } else {
                         this.person = response.data;
+                    }
+                }).catch(response => {
+                    console.log('WRONG',response);
+                    this.$store.commit("alert","Chyba: " + response);
+                });
+            },
+
+            readDgns: function() {
+                this.$axios.get('/api/diagnosesAll').then(response => {
+                    console.log('OK',response);
+                    if (response.status == 202) {
+                        this.$store.commit("alert","Chyba: " + response.data.Error);
+                    } else {
+                        this.dgns = response.data;
                     }
                 }).catch(response => {
                     console.log('WRONG',response);
@@ -419,6 +381,7 @@
 
         mounted: function() {
             console.log("mounted persons");
+            this.readDgns();
             this.readData();
         },
 
