@@ -1,25 +1,43 @@
 <template>
   <v-container fluid>
-    <v-toolbar flat color="white">
+    <v-toolbar
+      flat
+      color="white"
+    >
       <v-toolbar-title>Stretnutia</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
 
     <v-layout wrap>
-      <v-flex sm2 xs12 class="text-sm-left text-xs-center">
+      <v-flex
+        sm2
+        xs12
+        class="text-sm-left text-xs-center"
+      >
         <v-btn @click="$refs.calendar.prev()">
           <v-icon>keyboard_arrow_left</v-icon>
         </v-btn>
       </v-flex>
-      <v-flex sm8 xs12 class="text-xs-center">
+      <v-flex
+        sm8
+        xs12
+        class="text-xs-center"
+      >
         {{ calendarTitle }}
       </v-flex>
-      <v-flex sm2 xs12 class="text-sm-right text-xs-center">
+      <v-flex
+        sm2
+        xs12
+        class="text-sm-right text-xs-center"
+      >
         <v-btn @click="$refs.calendar.next()">
           <v-icon>keyboard_arrow_right</v-icon>
         </v-btn>
       </v-flex>
-      <v-flex xs12 class="my-3">
+      <v-flex
+        xs12
+        class="my-3"
+      >
         <v-sheet height="800">
           <v-calendar
             ref="calendar"
@@ -33,7 +51,11 @@
           >
             <template v-slot:day="{ date }">
               <template v-for="event in eventsMap[date]">
-                <v-chip small :key="event.ID" @click="editSession(event)">
+                <v-chip
+                  small
+                  :key="event.ID"
+                  @click="editSession(event)"
+                >
                   {{ event.UserName }}
                 </v-chip>
               </template>
@@ -41,21 +63,40 @@
           </v-calendar>
         </v-sheet>
       </v-flex>
-      <v-flex xs12 class="text-sm-right">
-        <v-btn color="primary" @click="addSession">
+      <v-flex
+        xs12
+        class="text-sm-right"
+      >
+        <v-btn
+          color="primary"
+          @click="addSession"
+        >
           <v-icon>add</v-icon>
         </v-btn>
       </v-flex>
     </v-layout>
-    <v-dialog v-model="dialog" max-width="500px" @keydown.esc="close" persistent>
+    <v-dialog
+      v-model="dialog"
+      max-width="500px"
+      @keydown.esc="close"
+      persistent
+    >
       <v-card>
-        <v-form ref="personform" v-model="valid" lazy-validation>
+        <v-form
+          ref="personform"
+          v-model="valid"
+          lazy-validation
+        >
           <v-card-title>
             <span class="headline">Stretnutie</span>
           </v-card-title>
           <v-card-text>
             <v-container grid-list-md>
-              <v-form v-model="valid" ref="form" lazy-validation>
+              <v-form
+                v-model="valid"
+                ref="form"
+                lazy-validation
+              >
                 <v-layout wrap>
                   <v-flex xs12>
                     <v-autocomplete 
@@ -140,7 +181,12 @@
                     /> 
                   </v-flex>
                   <v-flex xs12>
-                    <v-textarea v-model="form.desc" :label="'Popis'" rows="4" auto-grow />
+                    <v-textarea
+                      v-model="form.desc"
+                      :label="'Popis'"
+                      rows="4"
+                      auto-grow
+                    />
                   </v-flex>
                   <v-flex xs12>
                     <v-autocomplete 
@@ -161,10 +207,18 @@
 
           <v-card-actions>
             <v-spacer />
-            <v-btn color="blue darken-1" flat @click="close">
+            <v-btn
+              color="blue darken-1"
+              flat
+              @click="close"
+            >
               Zrušiť
             </v-btn>
-            <v-btn color="blue darken-1" flat @click="save">
+            <v-btn
+              color="blue darken-1"
+              flat
+              @click="save"
+            >
               Uložiť
             </v-btn>
           </v-card-actions>

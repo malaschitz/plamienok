@@ -3,6 +3,7 @@ package db
 import (
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/malaschitz/plamienok/server/model"
 	"github.com/malaschitz/plamienok/server/model/dto"
@@ -98,6 +99,22 @@ func Relatives(person model.Person) ([]model.PersonRelation, error) {
 	var relations []model.PersonRelation
 	err := _db.Find("PersonID", person.ID, &relations)
 	return relations, err
+}
+
+func RelationByID(id string) (relation model.PersonRelation, err error) {
+	err = _db.One("ID", id, &relation)
+	return
+}
+
+func RelationDelete(id string, authorID string) error {
+	relation, err := RelationByID(id)
+	if err == nil {
+		relation.Basification(authorID)
+		t := time.Now()
+		relation.Deleted = &t
+		err = _db.Save(&relation)
+	}
+	return err
 }
 
 //Created by Richard Malaschitz

@@ -46,7 +46,7 @@ func main() {
 	db.SaveCar(&car, user.ID)
 
 	//persons
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 30; i++ {
 		fname, sname, birthdate, rc, sex := randomName()
 		p := model.Person{
 			FirstName: fname,

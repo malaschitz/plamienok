@@ -12,7 +12,6 @@ type PersonFilter struct {
 type PersonDto struct {
 	model.Person
 	DtoBirthDate       string
-	DtoMeniny          string
 	DtoDeath           string
 	DtoPlamPrijatie    string
 	DtoPlamPrepustenie string
@@ -46,6 +45,15 @@ type CielDto struct {
 	model.Ciel
 	UserName  string
 	IsDeleted bool
+}
+
+type MeninyDto struct {
+	ID           string
+	Person       model.Person
+	Datum        model.Date
+	Typ          string
+	Relationship model.Relationship
+	Relative     model.Person
 }
 
 //Created by Richard Malaschitz malaschitz@gmail.com

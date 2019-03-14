@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
-    <v-toolbar flat color="white">
+    <v-toolbar
+      flat
+      color="white"
+    >
       <v-toolbar-title>Diagnózy</v-toolbar-title>
       <v-spacer />
       <v-text-field
@@ -20,7 +23,10 @@
       class="elevation-1"
       rows-per-page-text="Počet riadkov"
     >
-      <tr slot="items" slot-scope="props">
+      <tr
+        slot="items"
+        slot-scope="props"
+      >
         <td class="text-xs-left">
           {{ props.item.Skratka }}
         </td>

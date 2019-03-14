@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-btn icon @click="addTask()">
+    <v-btn
+      icon
+      @click="addTask()"
+    >
       <v-icon>add</v-icon>
     </v-btn>
     <div v-if="tasks.length > 0">
@@ -8,10 +11,23 @@
         <div :key="index">
           <v-layout row>  
             <v-flex xs1>
-              <v-checkbox v-model="task.IsDeleted" label="" class="pl-5" @change="saveTask(task)" :disabled="task.IsDeleted" />
+              <v-checkbox
+                v-model="task.IsDeleted"
+                label=""
+                class="pl-5"
+                @change="saveTask(task)"
+                :disabled="task.IsDeleted"
+              />
             </v-flex>
             <v-flex xs11>
-              <v-textarea v-model="task.Ciel" label="" rows="1" auto-grow @change="saveTask(task)" :disabled="task.IsDeleted" />
+              <v-textarea
+                v-model="task.Ciel"
+                label=""
+                rows="1"
+                auto-grow
+                @change="saveTask(task)"
+                :disabled="task.IsDeleted"
+              />
             </v-flex>
           </v-layout>
         </div>

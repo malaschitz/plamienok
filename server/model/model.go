@@ -22,7 +22,6 @@ type Person struct {
 	BirthDate       *Date
 	Sex             Sex
 	BornPlace       string
-	Meniny          *Date
 	Death           *Date
 	DeathPlace      string
 	PlamPrijatie    *Date
@@ -50,6 +49,12 @@ type Ciel struct {
 	Base     `storm:"inline"`
 	PersonID string `storm:"index"`
 	Ciel     string
+}
+
+type Medikacia struct {
+	Base      `storm:"inline"`
+	PersonID  string `storm:"index"`
+	Medikacia string
 }
 
 type PersonRelation struct {

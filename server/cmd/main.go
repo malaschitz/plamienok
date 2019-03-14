@@ -21,6 +21,7 @@ func main() {
 	db.InitDB()
 
 	e := echo.New()
+
 	e.Debug = true
 	e.Use(handleUser)
 	routers.InitAccesible(e)

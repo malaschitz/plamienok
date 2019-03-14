@@ -100,10 +100,18 @@
 
             <v-card-actions>
               <v-spacer />
-              <v-btn color="blue darken-1" flat @click="close">
+              <v-btn
+                color="blue darken-1"
+                flat
+                @click="close"
+              >
                 Zrušiť
               </v-btn>
-              <v-btn color="blue darken-1" flat @click="save">
+              <v-btn
+                color="blue darken-1"
+                flat
+                @click="save"
+              >
                 Uložiť
               </v-btn>
             </v-card-actions>
@@ -113,17 +121,52 @@
     </v-toolbar>
 
     <v-layout>
-      <v-flex xs12 md4 class="mr-1">
-        <v-text-field v-model="filter.fulltext" label="Hľadať" @change="readData" />
+      <v-flex
+        xs12
+        md4
+        class="mr-1"
+      >
+        <v-text-field
+          v-model="filter.fulltext"
+          label="Hľadať"
+          @change="readData"
+        />
       </v-flex>
-      <v-flex xs12 md4 class="mr-1">
-        <v-select :items="filterClients" v-model="filter.clients" label="Klienti" @change="readData" />
+      <v-flex
+        xs12
+        md4
+        class="mr-1"
+      >
+        <v-select
+          :items="filterClients"
+          v-model="filter.clients"
+          label="Klienti"
+          @change="readData"
+        />
       </v-flex>
-      <v-flex xs12 md4 class="mr-1">
-        <v-select :items="filterOddelenie" v-model="filter.oddelenie" label="Oddelenie" @change="readData" />
+      <v-flex
+        xs12
+        md4
+        class="mr-1"
+      >
+        <v-select
+          :items="filterOddelenie"
+          v-model="filter.oddelenie"
+          label="Oddelenie"
+          @change="readData"
+        />
       </v-flex>
-      <v-flex xs12 md4 class="mr-1">
-        <v-select :items="filterStav" v-model="filter.stav" label="Stav" @change="readData" />
+      <v-flex
+        xs12
+        md4
+        class="mr-1"
+      >
+        <v-select
+          :items="filterStav"
+          v-model="filter.stav"
+          label="Stav"
+          @change="readData"
+        />
       </v-flex>
     </v-layout>
 
@@ -174,7 +217,10 @@
           {{ pocetDni( props.item) }}
         </td>
         <td class="justify-center layout px-0">
-          <v-icon class="mr-2" @click="$router.push('/person/' + props.item.ID)">
+          <v-icon
+            class="mr-2"
+            @click="$router.push('/person/' + props.item.ID)"
+          >
             edit
           </v-icon>
         </td>

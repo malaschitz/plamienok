@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
-    <v-toolbar flat color="white">
+    <v-toolbar
+      flat
+      color="white"
+    >
       <v-toolbar-title>Ciele</v-toolbar-title>
     </v-toolbar>
     <v-list dense>
@@ -8,7 +11,10 @@
         <h3 :key="'nadpis' + person.value">
           {{ person.text }}
         </h3>
-        <PersonTasks :key="'tasks' + person.value" :person-id="person.value" />
+        <PersonTasks
+          :key="'tasks' + person.value"
+          :person-id="person.value"
+        />
       </template>
     </v-list>
   </v-container>

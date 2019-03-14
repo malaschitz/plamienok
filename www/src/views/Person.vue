@@ -7,6 +7,7 @@
 
 <template>
   <v-container fluid>
+    <confirm ref="confirm" />
     <h2 class="headline">
       {{ person.FirstName }} {{ person.Surname }} <span class="subheading">{{ age }}</span>
     </h2>
@@ -15,24 +16,44 @@
       color="primary"
       dark
     >
-      <v-tab key="0" ripple>
+      <v-tab
+        key="0"
+        ripple
+      >
         Základné údaje
       </v-tab>
-      <v-tab key="1" ripple>
+      <v-tab
+        key="1"
+        ripple
+      >
         Zdravotné údaje
       </v-tab>
-      <v-tab key="2" ripple>
+      <v-tab
+        key="2"
+        ripple
+      >
         Návštevy, Telefonáty
       </v-tab>
-      <v-tab key="4" ripple>
+      <v-tab
+        key="4"
+        ripple
+      >
         Poradňa
       </v-tab>
 
       <v-tab-item key="0">
-        <v-form v-model="valid" ref="baseform" lazy-validation>
+        <v-form
+          v-model="valid"
+          ref="baseform"
+          lazy-validation
+        >
           <v-container>
             <v-layout wrap>
-              <v-flex xs12 md4 sm6>
+              <v-flex
+                xs12
+                md4
+                sm6
+              >
                 <v-text-field
                   v-model="person.FirstName"
                   :rules="nameRules"
@@ -41,7 +62,11 @@
                   required
                 />
               </v-flex>
-              <v-flex xs12 md4 sm6>
+              <v-flex
+                xs12
+                md4
+                sm6
+              >
                 <v-text-field
                   v-model="person.Surname"
                   :rules="nameRules"
@@ -51,23 +76,56 @@
                 />
               </v-flex>
 
-              <v-flex xs12 md4 sm6>
-                <v-text-field v-model="person.RC" label="Rodné číslo" mask="######/####" />
+              <v-flex
+                xs12
+                md4
+                sm6
+              >
+                <v-text-field
+                  v-model="person.RC"
+                  label="Rodné číslo"
+                  mask="######/####"
+                />
               </v-flex>
 
-              <v-flex xs12 md3 sm6>
-                <v-checkbox v-model="person.IsHC" label="HomeCare" />
+              <v-flex
+                xs12
+                md3
+                sm6
+              >
+                <v-checkbox
+                  v-model="person.IsHC"
+                  label="HomeCare"
+                />
               </v-flex>
 
-              <v-flex xs12 md3 sm6>
-                <v-checkbox v-model="person.IsCGT" label="CGT" />
+              <v-flex
+                xs12
+                md3
+                sm6
+              >
+                <v-checkbox
+                  v-model="person.IsCGT"
+                  label="CGT"
+                />
               </v-flex>
 
-              <v-flex xs12 md3 sm6>
-                <v-checkbox v-model="person.IsPatient" label="Klient" />
+              <v-flex
+                xs12
+                md3
+                sm6
+              >
+                <v-checkbox
+                  v-model="person.IsPatient"
+                  label="Klient"
+                />
               </v-flex>
 
-              <v-flex xs12 md3 sm6>
+              <v-flex
+                xs12
+                md3
+                sm6
+              >
                 <v-select
                   v-model="person.Sex"
                   :items="[{value:0,text: '-'},{value:1,text: 'muž'},{value:2,text: 'žena'}]"
@@ -75,7 +133,11 @@
                 />
               </v-flex>
 
-              <v-flex xs12 sm6 md3>
+              <v-flex
+                xs12
+                sm6
+                md3
+              >
                 <v-menu
                   v-model="menuDatePicker1"
                   :close-on-content-click="false"
@@ -97,11 +159,18 @@
                       clearable
                     />
                   </template>
-                  <v-date-picker v-model="person.DtoBirthDate" @input="menuDatePicker1 = false" />
+                  <v-date-picker
+                    v-model="person.DtoBirthDate"
+                    @input="menuDatePicker1 = false"
+                  />
                 </v-menu>
               </v-flex>
 
-              <v-flex xs12 sm6 md3>
+              <v-flex
+                xs12
+                sm6
+                md3
+              >
                 <v-menu
                   v-model="menuDatePicker2"
                   :close-on-content-click="false"
@@ -123,11 +192,18 @@
                       clearable
                     />
                   </template>
-                  <v-date-picker v-model="person.DtoDeath" @input="menuDatePicker2 = false" />
+                  <v-date-picker
+                    v-model="person.DtoDeath"
+                    @input="menuDatePicker2 = false"
+                  />
                 </v-menu>
               </v-flex>
 
-              <v-flex xs12 sm6 md3>
+              <v-flex
+                xs12
+                sm6
+                md3
+              >
                 <v-menu
                   v-model="menuDatePicker3"
                   :close-on-content-click="false"
@@ -149,11 +225,18 @@
                       clearable
                     />
                   </template>
-                  <v-date-picker v-model="person.DtoPlamPrijatie" @input="menuDatePicker3 = false" />
+                  <v-date-picker
+                    v-model="person.DtoPlamPrijatie"
+                    @input="menuDatePicker3 = false"
+                  />
                 </v-menu>
               </v-flex>
 
-              <v-flex xs12 sm6 md3>
+              <v-flex
+                xs12
+                sm6
+                md3
+              >
                 <v-menu
                   v-model="menuDatePicker4"
                   :close-on-content-click="false"
@@ -175,48 +258,115 @@
                       clearable
                     />
                   </template>
-                  <v-date-picker v-model="person.DtoPlamPrepustenie" @input="menuDatePicker4 = false" />
+                  <v-date-picker
+                    v-model="person.DtoPlamPrepustenie"
+                    @input="menuDatePicker4 = false"
+                  />
                 </v-menu>
               </v-flex>
             </v-layout>
 
             <h3>Kontaktné údaje</h3>
             <v-layout wrap>
-              <v-flex xs12 md4 sm6>
-                <v-text-field v-model="person.Email" :rules="emailRules" label="E-mail" />
+              <v-flex
+                xs12
+                md4
+                sm6
+              >
+                <v-text-field
+                  v-model="person.Email"
+                  :rules="emailRules"
+                  label="E-mail"
+                />
               </v-flex>
-              <v-flex xs12 md4 sm6>
-                <v-text-field v-model="person.Phone" label="Telefónne číslo" />
+              <v-flex
+                xs12
+                md4
+                sm6
+              >
+                <v-text-field
+                  v-model="person.Phone"
+                  label="Telefónne číslo"
+                />
               </v-flex>
-              <v-flex xs12 md4 sm6>
-                <v-text-field v-model="person.Job" label="Zamestnanie" />
+              <v-flex
+                xs12
+                md4
+                sm6
+              >
+                <v-text-field
+                  v-model="person.Job"
+                  label="Zamestnanie"
+                />
               </v-flex>
 
-              <v-flex xs12 md4 sm6>
-                <v-text-field v-model="person.AddrStreet" label="Ulica" />
+              <v-flex
+                xs12
+                md4
+                sm6
+              >
+                <v-text-field
+                  v-model="person.AddrStreet"
+                  label="Ulica"
+                />
               </v-flex>
 
-              <v-flex xs12 md4 sm6>
-                <v-text-field v-model="person.AddrCity" label="Mesto" />
+              <v-flex
+                xs12
+                md4
+                sm6
+              >
+                <v-text-field
+                  v-model="person.AddrCity"
+                  label="Mesto"
+                />
               </v-flex>
 
-              <v-flex xs12 md4 sm6>
-                <v-text-field v-model="person.AddrPSC" label="PSČ" mask="### ##" />
+              <v-flex
+                xs12
+                md4
+                sm6
+              >
+                <v-text-field
+                  v-model="person.AddrPSC"
+                  label="PSČ"
+                  mask="### ##"
+                />
               </v-flex>
             </v-layout>
             <h3>Príbuzní</h3>
 
-            <v-flex v-for="(dr,index) in person.DtoRelatives">
-              {{index+1}}. {{dr.Relationship}} {{dr.FirstName}} {{dr.Surname}}
-            </v-flex>
+            <v-icon @click="relativeAdd">
+              add
+            </v-icon>
+            <v-chip
+              v-for="dr in person.DtoRelatives"
+              label
+              outline
+              close
+              @input="relativeClose(dr)"
+              @click="relativeDetail(dr)"
+              :key="dr.ID"
+            >
+              <v-icon left>
+                person
+              </v-icon>
+              <b>{{ dr.Relationship }}</b>, {{ dr.Person.FirstName }} {{ dr.Person.Surname }}
+            </v-chip>
 
 
             <v-layout>
-              <v-btn color="info" @click="saveBase">
+              <v-btn
+                color="info"
+                @click="saveBase"
+              >
                 Uložiť
               </v-btn>
 
-              <v-btn color="warning" @click="readData">
+              <v-btn
+                color="warning"
+                @click="readData"
+              >
                 Refresh
               </v-btn>
             </v-layout>
@@ -225,10 +375,18 @@
       </v-tab-item>
 
       <v-tab-item key="1">
-        <v-form v-model="valid" ref="zuform" lazy-validation>
+        <v-form
+          v-model="valid"
+          ref="zuform"
+          lazy-validation
+        >
           <v-container>
             <v-layout wrap>
-              <v-flex xs12 md4 sm6>
+              <v-flex
+                xs12
+                md4
+                sm6
+              >
                 <v-select
                   v-model="person.ZP"
                   :items="[{value:'VZP',text: 'Všeobecná ZP'},{value:'dovera',text: 'Dôvera'},{value:'union',text: 'Union'}]"
@@ -236,10 +394,21 @@
                   clearable
                 />
               </v-flex>
-              <v-flex xs12 md8 sm6>
-                <v-text-field v-model="person.Odoslal" label="Odosielajúci lekár" />
+              <v-flex
+                xs12
+                md8
+                sm6
+              >
+                <v-text-field
+                  v-model="person.Odoslal"
+                  label="Odosielajúci lekár"
+                />
               </v-flex>
-              <v-flex xs12 md12 sm12>
+              <v-flex
+                xs12
+                md12
+                sm12
+              >
                 <v-autocomplete
                   v-model="person.DGN"
                   :items="dgns"
@@ -252,7 +421,11 @@
                   multiple
                 />
               </v-flex>
-              <v-flex xs12 md12 sm12>
+              <v-flex
+                xs12
+                md12
+                sm12
+              >
                 <v-textarea
                   auto-grow
                   box
@@ -262,7 +435,11 @@
                   label="Bližší popis diagnózy"
                 />
               </v-flex>
-              <v-flex xs12 md12 sm12>
+              <v-flex
+                xs12
+                md12
+                sm12
+              >
                 <v-textarea
                   auto-grow
                   box
@@ -272,7 +449,11 @@
                   label="Lekár prvého kontaku"
                 />
               </v-flex>
-              <v-flex xs12 md12 sm12>
+              <v-flex
+                xs12
+                md12
+                sm12
+              >
                 <v-textarea
                   auto-grow
                   box
@@ -282,7 +463,11 @@
                   label="Popis alergií"
                 />
               </v-flex>
-              <v-flex xs12 md12 sm12>
+              <v-flex
+                xs12
+                md12
+                sm12
+              >
                 <v-textarea
                   auto-grow
                   box
@@ -293,11 +478,17 @@
                 />
               </v-flex>
 
-              <v-btn color="info" @click="saveZP">
+              <v-btn
+                color="info"
+                @click="saveZP"
+              >
                 Uložiť
               </v-btn>
 
-              <v-btn color="warning" @click="readData">
+              <v-btn
+                color="warning"
+                @click="readData"
+              >
                 Refresh
               </v-btn>
             </v-layout>
@@ -307,7 +498,10 @@
 
       <v-tab-item key="2">
         <v-container fluid>
-          <v-toolbar flat color="white">
+          <v-toolbar
+            flat
+            color="white"
+          >
             <v-btn @click="newVisit('H')">
               <v-icon>home</v-icon> Nová návšteva
             </v-btn>
@@ -336,11 +530,17 @@
               <td class="text-xs-left text-no-wrap">
                 {{ props.item.Popis }}
               </td>
-              <td class="text-xs-left text-no-wrap text-truncate" style="max-width: 200px;">
+              <td
+                class="text-xs-left text-no-wrap text-truncate"
+                style="max-width: 200px;"
+              >
                 {{ props.item.PopisDetail }}
               </td>
               <td>
-                <v-icon class="mr-2" @click="editVisit(props.item)">
+                <v-icon
+                  class="mr-2"
+                  @click="editVisit(props.item)"
+                >
                   edit
                 </v-icon>
               </td>
@@ -355,12 +555,30 @@
         </v-card>
       </v-tab-item>
     </v-tabs>
+
+    /*
+    Dialog - pridanie pribuzneho
+    */
+
+    <v-dialog
+      v-model="dialogRelative"
+      persistent
+      max-width="600px"
+    >
+      <v-card-title>
+        <span class="headline">Pridanie príbuzenského vzťahu</span>
+      </v-card-title>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
+    import confirm from '../components/Confirm'
+
     export default {
         name: "Person",
+
+        components: {'confirm':confirm},
 
         data: () => ({
           person: {
@@ -380,13 +598,13 @@
               v => ( /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || !v)  || 'E-mail must be valid'
           ],
 
-            menuDatePicker1: false,
-            menuDatePicker2: false,
-            menuDatePicker3: false,
-            menuDatePicker4: false,
+          menuDatePicker1: false,
+          menuDatePicker2: false,
+          menuDatePicker3: false,
+          menuDatePicker4: false,
 
             dgns: [],
-
+            dialogRelative: false,
         }),
 
         watch: {
@@ -400,7 +618,7 @@
                     if (response.status == 202) {
                         this.$store.commit("alert","Chyba: " + response.data.Error);
                     } else {
-                        this.person = response.data;
+                                this.person = response.data;
                     }
                 }).catch(response => {
                     console.log('WRONG',response);
@@ -482,6 +700,33 @@
                     this.$router.push('/visitPhone/new')
                 }
             },
+
+            relativeDetail: function(dr) {
+                console.log("Detail",dr);
+                ///api/person/relative/:id
+            },
+
+            relativeClose: function(dr) {
+
+                this.$refs.confirm.open('Vymazať  vzťah ?','Ste si istý ?', {color:'red'}).then((confirm => {
+                    console.log(confirm);
+                    this.$axios.delete('/r/api/person/relative/' + dr.ID).then(response => {
+                        if (response.status == 202) {
+                            this.$store.commit("alert","Chyba: " + response.data.Error);
+                        } else {
+                            this.readData();
+                        }
+                    }).catch(response => {
+                        console.log('WRONG',response);
+                        this.$store.commit("alert","Chyba: " + response);
+                    });
+                }))
+            },
+
+            relativeAdd: function() {
+              console.log("Add");
+            },
+
         },
 
         mounted: function() {

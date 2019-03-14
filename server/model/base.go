@@ -46,6 +46,16 @@ func (dt DateTime) After(d2 DateTime) bool {
 	}
 }
 
+func (dt Date) AddDay() Date {
+	y := dt.Year
+	if y == 0 {
+		y = time.Now().Year()
+	}
+	t := time.Date(y, time.Month(dt.Month), dt.Day, 0, 0, 0, 0, time.UTC)
+	t = t.AddDate(0, 0, 1)
+	return Date{t.Year(), int(t.Month()), t.Day()}
+}
+
 type Log struct {
 	ID       string `storm:"id"`
 	Created  time.Time

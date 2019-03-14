@@ -7,13 +7,9 @@ import (
 
 func InitAccesible(e *echo.Echo) {
 	//intro index.html
-	e.File("/", "server/static/intro/index.html")
-	e.Static("/assets", "server/static/intro/assets")
-
-	//appka html
-	e.File("/app", "server/static/app/dist/index.html")
-	e.Static("/css", "server/static/app/dist/css")
-	e.Static("/js", "server/static/app/dist/js")
+	e.Static("/", "www/dist")
+	e.File("/", "www/dist/index.html")
+	e.File("/favicon.ico", "www/dist/favicon.ico")
 
 	//public api
 	e.GET("/api/info", controllers.Info)
@@ -49,6 +45,8 @@ func InitRestricted(e *echo.Group) {
 	e.GET("/api/person/:id", controllers.Person)
 	e.POST("/api/person", controllers.PersonPost)
 	e.PUT("/api/person", controllers.PersonPut)
+	e.DELETE("/api/person/relative/:id", controllers.PersonRelationDelete)
+	e.GET("/api/meniny/:date", controllers.Meniny)
 
 	//sessions
 	e.GET("/api/sessions", controllers.Sessions)
