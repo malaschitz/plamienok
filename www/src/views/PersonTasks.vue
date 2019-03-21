@@ -1,15 +1,12 @@
 <template>
   <div>
-    <v-btn
-      icon
-      @click="addTask()"
-    >
+    <v-btn icon @click="addTask()">
       <v-icon>add</v-icon>
     </v-btn>
     <div v-if="tasks.length > 0">
       <template v-for="(task, index) in tasks">
         <div :key="index">
-          <v-layout row>  
+          <v-layout row>
             <v-flex xs1>
               <v-checkbox
                 v-model="task.IsDeleted"
@@ -45,25 +42,25 @@ export default {
   },
   data: function() {
     return {
-      meno: '',
+      meno: "",
       tasks: []
-    }
+    };
   },
   computed: {},
   methods: {
     addTask: function() {
-      let t = {}
-      t.ID = null
-      t.PersonID = this.personId
-      t.Username = this.$store.state.name
-      t.Deleted = null
-      t.IsDeleted = false
-      t.Ciel = ''
-      this.tasks.push(t)
+      let t = {};
+      t.ID = null;
+      t.PersonID = this.personId;
+      t.Username = this.$store.state.name;
+      t.Deleted = null;
+      t.IsDeleted = false;
+      t.Ciel = "";
+      this.tasks.push(t);
     },
     saveTask: function(task) {
-      if (task.Ciel === '') {
-        return false
+      if (task.Ciel === "") {
+        return false;
       }
       var params = {
         ID: task.ID,
@@ -71,39 +68,41 @@ export default {
         Deleted: task.Deleted,
         Ciel: task.Ciel,
         PersonID: task.PersonID
-      }
-      this.$axios.post('/r/api/task', params)
+      };
+      this.$axios
+        .post("/r/api/task", params)
         .then(response => {
-          console.log("OK", response)
+          console.log("OK", response);
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error)
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
           } else {
-            this.readData()
+            this.readData();
           }
         })
         .catch(response => {
-          console.log("WRONG", response)
-          this.$store.commit("alert", "Chyba: " + response)
-        })
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
+        });
     },
     readData: function() {
-      this.$axios.get('/r/api/tasks/' + this.personId)
+      this.$axios
+        .get("/r/api/tasks/" + this.personId)
         .then(response => {
-          console.log("OK", response)
+          console.log("OK", response);
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error)
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
           } else {
-            this.tasks = response.data
+            this.tasks = response.data;
           }
         })
         .catch(response => {
-          console.log("WRONG", response)
-          this.$store.commit("alert", "Chyba: " + response)
-        })
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
+        });
     }
   },
   mounted: function() {
-    this.readData()
+    this.readData();
   }
-}
+};
 </script>

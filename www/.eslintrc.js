@@ -3,23 +3,12 @@ module.exports = {
   env: {
     node: true
   },
-  'extends': [
-    'plugin:vue/strongly-recommended',
-    'eslint:recommended'
-  ],
+  extends: ["plugin:vue/essential", "@vue/prettier"],
   rules: {
-    'no-console': 'off',
-    'no-debugger': 'off',
-    'vue/max-attributes-per-line': [2, {
-      "singleline": 10,
-      "multiline": {
-        "max": 1,
-        "allowFirstLine": false
-      }
-    }]
+    "no-console": "off"
   },
 
-   parserOptions: {
-    parser: 'babel-eslint'
+  parserOptions: {
+    parser: "babel-eslint"
   }
-}
+};

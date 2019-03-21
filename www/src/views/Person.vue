@@ -9,51 +9,28 @@
   <v-container fluid>
     <confirm ref="confirm" />
     <h2 class="headline">
-      {{ person.FirstName }} {{ person.Surname }} <span class="subheading">{{ age }}</span>
+      {{ person.FirstName }} {{ person.Surname }}
+      <span class="subheading">{{ age }}</span>
     </h2>
-    <v-tabs
-      v-model="active"
-      color="primary"
-      dark
-    >
-      <v-tab
-        key="0"
-        ripple
-      >
+    <v-tabs v-model="active" color="primary" dark>
+      <v-tab key="0" ripple>
         Základné údaje
       </v-tab>
-      <v-tab
-        key="1"
-        ripple
-      >
+      <v-tab key="1" ripple>
         Zdravotné údaje
       </v-tab>
-      <v-tab
-        key="2"
-        ripple
-      >
+      <v-tab key="2" ripple>
         Návštevy, Telefonáty
       </v-tab>
-      <v-tab
-        key="4"
-        ripple
-      >
+      <v-tab key="4" ripple>
         Poradňa
       </v-tab>
 
       <v-tab-item key="0">
-        <v-form
-          v-model="valid"
-          ref="baseform"
-          lazy-validation
-        >
+        <v-form v-model="valid" ref="baseform" lazy-validation>
           <v-container>
             <v-layout wrap>
-              <v-flex
-                xs12
-                md4
-                sm6
-              >
+              <v-flex xs12 md4 sm6>
                 <v-text-field
                   v-model="person.FirstName"
                   :rules="nameRules"
@@ -62,11 +39,7 @@
                   required
                 />
               </v-flex>
-              <v-flex
-                xs12
-                md4
-                sm6
-              >
+              <v-flex xs12 md4 sm6>
                 <v-text-field
                   v-model="person.Surname"
                   :rules="nameRules"
@@ -76,11 +49,7 @@
                 />
               </v-flex>
 
-              <v-flex
-                xs12
-                md4
-                sm6
-              >
+              <v-flex xs12 md4 sm6>
                 <v-text-field
                   v-model="person.RC"
                   label="Rodné číslo"
@@ -88,56 +57,31 @@
                 />
               </v-flex>
 
-              <v-flex
-                xs12
-                md3
-                sm6
-              >
-                <v-checkbox
-                  v-model="person.IsHC"
-                  label="HomeCare"
-                />
+              <v-flex xs12 md3 sm6>
+                <v-checkbox v-model="person.IsHC" label="HomeCare" />
               </v-flex>
 
-              <v-flex
-                xs12
-                md3
-                sm6
-              >
-                <v-checkbox
-                  v-model="person.IsCGT"
-                  label="CGT"
-                />
+              <v-flex xs12 md3 sm6>
+                <v-checkbox v-model="person.IsCGT" label="CGT" />
               </v-flex>
 
-              <v-flex
-                xs12
-                md3
-                sm6
-              >
-                <v-checkbox
-                  v-model="person.IsPatient"
-                  label="Klient"
-                />
+              <v-flex xs12 md3 sm6>
+                <v-checkbox v-model="person.IsPatient" label="Klient" />
               </v-flex>
 
-              <v-flex
-                xs12
-                md3
-                sm6
-              >
+              <v-flex xs12 md3 sm6>
                 <v-select
                   v-model="person.Sex"
-                  :items="[{value:0,text: '-'},{value:1,text: 'muž'},{value:2,text: 'žena'}]"
+                  :items="[
+                    { value: 0, text: '-' },
+                    { value: 1, text: 'muž' },
+                    { value: 2, text: 'žena' }
+                  ]"
                   label=""
                 />
               </v-flex>
 
-              <v-flex
-                xs12
-                sm6
-                md3
-              >
+              <v-flex xs12 sm6 md3>
                 <v-menu
                   v-model="menuDatePicker1"
                   :close-on-content-click="false"
@@ -166,11 +110,7 @@
                 </v-menu>
               </v-flex>
 
-              <v-flex
-                xs12
-                sm6
-                md3
-              >
+              <v-flex xs12 sm6 md3>
                 <v-menu
                   v-model="menuDatePicker2"
                   :close-on-content-click="false"
@@ -199,11 +139,7 @@
                 </v-menu>
               </v-flex>
 
-              <v-flex
-                xs12
-                sm6
-                md3
-              >
+              <v-flex xs12 sm6 md3>
                 <v-menu
                   v-model="menuDatePicker3"
                   :close-on-content-click="false"
@@ -232,11 +168,7 @@
                 </v-menu>
               </v-flex>
 
-              <v-flex
-                xs12
-                sm6
-                md3
-              >
+              <v-flex xs12 sm6 md3>
                 <v-menu
                   v-model="menuDatePicker4"
                   :close-on-content-click="false"
@@ -268,65 +200,29 @@
 
             <h3>Kontaktné údaje</h3>
             <v-layout wrap>
-              <v-flex
-                xs12
-                md4
-                sm6
-              >
+              <v-flex xs12 md4 sm6>
                 <v-text-field
                   v-model="person.Email"
                   :rules="emailRules"
                   label="E-mail"
                 />
               </v-flex>
-              <v-flex
-                xs12
-                md4
-                sm6
-              >
-                <v-text-field
-                  v-model="person.Phone"
-                  label="Telefónne číslo"
-                />
+              <v-flex xs12 md4 sm6>
+                <v-text-field v-model="person.Phone" label="Telefónne číslo" />
               </v-flex>
-              <v-flex
-                xs12
-                md4
-                sm6
-              >
-                <v-text-field
-                  v-model="person.Job"
-                  label="Zamestnanie"
-                />
+              <v-flex xs12 md4 sm6>
+                <v-text-field v-model="person.Job" label="Zamestnanie" />
               </v-flex>
 
-              <v-flex
-                xs12
-                md4
-                sm6
-              >
-                <v-text-field
-                  v-model="person.AddrStreet"
-                  label="Ulica"
-                />
+              <v-flex xs12 md4 sm6>
+                <v-text-field v-model="person.AddrStreet" label="Ulica" />
               </v-flex>
 
-              <v-flex
-                xs12
-                md4
-                sm6
-              >
-                <v-text-field
-                  v-model="person.AddrCity"
-                  label="Mesto"
-                />
+              <v-flex xs12 md4 sm6>
+                <v-text-field v-model="person.AddrCity" label="Mesto" />
               </v-flex>
 
-              <v-flex
-                xs12
-                md4
-                sm6
-              >
+              <v-flex xs12 md4 sm6>
                 <v-text-field
                   v-model="person.AddrPSC"
                   label="PSČ"
@@ -351,22 +247,15 @@
               <v-icon left>
                 person
               </v-icon>
-              <b>{{ dr.Relationship }}</b>, {{ dr.Person.FirstName }} {{ dr.Person.Surname }}
+              <strong>{{ dr.Relationship.Relation }}</strong>: {{ dr.Person.FirstName }} {{ dr.Person.Surname }}
             </v-chip>
 
-
             <v-layout>
-              <v-btn
-                color="info"
-                @click="saveBase"
-              >
+              <v-btn color="info" @click="saveBase">
                 Uložiť
               </v-btn>
 
-              <v-btn
-                color="warning"
-                @click="readData"
-              >
+              <v-btn color="warning" @click="readData">
                 Refresh
               </v-btn>
             </v-layout>
@@ -375,40 +264,28 @@
       </v-tab-item>
 
       <v-tab-item key="1">
-        <v-form
-          v-model="valid"
-          ref="zuform"
-          lazy-validation
-        >
+        <v-form v-model="valid" ref="zuform" lazy-validation>
           <v-container>
             <v-layout wrap>
-              <v-flex
-                xs12
-                md4
-                sm6
-              >
+              <v-flex xs12 md4 sm6>
                 <v-select
                   v-model="person.ZP"
-                  :items="[{value:'VZP',text: 'Všeobecná ZP'},{value:'dovera',text: 'Dôvera'},{value:'union',text: 'Union'}]"
+                  :items="[
+                    { value: 'VZP', text: 'Všeobecná ZP' },
+                    { value: 'dovera', text: 'Dôvera' },
+                    { value: 'union', text: 'Union' }
+                  ]"
                   label="Zdravotná poisťovňa"
                   clearable
                 />
               </v-flex>
-              <v-flex
-                xs12
-                md8
-                sm6
-              >
+              <v-flex xs12 md8 sm6>
                 <v-text-field
                   v-model="person.Odoslal"
                   label="Odosielajúci lekár"
                 />
               </v-flex>
-              <v-flex
-                xs12
-                md12
-                sm12
-              >
+              <v-flex xs12 md12 sm12>
                 <v-autocomplete
                   v-model="person.DGN"
                   :items="dgns"
@@ -421,11 +298,7 @@
                   multiple
                 />
               </v-flex>
-              <v-flex
-                xs12
-                md12
-                sm12
-              >
+              <v-flex xs12 md12 sm12>
                 <v-textarea
                   auto-grow
                   box
@@ -435,11 +308,7 @@
                   label="Bližší popis diagnózy"
                 />
               </v-flex>
-              <v-flex
-                xs12
-                md12
-                sm12
-              >
+              <v-flex xs12 md12 sm12>
                 <v-textarea
                   auto-grow
                   box
@@ -449,11 +318,7 @@
                   label="Lekár prvého kontaku"
                 />
               </v-flex>
-              <v-flex
-                xs12
-                md12
-                sm12
-              >
+              <v-flex xs12 md12 sm12>
                 <v-textarea
                   auto-grow
                   box
@@ -463,11 +328,7 @@
                   label="Popis alergií"
                 />
               </v-flex>
-              <v-flex
-                xs12
-                md12
-                sm12
-              >
+              <v-flex xs12 md12 sm12>
                 <v-textarea
                   auto-grow
                   box
@@ -478,17 +339,11 @@
                 />
               </v-flex>
 
-              <v-btn
-                color="info"
-                @click="saveZP"
-              >
+              <v-btn color="info" @click="saveZP">
                 Uložiť
               </v-btn>
 
-              <v-btn
-                color="warning"
-                @click="readData"
-              >
+              <v-btn color="warning" @click="readData">
                 Refresh
               </v-btn>
             </v-layout>
@@ -498,10 +353,7 @@
 
       <v-tab-item key="2">
         <v-container fluid>
-          <v-toolbar
-            flat
-            color="white"
-          >
+          <v-toolbar flat color="white">
             <v-btn @click="newVisit('H')">
               <v-icon>home</v-icon> Nová návšteva
             </v-btn>
@@ -510,7 +362,13 @@
             </v-btn>
           </v-toolbar>
           <v-data-table
-            :headers="[{text:'Dátum', value:'DtoDatum'},{text:'Typ', value:'DtoTyp'},{text:'Popis', value:'Popis'},{text:'Detailný Popis', value:'PopisDetail'},{text:'Akcie', scrollable: false, value:'ID'}]"
+            :headers="[
+              { text: 'Dátum', value: 'DtoDatum' },
+              { text: 'Typ', value: 'DtoTyp' },
+              { text: 'Popis', value: 'Popis' },
+              { text: 'Detailný Popis', value: 'PopisDetail' },
+              { text: 'Akcie', scrollable: false, value: 'ID' }
+            ]"
             :items="visits"
             :items-per-page="20"
             class="elevation-1"
@@ -537,10 +395,7 @@
                 {{ props.item.PopisDetail }}
               </td>
               <td>
-                <v-icon
-                  class="mr-2"
-                  @click="editVisit(props.item)"
-                >
+                <v-icon class="mr-2" @click="editVisit(props.item)">
                   edit
                 </v-icon>
               </td>
@@ -556,207 +411,351 @@
       </v-tab-item>
     </v-tabs>
 
-    /*
-    Dialog - pridanie pribuzneho
-    */
+    <!-- Dialog - pridanie pribuzneho BEGIN -->
 
-    <v-dialog
-      v-model="dialogRelative"
-      persistent
-      max-width="600px"
-    >
-      <v-card-title>
-        <span class="headline">Pridanie príbuzenského vzťahu</span>
-      </v-card-title>
+    <v-dialog v-model="dialogRelative" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Pridanie príbuzenského vzťahu</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12 sm12 md12 v-if="editRelative.msg">
+                <span class="title red--text"
+                  >Chyba: {{ editRelative.msg }}</span
+                >
+              </v-flex>
+              <v-flex xs12 sm6 md4>
+                <v-select
+                  :items="relationships"
+                  label="Príbuzenský vzťah"
+                  v-model="editRelative.relationship"
+                />
+              </v-flex>
+              <v-flex xs12 sm6 md8>
+                <v-autocomplete
+                  v-model="editRelative.person"
+                  :items="persons"
+                  label="Osoba"
+                  clearable
+                />
+              </v-flex>
+              <template v-if="!editRelative.person">
+                <h3>Zadajte základné údaje ak sa jedná o novú osobu</h3>
+
+                <v-flex xs12 sm6 md4>
+                  <v-text-field label="Meno" v-model="editRelative.firstname" />
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field
+                    label="Priezvisko"
+                    v-model="editRelative.surname"
+                  />
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field label="Telefón" v-model="editRelative.phone" />
+                </v-flex>
+              </template>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="blue darken-1" flat @click="dialogRelative = false">
+            Close
+          </v-btn>
+          <v-btn color="blue darken-1" flat @click="saveRelative()">
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
+    <!-- Dialog - pridanie pribuzneho END -->
   </v-container>
 </template>
 
 <script>
-    import confirm from '../components/Confirm'
+import confirm from "../components/Confirm";
 
-    export default {
-        name: "Person",
+export default {
+  name: "Person",
 
-        components: {'confirm':confirm},
+  components: { confirm: confirm },
 
-        data: () => ({
-          person: {
-            DtoRelatives: [],
-          },
-          visits: [],
-          sessions: [],
-          active: 0,
-          valid: false,
+  data: () => ({
+    person: {
+      DtoRelatives: []
+    },
+    visits: [],
+    sessions: [],
+    active: 0,
+    valid: false,
 
-          nameRules: [
-              v => !!v || 'Meno je vyžadované',
-          ],
+    nameRules: [v => !!v || "Meno je vyžadované"],
 
-          emailRules: [
-              // eslint-disable-next-line
+    emailRules: [
+      // eslint-disable-next-line
               v => ( /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || !v)  || 'E-mail must be valid'
-          ],
+    ],
 
-          menuDatePicker1: false,
-          menuDatePicker2: false,
-          menuDatePicker3: false,
-          menuDatePicker4: false,
+    editRelative: {
+      person: null,
+      relationship: "",
+      firstname: "",
+      surname: "",
+      phone: "",
+      msg: ""
+    },
 
-            dgns: [],
-            dialogRelative: false,
-        }),
+    menuDatePicker1: false,
+    menuDatePicker2: false,
+    menuDatePicker3: false,
+    menuDatePicker4: false,
 
-        watch: {
+    dgns: [],
+    dialogRelative: false,
+    relationships: [],
+    persons: []
+  }),
 
-        },
+  methods: {
+    readData: function() {
+      this.$axios
+        .get("/r/api/person/" + this.$route.params.id)
+        .then(response => {
+          console.log("OK", response);
+          if (response.status == 202) {
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
+          } else {
+            this.person = response.data;
+          }
+        })
+        .catch(response => {
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
+        });
 
-        methods: {
-            readData: function() {
-                this.$axios.get('/r/api/person/' + this.$route.params.id).then(response => {
-                    console.log('OK',response);
-                    if (response.status == 202) {
-                        this.$store.commit("alert","Chyba: " + response.data.Error);
-                    } else {
-                                this.person = response.data;
-                    }
-                }).catch(response => {
-                    console.log('WRONG',response);
-                    this.$store.commit("alert","Chyba: " + response);
-                });
+      this.$axios
+        .get("/r/api/visits/" + this.$route.params.id)
+        .then(response => {
+          console.log("OK", response);
+          if (response.status == 202) {
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
+          } else {
+            this.visits = response.data;
+          }
+        })
+        .catch(response => {
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
+        });
 
-                this.$axios.get('/r/api/visits/' + this.$route.params.id).then(response => {
-                    console.log('OK',response);
-                    if (response.status == 202) {
-                        this.$store.commit("alert","Chyba: " + response.data.Error);
-                    } else {
-                        this.visits = response.data;
-                    }
-                }).catch(response => {
-                    console.log('WRONG',response);
-                    this.$store.commit("alert","Chyba: " + response);
-                });
+      this.$axios
+        .get("/r/api/persons")
+        .then(response => {
+          console.log("OK", response);
+          if (response.status == 202) {
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
+          } else {
+            this.persons = response.data;
+          }
+        })
+        .catch(response => {
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
+        });
+    },
 
-            },
+    readCodebooks: function() {
+      this.$axios
+        .get("/api/diagnosesAll")
+        .then(response => {
+          console.log("OK", response);
+          if (response.status == 202) {
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
+          } else {
+            this.dgns = response.data;
+          }
+        })
+        .catch(response => {
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
+        });
 
-            readDgns: function() {
-                this.$axios.get('/api/diagnosesAll').then(response => {
-                    console.log('OK',response);
-                    if (response.status == 202) {
-                        this.$store.commit("alert","Chyba: " + response.data.Error);
-                    } else {
-                        this.dgns = response.data;
-                    }
-                }).catch(response => {
-                    console.log('WRONG',response);
-                    this.$store.commit("alert","Chyba: " + response);
-                });
-            },
+      this.$axios
+        .get("/api/relationships")
+        .then(response => {
+          console.log("OK", response);
+          if (response.status == 202) {
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
+          } else {
+            this.relationships = response.data;
+          }
+        })
+        .catch(response => {
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
+        });
+    },
 
-            saveBase: function() {
-                if (!this.$refs.baseform.validate()) {
-                    return;
-                }
-                this.$axios.put("/r/api/person",this.person).then(response => {
-                  if (response.status == 202) {
-                      this.$store.commit("alert","Chyba: " + response.data.Error);
-                  } else { //OK
-                      this.person = response.data;
-                  }
-              }).catch(response => {
-                  console.log('WRONG',response);
-                  this.$store.commit("alert","Chyba: " + response);
-              });
-            },
+    saveBase: function() {
+      if (!this.$refs.baseform.validate()) {
+        return;
+      }
+      this.$axios
+        .put("/r/api/person", this.person)
+        .then(response => {
+          if (response.status == 202) {
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
+          } else {
+            //OK
+            this.person = response.data;
+          }
+        })
+        .catch(response => {
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
+        });
+    },
 
-            saveZP: function() {
-                if (!this.$refs.zuform.validate()) {
-                    return;
-                }
-                this.$axios.put("/r/api/person",this.person).then(response => {
-                    if (response.status == 202) {
-                        this.$store.commit("alert","Chyba: " + response.data.Error);
-                    } else { //OK
-                        this.person = response.data;
-                    }
-                }).catch(response => {
-                    console.log('WRONG',response);
-                    this.$store.commit("alert","Chyba: " + response);
-                });
-            },
+    saveZP: function() {
+      if (!this.$refs.zuform.validate()) {
+        return;
+      }
+      this.$axios
+        .put("/r/api/person", this.person)
+        .then(response => {
+          if (response.status == 202) {
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
+          } else {
+            //OK
+            this.person = response.data;
+          }
+        })
+        .catch(response => {
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
+        });
+    },
 
-            editVisit: function(item) {
-                if (item.Typ == 'H') {
-                    this.$router.push('/visitHome/' + item.ID)
-                } else {
-                    this.$router.push('/visitPhone/' + item.ID)
-                }
-            },
+    editVisit: function(item) {
+      if (item.Typ == "H") {
+        this.$router.push("/visitHome/" + item.ID);
+      } else {
+        this.$router.push("/visitPhone/" + item.ID);
+      }
+    },
 
-            newVisit: function(typ) {
-                if (typ == 'H') {
-                    this.$router.push('/visitHome/new')
-                } else {
-                    this.$router.push('/visitPhone/new')
-                }
-            },
+    newVisit: function(typ) {
+      if (typ == "H") {
+        this.$router.push("/visitHome/new");
+      } else {
+        this.$router.push("/visitPhone/new");
+      }
+    },
 
-            relativeDetail: function(dr) {
-                console.log("Detail",dr);
-                ///api/person/relative/:id
-            },
+    relativeDetail: function(dr) {
+      this.$router.push("/person/" + dr.Person.ID);
+    },
 
-            relativeClose: function(dr) {
+    relativeClose: function(dr) {
+      this.$refs.confirm
+        .open("Vymazať  vzťah ?", "Ste si istý ?", { color: "red" })
+        .then(confirm => {
+          console.log(confirm);
+          this.$axios
+            .delete("/r/api/person/relative/" + dr.ID)
+            .then(response => {
+              if (response.status == 202) {
+                this.$store.commit("alert", "Chyba: " + response.data.Error);
+              } else {
+                this.readData();
+              }
+            })
+            .catch(response => {
+              this.$store.commit("alert", "Chyba: " + response);
+            });
+        });
+    },
 
-                this.$refs.confirm.open('Vymazať  vzťah ?','Ste si istý ?', {color:'red'}).then((confirm => {
-                    console.log(confirm);
-                    this.$axios.delete('/r/api/person/relative/' + dr.ID).then(response => {
-                        if (response.status == 202) {
-                            this.$store.commit("alert","Chyba: " + response.data.Error);
-                        } else {
-                            this.readData();
-                        }
-                    }).catch(response => {
-                        console.log('WRONG',response);
-                        this.$store.commit("alert","Chyba: " + response);
-                    });
-                }))
-            },
+    relativeAdd: function() {
+      this.editRelative.firstname = "";
+      this.editRelative.surname = "";
+      this.editRelative.msg = "";
+      this.editRelative.phone = "";
+      this.editRelative.relationship = "";
+      this.dialogRelative = true;
+    },
 
-            relativeAdd: function() {
-              console.log("Add");
-            },
-
-        },
-
-        mounted: function() {
-            console.log("mounted persons");
-            this.readDgns();
+    saveRelative: function() {
+      if (this.editRelative.relationship === "") {
+        this.editRelative.msg = "Chýba zadaný príbuzenský vzťah";
+        this.$store.commit("alert", this.editRelative.msg);
+        return;
+      }
+      if (this.editRelative.person == null) {
+        if (
+          this.editRelative.firstname === "" ||
+          this.editRelative.surname === ""
+        )
+          this.editRelative.msg =
+            "Je nutné vybrať osobu zo zoznamu osôb alebo zadať novú";
+        this.$store.commit("alert", this.editRelative.msg);
+        return;
+      }
+      this.$axios
+        .post("/r/api/person/relative/" + this.person.ID, this.editRelative)
+        .then(response => {
+          if (response.status == 202) {
+            this.editRelative.msg = response.data.Error;
+            this.$store.commit("alert", this.editRelative.msg);
+          } else {
+            this.dialogRelative = false;
             this.readData();
-        },
-
-        computed: {
-            age: function() {
-                var dob = this.person.DtoBirthDate;
-                if (dob && dob.length === 10) {
-                    var year = Number(dob.substr(0, 4));
-                    var month = Number(dob.substr(4, 2)) - 1;
-                    var day = Number(dob.substr(6, 2));
-                    var today = new Date();
-                    var age = today.getFullYear() - year;
-                    if (today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)) {
-                        age--;
-                    }
-                    return "(" + age + "r)";
-                } else {
-                    return ""
-                }
-            },
-        }
-
+          }
+        })
+        .catch(response => {
+          this.editRelative.msg = response;
+          this.$store.commit("alert", this.editRelative.msg);
+        });
     }
+  },
+
+  mounted: function() {
+    console.log("mounted person", this.$route.params.id);
+    this.readCodebooks();
+    this.readData();
+  },
+
+  computed: {
+    age: function() {
+      var dob = this.person.DtoBirthDate;
+      if (dob && dob.length === 10) {
+        var year = Number(dob.substr(0, 4));
+        var month = Number(dob.substr(4, 2)) - 1;
+        var day = Number(dob.substr(6, 2));
+        var today = new Date();
+        var age = today.getFullYear() - year;
+        if (
+          today.getMonth() < month ||
+          (today.getMonth() == month && today.getDate() < day)
+        ) {
+          age--;
+        }
+        return "(" + age + "r)";
+      } else {
+        return "";
+      }
+    }
+  },
+
+  watch: {
+    $route() {
+      this.readData();
+    }
+  }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

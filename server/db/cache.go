@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"regexp"
 	"sort"
 	"time"
 
@@ -41,9 +42,15 @@ func GetDiagnozy(filter string, max int) []model.Diagnoza {
 
 func GetDiagnozyAll() []dto.TextValueDto {
 	dgns := make([]dto.TextValueDto, 0)
+	r, err := regexp.Compile("^[A-Z]{1}[0-9]{2}$")
+	if err != nil {
+		panic(err)
+	}
 	for _, d := range Diagnozy.Data {
-		d := dto.TextValueDto{Text: d.Popis, Value: d.Skratka}
-		dgns = append(dgns, d)
+		if r.MatchString(d.Skratka) {
+			d := dto.TextValueDto{Text: d.Popis, Value: d.Skratka}
+			dgns = append(dgns, d)
+		}
 	}
 	return dgns
 }

@@ -58,10 +58,10 @@ type Medikacia struct {
 }
 
 type PersonRelation struct {
-	Base         `storm:"inline"`
-	PersonID     string `storm:"index"`
-	RelativeID   string
-	Relationship Relationship
+	Base               `storm:"inline"`
+	PersonID           string `storm:"index"`
+	RelativeID         string `storm:"index"`
+	RelationshipString string
 }
 
 type Car struct {

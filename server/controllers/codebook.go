@@ -3,6 +3,8 @@ package controllers
 import (
 	"strconv"
 
+	"github.com/malaschitz/plamienok/server/model"
+
 	"github.com/labstack/echo"
 	"github.com/malaschitz/plamienok/server/db"
 )
@@ -26,5 +28,10 @@ func Diagnoses(c echo.Context) error {
 
 func DiagnosesAll(c echo.Context) error {
 	dgs := db.GetDiagnozyAll()
+
 	return okApiResponse(c, dgs)
+}
+
+func Relationships(c echo.Context) error {
+	return okApiResponse(c, model.RelationshipsNames)
 }

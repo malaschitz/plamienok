@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"github.com/malaschitz/plamienok/server/utils"
 
 	"github.com/labstack/echo"
@@ -55,6 +57,7 @@ func PersonsTasks(c echo.Context) error {
 	return okApiResponse(c, ret)
 }
 
+// get person
 func Person(c echo.Context) error {
 	id := c.Param("id")
 	person, err := db.PersonByID(id)
@@ -113,6 +116,59 @@ func PersonRelationDelete(c echo.Context) error {
 	}
 }
 
+func PersonRelationPost(c echo.Context) error {
+	id := c.Param("id")
+	p := c.(*PlContext)
+	var data struct {
+		Person, Relationship, Firstname, Surname, Phone string
+	}
+	err := c.Bind(&data)
+	if err != nil {
+		return errorApiResponse(c, err)
+	}
+
+	if data.Relationship == "" {
+		return errorApiResponse(c, errors.New("Nie je zadaný vzťah"))
+	}
+
+	if data.Person == "" && (data.Firstname == "" || data.Surname == "") {
+		return errorApiResponse(c, errors.New("Nie je zadaná osoba"))
+	}
+
+	var person model.Person
+	person, err = db.PersonByID(id)
+	if err != nil {
+		return errorApiResponse(c, err)
+	}
+
+	var relationship model.Relationship
+	if r, ok := model.RelationshipsMap[data.Relationship]; ok {
+		relationship = r
+	} else {
+		return errorApiResponse(c, errors.New("Nie je zadaný správny vzťah"))
+	}
+
+	var relative model.Person
+	if data.Person == "" {
+		relative = model.Person{FirstName: data.Firstname, Surname: data.Surname, Phone: data.Phone, Sex: relationship.Sex}
+		err = db.SavePerson(&relative, p.User.ID)
+		if err != nil {
+			return errorApiResponse(c, err)
+		}
+	} else {
+		relative, err = db.PersonByID(data.Person)
+		if relative.Sex != relationship.Sex {
+			return errorApiResponse(c, errors.New("Asi nie je správne zadaný vzťah alebo je chybne zadané pohlavie osoby."))
+		}
+	}
+	err = db.SaveRelation(person, relative, relationship, p.User.ID)
+	if err != nil {
+		return errorApiResponse(c, err)
+	} else {
+		return okApiResponse(c, "OK")
+	}
+}
+
 func Meniny(c echo.Context) error {
 	date := c.Param("date")
 	z := strings.Split(date, ".")
@@ -135,7 +191,7 @@ func Meniny(c echo.Context) error {
 	for i := 0; i < 7; i++ {
 
 		for _, p := range persons {
-			if p.IsPatient {
+			if p.Deleted == nil && p.IsPatient {
 				//narodeniny
 				if p.BirthDate != nil {
 					if p.BirthDate.Day == day.Day && p.BirthDate.Month == day.Month {
@@ -162,37 +218,47 @@ func Meniny(c echo.Context) error {
 					}
 				}
 				//pribuzni
-				rel, _ := db.Relatives(p)
-				for _, r := range rel {
+				rel1, rel2, _ := db.Relatives(p)
+				ids := map[string]string{}
+				for _, r := range rel1 {
+					ids[r.RelativeID] = r.RelationshipString
+				}
+				for _, r := range rel2 {
+					ids[r.PersonID] = model.GetOpoRelation(r.RelationshipString, p.Sex).Relation
+				}
+
+				for id, relationship := range ids {
 					//narodeniny
-					pr, err := db.PersonByID(r.RelativeID)
-					if err == nil {
-						if pr.BirthDate != nil {
-							if pr.BirthDate.Day == day.Day && pr.BirthDate.Month == day.Month {
-								m := dto.MeninyDto{
-									ID:           utils.UUID(),
-									Person:       p,
-									Datum:        *pr.BirthDate,
-									Typ:          "Narodeniny",
-									Relative:     pr,
-									Relationship: r.Relationship,
+					pr, err := db.PersonByID(id)
+					if pr.Deleted == nil {
+						if err == nil {
+							if pr.BirthDate != nil {
+								if pr.BirthDate.Day == day.Day && pr.BirthDate.Month == day.Month {
+									m := dto.MeninyDto{
+										ID:           utils.UUID(),
+										Person:       p,
+										Datum:        *pr.BirthDate,
+										Typ:          "Narodeniny",
+										Relative:     pr,
+										Relationship: model.RelationshipsMap[relationship],
+									}
+									meniny = append(meniny, m)
 								}
-								meniny = append(meniny, m)
 							}
-						}
-						//meniny
-						if pr.FirstName != "" {
-							mDate := model.Meniny(pr.FirstName)
-							if mDate.Day == day.Day && mDate.Month == day.Month {
-								m := dto.MeninyDto{
-									ID:           utils.UUID(),
-									Person:       p,
-									Datum:        mDate,
-									Typ:          "Meniny",
-									Relative:     pr,
-									Relationship: r.Relationship,
+							//meniny
+							if pr.FirstName != "" {
+								mDate := model.Meniny(pr.FirstName)
+								if mDate.Day == day.Day && mDate.Month == day.Month {
+									m := dto.MeninyDto{
+										ID:           utils.UUID(),
+										Person:       p,
+										Datum:        mDate,
+										Typ:          "Meniny",
+										Relative:     pr,
+										Relationship: model.RelationshipsMap[relationship],
+									}
+									meniny = append(meniny, m)
 								}
-								meniny = append(meniny, m)
 							}
 						}
 					}
@@ -212,23 +278,42 @@ func personToDto(person model.Person) dto.PersonDto {
 	d.DtoPlamPrijatie = model.Date2String(person.PlamPrijatie)
 	d.DtoPlamPrepustenie = model.Date2String(person.PlamPrepustenie)
 	//relatives
-	relatives, err := db.Relatives(person)
-	fmt.Println(relatives)
-	fmt.Println(err)
+	rel1, rel2, err := db.Relatives(person)
+	fmt.Println("REL1", rel1)
+	fmt.Println("REL2", rel2)
+	fmt.Println("ERRR", err)
 	d.DtoRelatives = make([]dto.RelativeDto, 0)
-	for _, r := range relatives {
-		if r.Deleted == nil {
-			relative, err := db.PersonByID(r.RelativeID)
-			if err != nil {
-				continue
-			}
-			dr := dto.RelativeDto{
-				ID:           r.ID,
-				Relationship: r.Relationship,
-				Person:       relative,
-			}
-			d.DtoRelatives = append(d.DtoRelatives, dr)
+	for _, r := range rel1 {
+		relative, err := db.PersonByID(r.RelativeID)
+		if err != nil {
+			continue
 		}
+		if relative.Deleted != nil {
+			continue
+		}
+		dr := dto.RelativeDto{
+			ID:           r.ID,
+			Relationship: model.RelationshipsMap[r.RelationshipString],
+			Person:       relative,
+		}
+		d.DtoRelatives = append(d.DtoRelatives, dr)
+	}
+
+	for _, r := range rel2 {
+		relative, err := db.PersonByID(r.PersonID)
+		if err != nil {
+			continue
+		}
+		if relative.Deleted != nil {
+			continue
+		}
+		fmt.Println("PROBLEM", r, relative)
+		dr := dto.RelativeDto{
+			ID:           r.ID,
+			Relationship: model.GetOpoRelation(r.RelationshipString, relative.Sex),
+			Person:       relative,
+		}
+		d.DtoRelatives = append(d.DtoRelatives, dr)
 	}
 
 	return d

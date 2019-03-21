@@ -25,3 +25,6 @@ data/lieky.json
 plamienok.db
 www/.browserslistrc
 www/package-lock.json
+plamienokLinux
+plamienokMac
+plamienokWin.exe

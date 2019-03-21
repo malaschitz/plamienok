@@ -1,9 +1,6 @@
 <template>
   <v-container fluid>
-    <v-toolbar
-      flat
-      color="white"
-    >
+    <v-toolbar flat color="white">
       <v-toolbar-title>Lieky</v-toolbar-title>
       <v-spacer />
       <v-text-field
@@ -23,11 +20,7 @@
       class="elevation-1"
       rows-per-page-text="Počet riadkov"
     >
-      <tr
-        slot="items"
-        slot-scope="props"
-        @click="viewItem(props.item)"
-      >
+      <tr slot="items" slot-scope="props" @click="viewItem(props.item)">
         <td class="text-xs-left">
           {{ props.item.Nazov }}
         </td>
@@ -49,10 +42,7 @@
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
-            <v-layout
-              column
-              wrap
-            >
+            <v-layout column wrap>
               <v-text-field
                 readonly
                 label="Kód ŠÚKL"
@@ -63,21 +53,13 @@
                 label="Registračné číslo"
                 v-model="chosen.RegistracneCislo"
               />
-              <v-text-field
-                readonly
-                label="Názov"
-                v-model="chosen.Nazov"
-              />
+              <v-text-field readonly label="Názov" v-model="chosen.Nazov" />
               <v-text-field
                 readonly
                 label="Doplnok Názvu"
                 v-model="chosen.DoplnokNazvu"
               />
-              <v-text-field
-                readonly
-                label="ATC"
-                v-model="chosen.AtcText"
-              />
+              <v-text-field readonly label="ATC" v-model="chosen.AtcText" />
               <v-text-field
                 readonly
                 label="Veľkosť balenia"
@@ -88,11 +70,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            color="blue darken-1"
-            flat
-            @click="close"
-          >
+          <v-btn color="blue darken-1" flat @click="close">
             Zrušiť
           </v-btn>
         </v-card-actions>
@@ -117,8 +95,7 @@ export default {
     filter: ""
   }),
 
-  computed: {
-  },
+  computed: {},
 
   methods: {
     viewItem: function(item) {
@@ -126,7 +103,7 @@ export default {
       this.dialog = true;
     },
     close: function() {
-      this.dialog = false
+      this.dialog = false;
     },
     readData: function() {
       this.$axios
@@ -153,5 +130,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

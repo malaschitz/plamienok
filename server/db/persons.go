@@ -5,6 +5,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/asdine/storm/q"
+
+	"github.com/asdine/storm"
+
 	"github.com/malaschitz/plamienok/server/model"
 	"github.com/malaschitz/plamienok/server/model/dto"
 	"github.com/malaschitz/plamienok/server/utils"
@@ -66,6 +70,9 @@ func PersonsFiltered(filter dto.PersonFilter) (persons []model.Person, err error
 }
 
 func SavePerson(person *model.Person, authorID string) error {
+	if person.Death != nil && person.PlamPrepustenie == nil {
+		person.PlamPrepustenie = person.Death
+	}
 	person.Basification(authorID)
 	fullText(person)
 	err := _db.Save(person)
@@ -81,9 +88,9 @@ func fullText(person *model.Person) {
 
 func SaveRelation(person, relative model.Person, relationship model.Relationship, authorID string) error {
 	pr := model.PersonRelation{
-		PersonID:     person.ID,
-		RelativeID:   relative.ID,
-		Relationship: relationship,
+		PersonID:           person.ID,
+		RelativeID:         relative.ID,
+		RelationshipString: relationship.Relation,
 	}
 	pr.Basification(authorID)
 	return _db.Save(&pr)
@@ -95,10 +102,16 @@ func PersonsCount() int {
 	return count
 }
 
-func Relatives(person model.Person) ([]model.PersonRelation, error) {
-	var relations []model.PersonRelation
-	err := _db.Find("PersonID", person.ID, &relations)
-	return relations, err
+func Relatives(person model.Person) ([]model.PersonRelation, []model.PersonRelation, error) {
+	var relations1 []model.PersonRelation
+	var relations2 []model.PersonRelation
+	query1 := _db.Select(q.Eq("PersonID", person.ID), q.Eq("Deleted", nil))
+	err := query1.Find(&relations1)
+	if err == nil || err == storm.ErrNotFound {
+		query2 := _db.Select(q.Eq("RelativeID", person.ID), q.Eq("Deleted", nil))
+		err = query2.Find(&relations2)
+	}
+	return relations1, relations2, err
 }
 
 func RelationByID(id string) (relation model.PersonRelation, err error) {

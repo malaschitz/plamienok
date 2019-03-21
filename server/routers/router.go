@@ -8,8 +8,8 @@ import (
 func InitAccesible(e *echo.Echo) {
 	//intro index.html
 	e.Static("/", "www/dist")
-	e.File("/", "www/dist/index.html")
-	e.File("/favicon.ico", "www/dist/favicon.ico")
+	//e.File("/", "www/dist/index.html")
+	//e.File("/favicon.ico", "www/dist/favicon.ico")
 
 	//public api
 	e.GET("/api/info", controllers.Info)
@@ -22,6 +22,7 @@ func InitAccesible(e *echo.Echo) {
 	e.GET("/api/meds", controllers.Meds)
 	e.GET("/api/diagnoses", controllers.Diagnoses)
 	e.GET("/api/diagnosesAll", controllers.DiagnosesAll)
+	e.GET("/api/relationships", controllers.Relationships)
 }
 
 func InitRestricted(e *echo.Group) {
@@ -46,6 +47,7 @@ func InitRestricted(e *echo.Group) {
 	e.POST("/api/person", controllers.PersonPost)
 	e.PUT("/api/person", controllers.PersonPut)
 	e.DELETE("/api/person/relative/:id", controllers.PersonRelationDelete)
+	e.POST("/api/person/relative/:id", controllers.PersonRelationPost)
 	e.GET("/api/meniny/:date", controllers.Meniny)
 
 	//sessions

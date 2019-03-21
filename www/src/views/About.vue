@@ -6,7 +6,8 @@
           <h1>O aplikácii</h1>
 
           <p>
-            Aplikácia je Open Source aplikácia na <a href="https://github.com/malaschitz/plamienok">
+            Aplikácia je Open Source aplikácia na
+            <a href="https://github.com/malaschitz/plamienok">
               https://github.com/malaschitz/plamienok
             </a>
           </p>

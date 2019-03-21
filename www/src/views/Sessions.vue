@@ -1,43 +1,25 @@
 <template>
   <v-container fluid>
-    <v-toolbar
-      flat
-      color="white"
-    >
+    <v-toolbar flat color="white">
       <v-toolbar-title>Stretnutia</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
 
     <v-layout wrap>
-      <v-flex
-        sm2
-        xs12
-        class="text-sm-left text-xs-center"
-      >
+      <v-flex sm2 xs12 class="text-sm-left text-xs-center">
         <v-btn @click="$refs.calendar.prev()">
           <v-icon>keyboard_arrow_left</v-icon>
         </v-btn>
       </v-flex>
-      <v-flex
-        sm8
-        xs12
-        class="text-xs-center"
-      >
+      <v-flex sm8 xs12 class="text-xs-center">
         {{ calendarTitle }}
       </v-flex>
-      <v-flex
-        sm2
-        xs12
-        class="text-sm-right text-xs-center"
-      >
+      <v-flex sm2 xs12 class="text-sm-right text-xs-center">
         <v-btn @click="$refs.calendar.next()">
           <v-icon>keyboard_arrow_right</v-icon>
         </v-btn>
       </v-flex>
-      <v-flex
-        xs12
-        class="my-3"
-      >
+      <v-flex xs12 class="my-3">
         <v-sheet height="800">
           <v-calendar
             ref="calendar"
@@ -51,11 +33,7 @@
           >
             <template v-slot:day="{ date }">
               <template v-for="event in eventsMap[date]">
-                <v-chip
-                  small
-                  :key="event.ID"
-                  @click="editSession(event)"
-                >
+                <v-chip small :key="event.ID" @click="editSession(event)">
                   {{ event.UserName }}
                 </v-chip>
               </template>
@@ -63,14 +41,8 @@
           </v-calendar>
         </v-sheet>
       </v-flex>
-      <v-flex
-        xs12
-        class="text-sm-right"
-      >
-        <v-btn
-          color="primary"
-          @click="addSession"
-        >
+      <v-flex xs12 class="text-sm-right">
+        <v-btn color="primary" @click="addSession">
           <v-icon>add</v-icon>
         </v-btn>
       </v-flex>
@@ -82,24 +54,16 @@
       persistent
     >
       <v-card>
-        <v-form
-          ref="personform"
-          v-model="valid"
-          lazy-validation
-        >
+        <v-form ref="personform" v-model="valid" lazy-validation>
           <v-card-title>
             <span class="headline">Stretnutie</span>
           </v-card-title>
           <v-card-text>
             <v-container grid-list-md>
-              <v-form
-                v-model="valid"
-                ref="form"
-                lazy-validation
-              >
+              <v-form v-model="valid" ref="form" lazy-validation>
                 <v-layout wrap>
                   <v-flex xs12>
-                    <v-autocomplete 
+                    <v-autocomplete
                       v-model="form.user"
                       ref="userSelect"
                       :label="$vuetify.t('Užívateľ')"
@@ -126,13 +90,15 @@
                           v-model="form.dateFormatted"
                           label="Dátum"
                           prepend-icon="event"
-                          @change="formDate = parseDate(form.dateFormatted, formDate)"
+                          @change="
+                            formDate = parseDate(form.dateFormatted, formDate)
+                          "
                           v-on="on"
                           :rules="[rules.required]"
                           required
-                        /> 
+                        />
                       </template>
-                      <v-date-picker 
+                      <v-date-picker
                         v-model="formDate"
                         @input="menuDatePicker = false"
                         locale="sk"
@@ -178,7 +144,7 @@
                       :rules="[rules.required]"
                       type="number"
                       mask="###"
-                    /> 
+                    />
                   </v-flex>
                   <v-flex xs12>
                     <v-textarea
@@ -189,7 +155,7 @@
                     />
                   </v-flex>
                   <v-flex xs12>
-                    <v-autocomplete 
+                    <v-autocomplete
                       v-model="form.persons"
                       multiple
                       :label="$vuetify.t('Účastníci')"
@@ -207,18 +173,10 @@
 
           <v-card-actions>
             <v-spacer />
-            <v-btn
-              color="blue darken-1"
-              flat
-              @click="close"
-            >
+            <v-btn color="blue darken-1" flat @click="close">
               Zrušiť
             </v-btn>
-            <v-btn
-              color="blue darken-1"
-              flat
-              @click="save"
-            >
+            <v-btn color="blue darken-1" flat @click="save">
               Uložiť
             </v-btn>
           </v-card-actions>
@@ -236,10 +194,13 @@ export default {
 
   data: () => ({
     start: moment().format("YYYY-MM-DD"),
-    end: moment().month(11).date(31).format("YYYY-MM-DD"),
+    end: moment()
+      .month(11)
+      .date(31)
+      .format("YYYY-MM-DD"),
     dialog: false,
     rules: {
-      required: value => !!value || 'Required.',
+      required: value => !!value || "Required."
     },
     valid: true,
     menuDatePicker: false,
@@ -253,63 +214,68 @@ export default {
   computed: {
     calendarTitle: function() {
       return moment(this.start)
-        .locale('sk')
-        .format('MMMM YYYY')
+        .locale("sk")
+        .format("MMMM YYYY");
     },
     // convert the list of events into a map of lists keyed by date
     eventsMap: function() {
-      const map = {}
+      const map = {};
       // this.events.forEach(e => (map[e.DtoDatum] = map[e.DtoDatum] || []).push(e))
       this.events.forEach(function(e) {
-        let ret = e.DtoDatum.substr(0, 10)
-        return (map[ret] = map[ret] || []).push(e)
-      })
-      return map
-    }    
+        let ret = e.DtoDatum.substr(0, 10);
+        return (map[ret] = map[ret] || []).push(e);
+      });
+      return map;
+    }
   },
   watch: {
-    'formDate': function(newValue){
-      console.log('formDate watcher', newValue)
-      this.form.dateFormatted = moment(newValue).format('DD.MM.YYYY')
+    formDate: function(newValue) {
+      console.log("formDate watcher", newValue);
+      this.form.dateFormatted = moment(newValue).format("DD.MM.YYYY");
     }
   },
   methods: {
     parseDate: function(aFormattedDatum, aOldValue) {
-      console.log('parseDate', aFormattedDatum, aOldValue)
-      let ret = aOldValue
-      if (aFormattedDatum !== undefined && moment(aFormattedDatum,'DD.MM.YYYY').isValid()) {
-        ret = moment(aFormattedDatum,'DD.MM.YYYY').format('YYYY-MM-DD')
+      console.log("parseDate", aFormattedDatum, aOldValue);
+      let ret = aOldValue;
+      if (
+        aFormattedDatum !== undefined &&
+        moment(aFormattedDatum, "DD.MM.YYYY").isValid()
+      ) {
+        ret = moment(aFormattedDatum, "DD.MM.YYYY").format("YYYY-MM-DD");
       }
-      return ret
+      return ret;
     },
     addSession: function() {
-      this.form.id = null
-      this.form.user = this.$store.state.id
-      this.formDate = moment().format('YYYY-MM-DD')
-      this.form.dateFormatted = moment().format('DD.MM.YYYY')
-      this.form.time = '09:00'
-      this.form.desc = ''
-      this.form.duration = 30
-      this.form.persons = []
-      this.dialog = true
+      this.form.id = null;
+      this.form.user = this.$store.state.id;
+      this.formDate = moment().format("YYYY-MM-DD");
+      this.form.dateFormatted = moment().format("DD.MM.YYYY");
+      this.form.time = "09:00";
+      this.form.desc = "";
+      this.form.duration = 30;
+      this.form.persons = [];
+      this.dialog = true;
     },
     editSession: function(event) {
-      this.form.id = event.ID
-      this.form.user = event.UserID
-      this.formDate = event.DtoDatum.substr(0, 10)
-      this.form.dateFormatted = moment(this.formDate, 'YYYY-MM-DD').format('DD.MM.YYYY')
-      this.form.time = event.DtoDatum.substr(11, 5)
-      this.form.desc = event.Description
-      this.form.duration = event.Duration
-      this.form.persons = event.Persons
-      this.dialog = true
+      this.form.id = event.ID;
+      this.form.user = event.UserID;
+      this.formDate = event.DtoDatum.substr(0, 10);
+      this.form.dateFormatted = moment(this.formDate, "YYYY-MM-DD").format(
+        "DD.MM.YYYY"
+      );
+      this.form.time = event.DtoDatum.substr(11, 5);
+      this.form.desc = event.Description;
+      this.form.duration = event.Duration;
+      this.form.persons = event.Persons;
+      this.dialog = true;
     },
     close: function() {
-      this.dialog = false
+      this.dialog = false;
     },
     save: function() {
       if (!this.$refs.form.validate()) {
-        return
+        return;
       }
       var params = {
         ID: this.form.id,
@@ -317,20 +283,24 @@ export default {
         Persons: this.form.persons,
         Duration: this.form.duration,
         Description: this.form.desc,
-        DtoDatum: this.form.dateFormatted + ' ' + this.form.time
-      }
-      this.$axios.post("/r/api/session",params).then(response => {
-        if (response.status == 202) {
-          this.$store.commit("alert","Chyba: " + response.data.Error)
-        } else { //OK
+        DtoDatum: this.form.dateFormatted + " " + this.form.time
+      };
+      this.$axios
+        .post("/r/api/session", params)
+        .then(response => {
+          if (response.status == 202) {
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
+          } else {
+            //OK
             // response.data
-          this.dialog = false
-          this.readSessions()
-        }
-      }).catch(response => {
-        console.log('WRONG',response)
-        this.$store.commit("alert","Chyba: " + response)
-      })
+            this.dialog = false;
+            this.readSessions();
+          }
+        })
+        .catch(response => {
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
+        });
     },
     readSessions: function() {
       this.$axios
@@ -354,42 +324,41 @@ export default {
         .then(response => {
           console.log("OK", response);
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error)
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
           } else {
-            this.users = response.data
+            this.users = response.data;
           }
         })
         .catch(response => {
-          console.log("WRONG", response)
-          this.$store.commit("alert", "Chyba: " + response)
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
         });
     },
     readPersons: function() {
       this.$axios
         .get("/r/api/persons")
         .then(response => {
-          console.log("OK", response)
+          console.log("OK", response);
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error)
+            this.$store.commit("alert", "Chyba: " + response.data.Error);
           } else {
-            this.persons = response.data
+            this.persons = response.data;
           }
         })
         .catch(response => {
-          console.log("WRONG", response)
-          this.$store.commit("alert", "Chyba: " + response)
+          console.log("WRONG", response);
+          this.$store.commit("alert", "Chyba: " + response);
         });
     }
   },
 
   mounted: function() {
-    console.log("SESSIONS.VUE, mounted")
-    this.readUsers()
-    this.readPersons()
-    this.readSessions()
+    console.log("SESSIONS.VUE, mounted");
+    this.readUsers();
+    this.readPersons();
+    this.readSessions();
   }
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
