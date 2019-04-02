@@ -25,7 +25,7 @@ func InitDB() {
 	user, err := UserByEmail(constants.AdminEmail)
 	if err != nil {
 		if err == storm.ErrNotFound {
-			user = model.User{Email: constants.AdminEmail, Name: "admin"}
+			user = model.User{Email: constants.AdminEmail, Name: "admin", RoleAdmin: true}
 			user.Basification("")
 			err = SaveUser(&user, "")
 			if err == nil {

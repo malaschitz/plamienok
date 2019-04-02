@@ -18,10 +18,16 @@
       :to="'/person/' + m.Person.ID"
     >
       <b>{{ m.Datum.Day }}.{{ m.Datum.Month }}.</b>
-      {{ m.Typ }} {{ m.Person.FirstName }} {{ m.Person.Surname }}
-      <template v-if="m.Relationship">
-        -- <b>{{ m.Relationship }}</b> {{ m.Relative.FirstName }}
+      {{ m.Typ }}
+      <template v-if="m.Relationship.Sex">
+        <span class="grey--text text--lighten-1"
+          >{{ m.Person.FirstName }} {{ m.Person.Surname }}</span
+        >
+        -- <b>{{ m.Relationship.Relation }}</b> {{ m.Relative.FirstName }}
         {{ m.Relative.Surname }}
+      </template>
+      <template v-else>
+        <b>{{ m.Person.FirstName }} {{ m.Person.Surname }}</b>
       </template>
     </v-card>
   </v-container>

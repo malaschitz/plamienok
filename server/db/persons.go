@@ -5,12 +5,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/malaschitz/plamienok/server/model/enum"
+
 	"github.com/asdine/storm/q"
 
 	"github.com/asdine/storm"
 
 	"github.com/malaschitz/plamienok/server/model"
-	"github.com/malaschitz/plamienok/server/model/dto"
 	"github.com/malaschitz/plamienok/server/utils"
 )
 
@@ -24,7 +25,7 @@ func PersonByID(id string) (person model.Person, err error) {
 	return
 }
 
-func PersonsFiltered(filter dto.PersonFilter) (persons []model.Person, err error) {
+func PersonsFiltered(filter model.PersonFilter) (persons []model.Person, err error) {
 	persons = make([]model.Person, 0)
 	var z []model.Person
 	z, err = Persons()
@@ -86,7 +87,7 @@ func fullText(person *model.Person) {
 	person.FullText = fulltext
 }
 
-func SaveRelation(person, relative model.Person, relationship model.Relationship, authorID string) error {
+func SaveRelation(person, relative model.Person, relationship enum.Relationship, authorID string) error {
 	pr := model.PersonRelation{
 		PersonID:           person.ID,
 		RelativeID:         relative.ID,

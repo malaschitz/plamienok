@@ -1,6 +1,15 @@
-package dto
+/*
+ * Developed by Richard Malaschitz on 3/27/19 12:34 PM
+ * Last modified 3/27/19 12:33 PM
+ * Copyright (c) 2019. All right reserved.
+ *
+ */
 
-import "github.com/malaschitz/plamienok/server/model"
+package model
+
+import (
+	"github.com/malaschitz/plamienok/server/model/enum"
+)
 
 type PersonFilter struct {
 	FullText  string
@@ -10,7 +19,7 @@ type PersonFilter struct {
 }
 
 type PersonDto struct {
-	model.Person
+	Person
 	DtoBirthDate       string
 	DtoDeath           string
 	DtoPlamPrijatie    string
@@ -20,8 +29,8 @@ type PersonDto struct {
 
 type RelativeDto struct {
 	ID           string
-	Relationship model.Relationship
-	Person       model.Person
+	Relationship enum.Relationship
+	Person       Person
 }
 
 type TextValueDto struct {
@@ -30,30 +39,45 @@ type TextValueDto struct {
 }
 
 type SessionDto struct {
-	model.Session
+	Session
 	DtoDatum string
 	UserName string
 }
 
-type VisitDto struct {
-	model.Visit
-	DtoTyp   string // H - Home P - Phone
-	DtoDatum string
-}
-
 type CielDto struct {
-	model.Ciel
+	Ciel
 	UserName  string
 	IsDeleted bool
 }
 
 type MeninyDto struct {
 	ID           string
-	Person       model.Person
-	Datum        model.Date
+	Person       Person
+	Datum        Date
 	Typ          string
-	Relationship model.Relationship
-	Relative     model.Person
+	Relationship enum.Relationship
+	Relative     Person
+}
+
+type VisitDto struct {
+	Visit
+	DtoTyp   string // H - Home P - Phone
+	DtoDatum string
+}
+
+type VisitCallDto struct {
+	VisitCall
+	DtoDatum DateTimeDto
+}
+
+type VisitHomeDto struct {
+	VisitHome
+	DtoDatum, DtoVyjazdFrom, DtoVyjazdTo DateTimeDto
+}
+
+type DateTimeDto struct {
+	Date string
+	Time string
 }
 
 //Created by Richard Malaschitz malaschitz@gmail.com

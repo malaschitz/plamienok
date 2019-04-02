@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
+
+	"github.com/malaschitz/plamienok/server/model/enum"
 
 	"github.com/malaschitz/plamienok/server/constants"
 
@@ -20,23 +23,26 @@ var mNames, wNames, sNames []string
 func main() {
 	constants.InitConst()
 	db.InitDB()
-
+	rand.Seed(1)
 	//user
-	passwordHash, err := utils.EncodePassword("secret")
-	utils.PanicErr(err)
-	user := model.User{
-		Name:       "MUDr. Ján Malý",
-		Email:      "demo@mailinator.com",
-		RoleAdmin:  true,
-		RoleDoctor: true,
-		RoleNurse:  true,
-		RoleSoc:    true,
-		RolePsych:  true,
+	var user model.User
+	for i := 0; i < 20; i++ {
+		passwordHash, err := utils.EncodePassword("secret")
+		utils.PanicErr(err)
+		fname, sname, _, _, _ := randomName()
+		user = model.User{
+			Name:       "MUDr. " + fname + " " + sname,
+			Email:      "demo" + strconv.Itoa(i) + "@mailinator.com",
+			RoleAdmin:  rand.Intn(2) == 0,
+			RoleDoctor: rand.Intn(2) == 0,
+			RoleNurse:  rand.Intn(2) == 0,
+			RoleSoc:    rand.Intn(2) == 0,
+			RolePsych:  rand.Intn(2) == 0,
+		}
+		err = db.SaveUser(&user, "")
+		utils.LogErr(err)
+		db.SetNewPassword(user, passwordHash)
 	}
-	err = db.SaveUser(&user, "")
-	utils.LogErr(err)
-	db.SetNewPassword(user, passwordHash)
-
 	//cars
 	car := model.Car{Name: "Šedá Octavia", Popis: "BA 319 OD. Pozor ! Trochu pokazená predovka !!"}
 	db.SaveCar(&car, user.ID)
@@ -96,7 +102,7 @@ func main() {
 			fname = wNames[rand.Intn(len(wNames))]
 			sname = sNames[rand.Intn(len(sNames))] + "ová"
 			b, rc := randomBirthdate(true)
-			sex = model.Female
+			sex = enum.Female
 			b = b.Add(-time.Hour * 24 * 365 * 30)
 			birthdate = model.Time2Date(b)
 			mother = model.Person{
@@ -110,7 +116,7 @@ func main() {
 				IsPatient: false,
 			}
 			db.SavePerson(&mother, user.ID)
-			db.SaveRelation(p, mother, model.Mother, user.ID)
+			db.SaveRelation(p, mother, enum.Mother, user.ID)
 		}
 
 		//father
@@ -119,7 +125,7 @@ func main() {
 			fname = mNames[rand.Intn(len(mNames))]
 			sname = sNames[rand.Intn(len(sNames))]
 			b, rc := randomBirthdate(false)
-			sex = model.Male
+			sex = enum.Male
 			b = b.Add(-time.Hour * 24 * 365 * 30)
 			birthdate = model.Time2Date(b)
 			father = model.Person{
@@ -133,7 +139,7 @@ func main() {
 				IsPatient: false,
 			}
 			db.SavePerson(&father, user.ID)
-			db.SaveRelation(p, father, model.Father, user.ID)
+			db.SaveRelation(p, father, enum.Father, user.ID)
 		}
 
 		//visits
@@ -172,10 +178,10 @@ func main() {
 					MaterialnaPomoc:     "Materiálna pomoc bola poskytnutá. Toto je dlhší popis, ktorý môže obsahovať veĺmi dlhý text na niekoľko riadkov alebo odstavcov.",
 					SocialnePoradenstvo: "Sociálne poradenstvo bolo poskytnuté. Toto je dlhší popis, ktorý môže obsahovať veĺmi dlhý text na niekoľko riadkov alebo odstavcov.",
 				}
-				err = db.SaveVisitHome(vh, user.ID)
+				err := db.SaveVisitHome(&vh, user.ID)
 				utils.PanicErr(err)
 
-				vp := model.VisitPhone{
+				vp := model.VisitCall{
 					Visit: model.Visit{
 						Datum: model.DateTime{
 							Date: model.Date{
@@ -195,7 +201,7 @@ func main() {
 					},
 					Smer: rand.Intn(2) == 0,
 				}
-				err = db.SaveVisitPhone(vp, user.ID)
+				err = db.SaveVisitCall(&vp, user.ID)
 				utils.PanicErr(err)
 			}
 
@@ -205,7 +211,7 @@ func main() {
 
 }
 
-func randomName() (fname string, sname string, birthdate model.Date, rc string, sex model.Sex) {
+func randomName() (fname string, sname string, birthdate model.Date, rc string, sex enum.Sex) {
 	if mNames == nil {
 		z := "Drahoslav, Severín, Alexej, Ernest, Rastislav, Radovan, Dobroslav, Dalibor, Vincent, Miloš, Timotej, Gejza, Bohuš, Alfonz, Gašpar, Emil, Erik, Blažej, Zdenko, Dezider, Arpád, Valentín, Pravoslav, Jaromír, Roman, Matej, Frederik, Viktor, Alexander, Radomír, Albín, Bohumil, Kazimír, Fridrich, Radoslav, Tomáš, Alan, Branislav, Bruno, Gregor, Vlastimil, Boleslav, Eduard, Jozef, Víťazoslav, Blahoslav, Beňadik, Adrián, Gabriel, Marián, Emanuel, Miroslav, Benjamín, Hugo, Richard, Izidor, Zoltán, Albert, Igor, Július, Aleš, Fedor, Rudolf, Valér, Marcel, Ervín, Slavomír, Vojtech, Juraj, Marek, Jaroslav, Žigmund, Florián, Roland, Pankrác, Servác, Bonifác, Svetozár, Bernard, Júlia, Urban, Dušan, Viliam, Ferdinand, Norbert, Róbert, Medard, Zlatko, Anton, Vasil, Vít, Adolf, Vratislav, Alfréd, Alojz, Ján, Tadeáš, Ladislav, Peter, Pavol, Miloslav, Prokop, Cyril, Metod, Patrik, Oliver, Ivan, Kamil, Henrich, Drahomír, Bohuslav, Iľja, Daniel, Vladimír, Jakub, Krištof, Ignác, Gustáv, Jerguš, Dominik, Oskar, Vavrinec, Ľubomír, Mojmír, Leonard, Tichomír, Filip, Bartolomej, Ľudovít, Samuel, Augustín, Belo, Oleg, Bystrík, Ctibor, Ľudomil, Konštantín, Ľuboslav, Matúš, Móric, Ľuboš, Ľubor, Vladislav, Cyprián, Václav, Michal, Jarolím, Arnold, Levoslav, František, Dionýz, Maximilián, Koloman, Boris, Lukáš, Kristián, Vendelín, Sergej, Aurel, Demeter, Denis, Hubert, Karol, Imrich, René, Bohumír, Teodor, Tibor, Maroš, Martin, Svätopluk, Stanislav, Leopold, Eugen, Félix, Klement, Kornel, Milan, Vratko, Ondrej, Andrej, Edmund, Oldrich, Oto, Mikuláš, Ambróz, Radúz, Bohdan, Adam, Štefan, Dávid, Silvester"
 		mNames = strings.Split(z, ",")
@@ -224,12 +230,12 @@ func randomName() (fname string, sname string, birthdate model.Date, rc string, 
 		fname = mNames[rand.Intn(len(mNames))]
 		sname = sNames[rand.Intn(len(sNames))]
 		b, rc = randomBirthdate(false)
-		sex = model.Male
+		sex = enum.Male
 	} else {
 		fname = wNames[rand.Intn(len(wNames))]
 		sname = sNames[rand.Intn(len(sNames))] + "ová"
 		b, rc = randomBirthdate(true)
-		sex = model.Female
+		sex = enum.Female
 	}
 	birthdate = model.Time2Date(b)
 	return

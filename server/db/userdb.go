@@ -6,6 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/malaschitz/plamienok/server/model/enum"
+
 	"github.com/malaschitz/plamienok/server/constants"
 
 	"github.com/malaschitz/plamienok/server/model"
@@ -107,19 +109,19 @@ func PasswordCheck(user model.User, password string) bool {
 }
 
 func SetCode6(key string, value model.Code6) {
-	_db.Set(string(model.PROPERTY_CODE6), key, value)
+	_db.Set(string(enum.PROPERTY_CODE6), key, value)
 }
 
 func GetCode6(key string) (value model.Code6) {
-	_db.Get(string(model.PROPERTY_CODE6), key, &value)
+	_db.Get(string(enum.PROPERTY_CODE6), key, &value)
 	return
 }
 
 func setPassword(key string, value string) {
-	_db.Set(string(model.PROPERTY_PASSWORD_HASH), key, value)
+	_db.Set(string(enum.PROPERTY_PASSWORD_HASH), key, value)
 }
 
 func getPassword(key string) (value string) {
-	_db.Get(string(model.PROPERTY_PASSWORD_HASH), key, &value)
+	_db.Get(string(enum.PROPERTY_PASSWORD_HASH), key, &value)
 	return
 }

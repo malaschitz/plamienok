@@ -10,6 +10,10 @@ import Cars from "./views/Cars";
 import Persons from "./views/Persons";
 import Person from "./views/Person";
 import Meniny from "./views/Meniny";
+import VisitCall from "./views/VisitCall";
+import VisitHome from "./views/VisitHome";
+import VisitHomes from "./views/VisitHomes";
+import VisitCalls from "./views/VisitCalls";
 
 Vue.use(Router);
 
@@ -38,6 +42,20 @@ export default new Router({
     { path: "/sessions", name: "sessions", component: Sessions },
     { path: "/persons", name: "persons", component: Persons },
     { path: "/person/:id", name: "person", component: Person },
-    { path: "/meniny", name: "meniny", component: Meniny }
+    { path: "/meniny", name: "meniny", component: Meniny },
+    {
+      path: "/visitcall/:personid/:visitid",
+      name: "visitcall",
+      component: VisitCall,
+      props: true
+    },
+    {
+      path: "/visithome/:personid/:visitid",
+      name: "visithome",
+      component: VisitHome,
+      props: true
+    },
+    { path: "/visithomes", name: "visithomes", component: VisitHomes },
+    { path: "/visitcalls", name: "visitcalls", component: VisitCalls }
   ]
 });

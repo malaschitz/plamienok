@@ -12,11 +12,11 @@ import (
 	"github.com/labstack/echo"
 	"github.com/malaschitz/plamienok/server/db"
 	"github.com/malaschitz/plamienok/server/model"
-	"github.com/malaschitz/plamienok/server/model/dto"
+	"github.com/malaschitz/plamienok/server/model/enum"
 )
 
 func Persons(c echo.Context) error {
-	var filter dto.PersonFilter
+	var filter model.PersonFilter
 	err := c.Bind(&filter)
 	if err != nil {
 		return errorApiResponse(c, err)
@@ -31,9 +31,9 @@ func Persons(c echo.Context) error {
 
 func PersonsAll(c echo.Context) error {
 	persons, err := db.Persons()
-	ret := make([]dto.TextValueDto, 0)
+	ret := make([]model.TextValueDto, 0)
 	for _, p := range persons {
-		p := dto.TextValueDto{Text: p.FirstName + " " + p.Surname, Value: p.ID}
+		p := model.TextValueDto{Text: p.FirstName + " " + p.Surname, Value: p.ID}
 		ret = append(ret, p)
 	}
 	if err != nil {
@@ -44,10 +44,10 @@ func PersonsAll(c echo.Context) error {
 
 func PersonsTasks(c echo.Context) error {
 	persons, err := db.Persons()
-	ret := make([]dto.TextValueDto, 0)
+	ret := make([]model.TextValueDto, 0)
 	for _, p := range persons {
 		if p.IsHC && p.PlamPrijatie != nil && p.PlamPrepustenie == nil {
-			p := dto.TextValueDto{Text: p.FirstName + " " + p.Surname, Value: p.ID}
+			p := model.TextValueDto{Text: p.FirstName + " " + p.Surname, Value: p.ID}
 			ret = append(ret, p)
 		}
 	}
@@ -89,7 +89,7 @@ func PersonPost(c echo.Context) error {
 
 func PersonPut(c echo.Context) error {
 	p := c.(*PlContext)
-	var data dto.PersonDto
+	var data model.PersonDto
 	err := c.Bind(&data)
 	if err == nil {
 		person := data.Person
@@ -141,8 +141,8 @@ func PersonRelationPost(c echo.Context) error {
 		return errorApiResponse(c, err)
 	}
 
-	var relationship model.Relationship
-	if r, ok := model.RelationshipsMap[data.Relationship]; ok {
+	var relationship enum.Relationship
+	if r, ok := enum.RelationshipsMap[data.Relationship]; ok {
 		relationship = r
 	} else {
 		return errorApiResponse(c, errors.New("Nie je zadaný správny vzťah"))
@@ -182,7 +182,7 @@ func Meniny(c echo.Context) error {
 	}
 	day := model.Date{Day: d, Month: m}
 	// prejdi deti a najdi meniny aj u pribuznych...
-	meniny := make([]dto.MeninyDto, 0)
+	meniny := make([]model.MeninyDto, 0)
 	persons, err := db.Persons()
 	if err != nil {
 		return errorApiResponse(c, err)
@@ -195,7 +195,7 @@ func Meniny(c echo.Context) error {
 				//narodeniny
 				if p.BirthDate != nil {
 					if p.BirthDate.Day == day.Day && p.BirthDate.Month == day.Month {
-						m := dto.MeninyDto{
+						m := model.MeninyDto{
 							ID:     utils.UUID(),
 							Person: p,
 							Datum:  *p.BirthDate,
@@ -208,7 +208,7 @@ func Meniny(c echo.Context) error {
 				if p.FirstName != "" {
 					mDate := model.Meniny(p.FirstName)
 					if mDate.Day == day.Day && mDate.Month == day.Month {
-						m := dto.MeninyDto{
+						m := model.MeninyDto{
 							ID:     utils.UUID(),
 							Person: p,
 							Datum:  mDate,
@@ -224,7 +224,7 @@ func Meniny(c echo.Context) error {
 					ids[r.RelativeID] = r.RelationshipString
 				}
 				for _, r := range rel2 {
-					ids[r.PersonID] = model.GetOpoRelation(r.RelationshipString, p.Sex).Relation
+					ids[r.PersonID] = enum.GetOpoRelation(r.RelationshipString, p.Sex).Relation
 				}
 
 				for id, relationship := range ids {
@@ -234,13 +234,13 @@ func Meniny(c echo.Context) error {
 						if err == nil {
 							if pr.BirthDate != nil {
 								if pr.BirthDate.Day == day.Day && pr.BirthDate.Month == day.Month {
-									m := dto.MeninyDto{
+									m := model.MeninyDto{
 										ID:           utils.UUID(),
 										Person:       p,
 										Datum:        *pr.BirthDate,
 										Typ:          "Narodeniny",
 										Relative:     pr,
-										Relationship: model.RelationshipsMap[relationship],
+										Relationship: enum.RelationshipsMap[relationship],
 									}
 									meniny = append(meniny, m)
 								}
@@ -249,13 +249,13 @@ func Meniny(c echo.Context) error {
 							if pr.FirstName != "" {
 								mDate := model.Meniny(pr.FirstName)
 								if mDate.Day == day.Day && mDate.Month == day.Month {
-									m := dto.MeninyDto{
+									m := model.MeninyDto{
 										ID:           utils.UUID(),
 										Person:       p,
 										Datum:        mDate,
 										Typ:          "Meniny",
 										Relative:     pr,
-										Relationship: model.RelationshipsMap[relationship],
+										Relationship: enum.RelationshipsMap[relationship],
 									}
 									meniny = append(meniny, m)
 								}
@@ -271,8 +271,8 @@ func Meniny(c echo.Context) error {
 	//
 }
 
-func personToDto(person model.Person) dto.PersonDto {
-	d := dto.PersonDto{Person: person}
+func personToDto(person model.Person) model.PersonDto {
+	d := model.PersonDto{Person: person}
 	d.DtoBirthDate = model.Date2String(person.BirthDate)
 	d.DtoDeath = model.Date2String(person.Death)
 	d.DtoPlamPrijatie = model.Date2String(person.PlamPrijatie)
@@ -282,7 +282,7 @@ func personToDto(person model.Person) dto.PersonDto {
 	fmt.Println("REL1", rel1)
 	fmt.Println("REL2", rel2)
 	fmt.Println("ERRR", err)
-	d.DtoRelatives = make([]dto.RelativeDto, 0)
+	d.DtoRelatives = make([]model.RelativeDto, 0)
 	for _, r := range rel1 {
 		relative, err := db.PersonByID(r.RelativeID)
 		if err != nil {
@@ -291,9 +291,9 @@ func personToDto(person model.Person) dto.PersonDto {
 		if relative.Deleted != nil {
 			continue
 		}
-		dr := dto.RelativeDto{
+		dr := model.RelativeDto{
 			ID:           r.ID,
-			Relationship: model.RelationshipsMap[r.RelationshipString],
+			Relationship: enum.RelationshipsMap[r.RelationshipString],
 			Person:       relative,
 		}
 		d.DtoRelatives = append(d.DtoRelatives, dr)
@@ -308,9 +308,9 @@ func personToDto(person model.Person) dto.PersonDto {
 			continue
 		}
 		fmt.Println("PROBLEM", r, relative)
-		dr := dto.RelativeDto{
+		dr := model.RelativeDto{
 			ID:           r.ID,
-			Relationship: model.GetOpoRelation(r.RelationshipString, relative.Sex),
+			Relationship: enum.GetOpoRelation(r.RelationshipString, relative.Sex),
 			Person:       relative,
 		}
 		d.DtoRelatives = append(d.DtoRelatives, dr)

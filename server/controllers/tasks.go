@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/malaschitz/plamienok/server/db"
-	"github.com/malaschitz/plamienok/server/model/dto"
+	"github.com/malaschitz/plamienok/server/model"
 )
 
 // return all tasks for user
@@ -21,7 +21,7 @@ func Ciele(c echo.Context) error {
 
 func CielPost(c echo.Context) error {
 	p := c.(*PlContext)
-	var data dto.CielDto
+	var data model.CielDto
 	err := c.Bind(&data)
 	if err == nil {
 		ciel := data.Ciel

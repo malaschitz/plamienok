@@ -16,15 +16,17 @@
       <v-tab key="0" ripple>
         Základné údaje
       </v-tab>
-      <v-tab key="1" ripple>
-        Zdravotné údaje
-      </v-tab>
-      <v-tab key="2" ripple>
-        Návštevy, Telefonáty
-      </v-tab>
-      <v-tab key="4" ripple>
-        Poradňa
-      </v-tab>
+      <template v-if="person.IsPatient">
+        <v-tab key="1" ripple>
+          Zdravotné údaje
+        </v-tab>
+        <v-tab key="2" ripple>
+          Návštevy, Telefonáty
+        </v-tab>
+        <v-tab key="4" ripple>
+          Poradňa
+        </v-tab>
+      </template>
 
       <v-tab-item key="0">
         <v-form v-model="valid" ref="baseform" lazy-validation>
@@ -247,15 +249,18 @@
               <v-icon left>
                 person
               </v-icon>
-              <strong>{{ dr.Relationship.Relation }}</strong>: {{ dr.Person.FirstName }} {{ dr.Person.Surname }}
+              <strong>{{ dr.Relationship.Relation }}</strong
+              >: {{ dr.Person.FirstName }} {{ dr.Person.Surname }}
             </v-chip>
 
             <v-layout>
               <v-btn color="info" @click="saveBase">
+                <v-icon left>save_alt</v-icon>
                 Uložiť
               </v-btn>
 
               <v-btn color="warning" @click="readData">
+                <v-icon left>refresh</v-icon>
                 Refresh
               </v-btn>
             </v-layout>
@@ -339,11 +344,13 @@
                 />
               </v-flex>
 
-              <v-btn color="info" @click="saveZP">
+              <v-btn color="info" @click="saveBase">
+                <v-icon left>save_alt</v-icon>
                 Uložiť
               </v-btn>
 
               <v-btn color="warning" @click="readData">
+                <v-icon left>refresh</v-icon>
                 Refresh
               </v-btn>
             </v-layout>
@@ -355,10 +362,10 @@
         <v-container fluid>
           <v-toolbar flat color="white">
             <v-btn @click="newVisit('H')">
-              <v-icon>home</v-icon> Nová návšteva
+              <v-icon left>home</v-icon> Nová návšteva
             </v-btn>
             <v-btn @click="newVisit('P')">
-              <v-icon>phone</v-icon> Nový telefonát
+              <v-icon left>phone</v-icon> Nový telefonát
             </v-btn>
           </v-toolbar>
           <v-data-table
@@ -640,18 +647,18 @@ export default {
     },
 
     editVisit: function(item) {
-      if (item.Typ == "H") {
-        this.$router.push("/visitHome/" + item.ID);
+      if (item.DtoTyp == "H") {
+        this.$router.push("/visithome/" + this.person.ID + "/" + item.ID);
       } else {
-        this.$router.push("/visitPhone/" + item.ID);
+        this.$router.push("/visitcall/" + this.person.ID + "/" + item.ID);
       }
     },
 
     newVisit: function(typ) {
       if (typ == "H") {
-        this.$router.push("/visitHome/new");
+        this.$router.push("/visithome/" + this.person.ID + "/new");
       } else {
-        this.$router.push("/visitPhone/new");
+        this.$router.push("/visitcall/" + this.person.ID + "/new");
       }
     },
 

@@ -79,9 +79,9 @@
       <router-view />
     </v-content>
 
-    <v-snackbar v-model="snackbar" :timeout="2000">
+    <v-snackbar v-model="snackbar" :timeout="5000" :color="snackbarColor">
       {{ alertText }}
-      <v-btn color="pink" flat @click="snackbar = false">
+      <v-btn flat @click="snackbar = false">
         Zavrieť
       </v-btn>
     </v-snackbar>
@@ -101,8 +101,8 @@ export default {
       { icon: "child_care", text: "Deti", link: "/persons" },
       { icon: "done", text: "Ciele", link: "/tasks" },
       { icon: "cake", text: "Meniny", link: "/meniny" },
-      { icon: "lightbulb_outline", text: "Návštevy" },
-      { icon: "touch_app", text: "Telefón" },
+      { icon: "lightbulb_outline", text: "Návštevy", link: "/visithomes" },
+      { icon: "touch_app", text: "Telefón", link: "/visitcalls" },
       { divider: true },
       { heading: "Poradňa" },
       { icon: "calendar_today", text: "Stretnutia", link: "/sessions" },
@@ -118,7 +118,8 @@ export default {
       { icon: "phonelink", text: "Exporty" }
     ],
     alertText: "",
-    snackbar: false
+    snackbar: false,
+    snackbarColor: "info"
   }),
 
   methods: {
@@ -137,6 +138,10 @@ export default {
   computed: {
     alertMessage: function() {
       return this.$store.state.alert;
+    },
+
+    normalMessage: function() {
+      return this.$store.state.message;
     }
   },
 
@@ -145,9 +150,20 @@ export default {
       if (val !== "") {
         this.snackbar = true;
         this.alertText = val;
+        this.snackbarColor = "error";
         console.log("ALERT:" + val);
       }
       this.$store.commit("alert", "");
+    },
+
+    normalMessage: function(val) {
+      if (val !== "") {
+        this.snackbar = true;
+        this.alertText = val;
+        this.snackbarColor = "success";
+        console.log("MESSAGE:" + val);
+      }
+      this.$store.commit("message", "");
     }
   },
 

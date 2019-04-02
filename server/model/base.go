@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/malaschitz/plamienok/server/utils"
@@ -117,14 +118,15 @@ func String2Date(a string) (date *Date) {
 	return
 }
 
+//2008-02-11 03:20
 func String2DateTime(a string) (date *DateTime) {
 	if len(a) < 16 {
 		return nil
 	}
 	date = &DateTime{}
-	date.Day, _ = strconv.Atoi(a[:2])
-	date.Month, _ = strconv.Atoi(a[3:5])
-	date.Year, _ = strconv.Atoi(a[6:10])
+	date.Year, _ = strconv.Atoi(a[:4])
+	date.Month, _ = strconv.Atoi(a[5:7])
+	date.Day, _ = strconv.Atoi(a[8:10])
 	date.Hour, _ = strconv.Atoi(a[11:13])
 	date.Minute, _ = strconv.Atoi(a[14:16])
 	return
@@ -140,10 +142,25 @@ func Date2String(date *Date) (a string) {
 }
 
 func DateTime2String(date *DateTime) (a string) {
-	if date == nil {
-		a = ""
-	} else {
+	if date != nil {
 		a = fmt.Sprintf("%04d-%02d-%02d %02d:%02d", date.Year, date.Month, date.Day, date.Hour, date.Minute)
 	}
 	return
+}
+
+func DateTime2DTO(date *DateTime) (dto DateTimeDto) {
+	if date != nil {
+		dto.Date = fmt.Sprintf("%04d-%02d-%02d", date.Year, date.Month, date.Day)
+		dto.Time = fmt.Sprintf("%02d:%02d", date.Hour, date.Minute)
+		if strings.HasPrefix(dto.Date, "0000") {
+			dto.Date = "2000-01-01"
+		}
+	}
+	return
+}
+
+func DTO2DateTime(dto DateTimeDto) (d *DateTime) {
+	d = String2DateTime(dto.Date + " " + dto.Time)
+	fmt.Println("DTO", dto.Date, dto.Time, "->", d)
+	return d
 }

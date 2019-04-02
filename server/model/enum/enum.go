@@ -1,6 +1,15 @@
-package model
+/*
+ * Developed by Richard Malaschitz on 3/21/19 2:45 PM
+ * Last modified 3/21/19 12:37 PM
+ * Copyright (c) 2019. All right reserved.
+ *
+ */
 
-import "fmt"
+package enum
+
+import (
+	"fmt"
+)
 
 type Relationship struct {
 	Relation                     string
@@ -10,6 +19,11 @@ type Relationship struct {
 type Department int
 type Sex int
 type Property string
+
+const (
+	PROPERTY_CODE6         Property = "bucket_code6"
+	PROPERTY_PASSWORD_HASH Property = "bucket_password_hash"
+)
 
 var (
 	Father          Relationship = Relationship{Relation: "father", Sex: Male}
@@ -69,11 +83,6 @@ const (
 	Unknown Sex = 0
 	Male    Sex = 1
 	Female  Sex = 2
-)
-
-const (
-	PROPERTY_CODE6         Property = "bucket_code6"
-	PROPERTY_PASSWORD_HASH Property = "bucket_password_hash"
 )
 
 func GetOpoRelation(relationship string, sex Sex) Relationship {

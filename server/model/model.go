@@ -1,5 +1,7 @@
 package model
 
+import "github.com/malaschitz/plamienok/server/model/enum"
+
 type User struct {
 	Base  `storm:"inline"`
 	Name  string
@@ -20,7 +22,7 @@ type Person struct {
 	FirstName       string
 	Surname         string
 	BirthDate       *Date
-	Sex             Sex
+	Sex             enum.Sex
 	BornPlace       string
 	Death           *Date
 	DeathPlace      string
@@ -106,7 +108,7 @@ type VisitHome struct {
 	SocialnePoradenstvo string
 }
 
-type VisitPhone struct {
+type VisitCall struct {
 	Visit `storm:"inline"`
 	Smer  bool // true ak volal plamienok
 }
