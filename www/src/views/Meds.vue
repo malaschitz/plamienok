@@ -21,10 +21,10 @@
       rows-per-page-text="Počet riadkov"
     >
       <tr slot="items" slot-scope="props" @click="viewItem(props.item)">
-        <td class="text-xs-left">
+        <td class="text-left">
           {{ props.item.Nazov }}
         </td>
-        <td class="text-xs-left">
+        <td class="text-left">
           {{ props.item.DoplnokNazvu }}
         </td>
       </tr>
@@ -81,53 +81,53 @@
 
 <script>
 export default {
-  name: "Meds",
+  name: 'Meds',
 
   data: () => ({
     headers: [
-      { text: "Názov", value: "Nazov", align: "left" },
-      { text: "Doplnok názvu", value: "DoplnokNazvu" }
+      { text: 'Názov', value: 'Nazov', align: 'left' },
+      { text: 'Doplnok názvu', value: 'DoplnokNazvu' }
     ],
     items: [],
     pagination: { rowsPerPage: 10 },
     chosen: {},
     dialog: false,
-    filter: ""
+    filter: ''
   }),
 
   computed: {},
 
   methods: {
-    viewItem: function(item) {
-      this.chosen = Object.assign({}, item);
-      this.dialog = true;
+    viewItem: function (item) {
+      this.chosen = Object.assign({}, item)
+      this.dialog = true
     },
-    close: function() {
-      this.dialog = false;
+    close: function () {
+      this.dialog = false
     },
-    readData: function() {
+    readData: function () {
       this.$axios
-        .get("/api/meds?filter=" + this.filter)
+        .get('/api/meds?filter=' + this.filter)
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.items = response.data;
+            this.items = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     }
   },
 
-  mounted: function() {
-    console.log("MEDS.VUE, mounted");
-    this.readData();
+  mounted: function () {
+    console.log('MEDS.VUE, mounted')
+    this.readData()
   }
-};
+}
 </script>
 
 <style scoped></style>

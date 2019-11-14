@@ -35,62 +35,62 @@
 
 <script>
 export default {
-  name: "Meniny",
+  name: 'Meniny',
 
   data: () => ({
     today: new Date(),
     meniny: []
   }),
 
-  mounted: function() {
-    console.log("meniny");
-    this.readData();
+  mounted: function () {
+    console.log('meniny')
+    this.readData()
   },
 
   methods: {
-    readData: function() {
+    readData: function () {
       this.$axios
-        .get("/r/api/meniny/" + this.pondelok)
+        .get('/r/api/meniny/' + this.pondelok)
         .then(response => {
-          this.meniny = response.data;
+          this.meniny = response.data
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
 
-    addDays: function(d) {
-      var newDate = new Date(this.today);
-      newDate.setDate(newDate.getDate() + d);
-      this.today = newDate;
-      this.readData();
+    addDays: function (d) {
+      var newDate = new Date(this.today)
+      newDate.setDate(newDate.getDate() + d)
+      this.today = newDate
+      this.readData()
     },
 
-    minusDays: function(d) {
-      var newDate = new Date(this.today);
-      newDate.setDate(newDate.getDate() - d);
-      this.today = newDate;
-      this.readData();
+    minusDays: function (d) {
+      var newDate = new Date(this.today)
+      newDate.setDate(newDate.getDate() - d)
+      this.today = newDate
+      this.readData()
     }
   },
 
   computed: {
-    pondelok: function() {
-      var t = this.today.getDate() - ((this.today.getDay() + 6) % 7);
-      var day = new Date(this.today);
-      day.setDate(t);
-      return day.getDate() + "." + (day.getMonth() + 1) + ".";
+    pondelok: function () {
+      var t = this.today.getDate() - ((this.today.getDay() + 6) % 7)
+      var day = new Date(this.today)
+      day.setDate(t)
+      return day.getDate() + '.' + (day.getMonth() + 1) + '.'
     },
 
-    nedela: function() {
-      var t = this.today.getDate() - ((this.today.getDay() + 6) % 7) + 6;
-      var day = new Date(this.today);
-      day.setDate(t);
-      return day.getDate() + "." + (day.getMonth() + 1) + ".";
+    nedela: function () {
+      var t = this.today.getDate() - ((this.today.getDay() + 6) % 7) + 6
+      var day = new Date(this.today)
+      day.setDate(t)
+      return day.getDate() + '.' + (day.getMonth() + 1) + '.'
     }
   }
-};
+}
 </script>
 
 <style scoped></style>

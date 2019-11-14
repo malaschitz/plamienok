@@ -64,30 +64,30 @@ export default {
     message: null,
     title: null,
     options: {
-      color: "primary",
+      color: 'primary',
       width: 290,
       zIndex: 200
     }
   }),
   methods: {
-    open(title, message, options) {
-      this.dialog = true;
-      this.title = title;
-      this.message = message;
-      this.options = Object.assign(this.options, options);
+    open (title, message, options) {
+      this.dialog = true
+      this.title = title
+      this.message = message
+      this.options = Object.assign(this.options, options)
       return new Promise((resolve, reject) => {
-        this.resolve = resolve;
-        this.reject = reject;
-      });
+        this.resolve = resolve
+        this.reject = reject
+      })
     },
-    agree() {
-      this.resolve(true);
-      this.dialog = false;
+    agree () {
+      this.resolve(true)
+      this.dialog = false
     },
-    cancel() {
-      this.resolve(false);
-      this.dialog = false;
+    cancel () {
+      this.resolve(false)
+      this.dialog = false
     }
   }
-};
+}
 </script>

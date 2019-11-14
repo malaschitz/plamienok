@@ -4,7 +4,6 @@ replace gopkg.in/russross/blackfriday.v2 v2.0.1 => github.com/russross/blackfrid
 
 require (
 	github.com/asdine/storm v2.1.2+incompatible
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/facebookgo/ensure v0.0.0-20160127193407-b4ab57deab51 // indirect
 	github.com/facebookgo/stack v0.0.0-20160209184415-751773369052 // indirect
 	github.com/facebookgo/subset v0.0.0-20150612182917-8dac2c3c4870 // indirect
@@ -17,8 +16,6 @@ require (
 	github.com/mailgun/mailgun-go v1.1.1
 	github.com/matcornic/hermes v1.2.0
 	github.com/matcornic/hermes/v2 v2.0.1
-	github.com/mattn/go-colorable v0.0.9 // indirect
-	github.com/mattn/go-isatty v0.0.4 // indirect
 	github.com/oklog/ulid v1.3.1
 	github.com/pkg/errors v0.8.0
 	github.com/spf13/viper v1.2.1
@@ -32,3 +29,5 @@ require (
 	google.golang.org/api v0.0.0-20181213000619-1327b224df06
 	google.golang.org/appengine v1.3.0 // indirect
 )
+
+go 1.13

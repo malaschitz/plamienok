@@ -200,15 +200,15 @@
 
 <script>
 export default {
-  name: "VisitCall",
+  name: 'VisitCall',
 
-  props: ["personid", "visitid"],
+  props: ['personid', 'visitid'],
 
   data: () => ({
     visit: {
       DtoDatum: {
-        Date: "",
-        Time: ""
+        Date: '',
+        Time: ''
       },
       Users: [],
       Persons: [],
@@ -223,105 +223,105 @@ export default {
   }),
 
   methods: {
-    sendData: function() {},
+    sendData: function () {},
 
-    userName: function(id) {
+    userName: function (id) {
       for (var i = 0; i < this.users.length; i++) {
         if (this.users[i].ID === id) {
-          return this.users[i].Name;
+          return this.users[i].Name
         }
       }
-      return id;
+      return id
     },
 
-    saveData: function() {
+    saveData: function () {
       if (!this.$refs.form.validate()) {
-        return;
+        return
       }
       this.$axios
-        .post("/r/api/visitcall", this.visit)
+        .post('/r/api/visitcall', this.visit)
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.visit = response.data;
+            this.visit = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
 
-    readData: function() {
+    readData: function () {
       this.$axios
-        .get("/r/api/person/" + this.personid)
+        .get('/r/api/person/' + this.personid)
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.person = response.data;
+            this.person = response.data
           }
         })
         .catch(response => {
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
 
       this.$axios
-        .get("/r/api/users")
+        .get('/r/api/users')
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.users = response.data;
+            this.users = response.data
           }
         })
         .catch(response => {
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
 
-      if (this.visitid === "new") {
-        var today = new Date();
+      if (this.visitid === 'new') {
+        var today = new Date()
         this.visit = {
           DtoDatum: {
             Date:
               today.getFullYear() +
-              "-" +
-              String(today.getMonth() + 1).padStart(2, "0") +
-              "-" +
-              String(today.getDate()).padStart(2, "0"),
-            Time: ""
+              '-' +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              '-' +
+              String(today.getDate()).padStart(2, '0'),
+            Time: ''
           },
           Users: [],
           Persons: [],
           Smer: true
-        };
-        this.visit.Users.push(this.$store.state.id);
+        }
+        this.visit.Users.push(this.$store.state.id)
       } else {
         this.$axios
-          .get("/r/api/visitcall/" + this.visitid)
+          .get('/r/api/visitcall/' + this.visitid)
           .then(response => {
-            console.log("OK", response);
+            console.log('OK', response)
             if (response.status == 202) {
-              this.$store.commit("alert", "Chyba: " + response.data.Error);
+              this.$store.commit('alert', 'Chyba: ' + response.data.Error)
             } else {
-              this.visit = response.data;
+              this.visit = response.data
             }
           })
           .catch(response => {
-            console.log("WRONG", response);
-            this.$store.commit("alert", "Chyba: " + response);
-          });
+            console.log('WRONG', response)
+            this.$store.commit('alert', 'Chyba: ' + response)
+          })
       }
     }
   },
 
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
-      this.readData();
-    });
+      this.readData()
+    })
   }
-};
+}
 </script>
 
 <style scoped></style>

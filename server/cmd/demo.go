@@ -21,7 +21,7 @@ var mNames, wNames, sNames []string
 
 // create demo data
 func main() {
-	constants.InitConst()
+		constants.InitConst()
 	db.InitDB()
 	rand.Seed(1)
 	//user

@@ -22,12 +22,12 @@
       class="elevation-1"
     >
       <template v-slot:items="props">
-        <td class="text-xs-left">
+        <td class="text-left">
           {{ props.item.Datum.Day }}.{{ props.item.Datum.Month }}.{{
             props.item.Datum.Year
           }}
         </td>
-        <td class="text-xs-left">
+        <td class="text-left">
           <v-chip
             v-if="props.item.Smer"
             color="primary"
@@ -97,11 +97,11 @@
             <span>Po úmrtí</span>
           </v-tooltip>
         </td>
-        <td class="text-xs-left text-no-wrap">
+        <td class="text-left text-no-wrap">
           {{ props.item.Popis }}
         </td>
         <td
-          class="text-xs-left text-no-wrap text-truncate"
+          class="text-left text-no-wrap text-truncate"
           style="max-width: 200px;"
         >
           {{ props.item.PopisDetail }}
@@ -118,45 +118,45 @@
 
 <script>
 export default {
-  name: "VisitHomes",
+  name: 'VisitHomes',
 
   data: () => ({
     visits: []
   }),
 
   methods: {
-    readData: function() {
+    readData: function () {
       this.$axios
-        .get("/r/api/visitcalls")
+        .get('/r/api/visitcalls')
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.visits = response.data;
+            this.visits = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
 
-    editVisit: function(item) {
-      this.$router.push("/visitcall/" + item.PersonID + "/" + item.ID);
+    editVisit: function (item) {
+      this.$router.push('/visitcall/' + item.PersonID + '/' + item.ID)
     }
   },
 
-  mounted: function() {
-    this.readData();
+  mounted: function () {
+    this.readData()
   },
 
   watch: {
-    $route() {
-      this.readData();
+    $route () {
+      this.readData()
     }
   }
-};
+}
 </script>
 
 <style scoped></style>

@@ -6,15 +6,15 @@
     </v-toolbar>
 
     <v-layout wrap>
-      <v-flex sm2 xs12 class="text-sm-left text-xs-center">
+      <v-flex sm2 xs12 class="text-sm-left text-center">
         <v-btn @click="$refs.calendar.prev()">
           <v-icon>keyboard_arrow_left</v-icon>
         </v-btn>
       </v-flex>
-      <v-flex sm8 xs12 class="text-xs-center">
+      <v-flex sm8 xs12 class="text-center">
         {{ calendarTitle }}
       </v-flex>
-      <v-flex sm2 xs12 class="text-sm-right text-xs-center">
+      <v-flex sm2 xs12 class="text-sm-right text-center">
         <v-btn @click="$refs.calendar.next()">
           <v-icon>keyboard_arrow_right</v-icon>
         </v-btn>
@@ -187,20 +187,20 @@
 </template>
 
 <script>
-import moment from "moment";
+import moment from 'moment'
 
 export default {
-  name: "Sessions",
+  name: 'Sessions',
 
   data: () => ({
-    start: moment().format("YYYY-MM-DD"),
+    start: moment().format('YYYY-MM-DD'),
     end: moment()
       .month(11)
       .date(31)
-      .format("YYYY-MM-DD"),
+      .format('YYYY-MM-DD'),
     dialog: false,
     rules: {
-      required: value => !!value || "Required."
+      required: value => !!value || 'Required.'
     },
     valid: true,
     menuDatePicker: false,
@@ -212,70 +212,70 @@ export default {
     form: {}
   }),
   computed: {
-    calendarTitle: function() {
+    calendarTitle: function () {
       return moment(this.start)
-        .locale("sk")
-        .format("MMMM YYYY");
+        .locale('sk')
+        .format('MMMM YYYY')
     },
     // convert the list of events into a map of lists keyed by date
-    eventsMap: function() {
-      const map = {};
+    eventsMap: function () {
+      const map = {}
       // this.events.forEach(e => (map[e.DtoDatum] = map[e.DtoDatum] || []).push(e))
-      this.events.forEach(function(e) {
-        let ret = e.DtoDatum.substr(0, 10);
-        return (map[ret] = map[ret] || []).push(e);
-      });
-      return map;
+      this.events.forEach(function (e) {
+        let ret = e.DtoDatum.substr(0, 10)
+        return (map[ret] = map[ret] || []).push(e)
+      })
+      return map
     }
   },
   watch: {
-    formDate: function(newValue) {
-      console.log("formDate watcher", newValue);
-      this.form.dateFormatted = moment(newValue).format("DD.MM.YYYY");
+    formDate: function (newValue) {
+      console.log('formDate watcher', newValue)
+      this.form.dateFormatted = moment(newValue).format('DD.MM.YYYY')
     }
   },
   methods: {
-    parseDate: function(aFormattedDatum, aOldValue) {
-      console.log("parseDate", aFormattedDatum, aOldValue);
-      let ret = aOldValue;
+    parseDate: function (aFormattedDatum, aOldValue) {
+      console.log('parseDate', aFormattedDatum, aOldValue)
+      let ret = aOldValue
       if (
         aFormattedDatum !== undefined &&
-        moment(aFormattedDatum, "DD.MM.YYYY").isValid()
+        moment(aFormattedDatum, 'DD.MM.YYYY').isValid()
       ) {
-        ret = moment(aFormattedDatum, "DD.MM.YYYY").format("YYYY-MM-DD");
+        ret = moment(aFormattedDatum, 'DD.MM.YYYY').format('YYYY-MM-DD')
       }
-      return ret;
+      return ret
     },
-    addSession: function() {
-      this.form.id = null;
-      this.form.user = this.$store.state.id;
-      this.formDate = moment().format("YYYY-MM-DD");
-      this.form.dateFormatted = moment().format("DD.MM.YYYY");
-      this.form.time = "09:00";
-      this.form.desc = "";
-      this.form.duration = 30;
-      this.form.persons = [];
-      this.dialog = true;
+    addSession: function () {
+      this.form.id = null
+      this.form.user = this.$store.state.id
+      this.formDate = moment().format('YYYY-MM-DD')
+      this.form.dateFormatted = moment().format('DD.MM.YYYY')
+      this.form.time = '09:00'
+      this.form.desc = ''
+      this.form.duration = 30
+      this.form.persons = []
+      this.dialog = true
     },
-    editSession: function(event) {
-      this.form.id = event.ID;
-      this.form.user = event.UserID;
-      this.formDate = event.DtoDatum.substr(0, 10);
-      this.form.dateFormatted = moment(this.formDate, "YYYY-MM-DD").format(
-        "DD.MM.YYYY"
-      );
-      this.form.time = event.DtoDatum.substr(11, 5);
-      this.form.desc = event.Description;
-      this.form.duration = event.Duration;
-      this.form.persons = event.Persons;
-      this.dialog = true;
+    editSession: function (event) {
+      this.form.id = event.ID
+      this.form.user = event.UserID
+      this.formDate = event.DtoDatum.substr(0, 10)
+      this.form.dateFormatted = moment(this.formDate, 'YYYY-MM-DD').format(
+        'DD.MM.YYYY'
+      )
+      this.form.time = event.DtoDatum.substr(11, 5)
+      this.form.desc = event.Description
+      this.form.duration = event.Duration
+      this.form.persons = event.Persons
+      this.dialog = true
     },
-    close: function() {
-      this.dialog = false;
+    close: function () {
+      this.dialog = false
     },
-    save: function() {
+    save: function () {
       if (!this.$refs.form.validate()) {
-        return;
+        return
       }
       var params = {
         ID: this.form.id,
@@ -283,82 +283,82 @@ export default {
         Persons: this.form.persons,
         Duration: this.form.duration,
         Description: this.form.desc,
-        DtoDatum: this.form.dateFormatted + " " + this.form.time
-      };
+        DtoDatum: this.form.dateFormatted + ' ' + this.form.time
+      }
       this.$axios
-        .post("/r/api/session", params)
+        .post('/r/api/session', params)
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            //OK
+            // OK
             // response.data
-            this.dialog = false;
-            this.readSessions();
+            this.dialog = false
+            this.readSessions()
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
-    readSessions: function() {
+    readSessions: function () {
       this.$axios
-        .get("/r/api/sessions")
+        .get('/r/api/sessions')
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.events = response.data;
+            this.events = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
-    readUsers: function() {
+    readUsers: function () {
       this.$axios
-        .get("/r/api/users")
+        .get('/r/api/users')
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.users = response.data;
+            this.users = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
-    readPersons: function() {
+    readPersons: function () {
       this.$axios
-        .get("/r/api/persons")
+        .get('/r/api/persons')
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.persons = response.data;
+            this.persons = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     }
   },
 
-  mounted: function() {
-    console.log("SESSIONS.VUE, mounted");
-    this.readUsers();
-    this.readPersons();
-    this.readSessions();
+  mounted: function () {
+    console.log('SESSIONS.VUE, mounted')
+    this.readUsers()
+    this.readPersons()
+    this.readSessions()
   }
-};
+}
 </script>
 
 <style scoped></style>

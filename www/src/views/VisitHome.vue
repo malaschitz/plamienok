@@ -11,9 +11,7 @@
       <v-icon large color="teal darken-2">home</v-icon>
       <v-toolbar-title>
         {{ person.FirstName }} {{ person.Surname }} ({{ person.DtoBirthDate }})
-        <v-btn flat small color="primary" :to="'/person/' + person.ID"
-          >detail</v-btn
-        >
+        <v-btn flat small color="primary" :to="'/person/' + person.ID">detail</v-btn>
       </v-toolbar-title>
       <v-spacer />
     </v-toolbar>
@@ -43,10 +41,7 @@
                   clearable
                 />
               </template>
-              <v-date-picker
-                v-model="visit.DtoDatum.Date"
-                @input="menuDatePicker1 = false"
-              />
+              <v-date-picker v-model="visit.DtoDatum.Date" @input="menuDatePicker1 = false" />
             </v-menu>
           </v-flex>
 
@@ -96,8 +91,7 @@
               item-text="Name"
               item-value="ID"
               clearable
-            >
-            </v-select>
+            ></v-select>
           </v-flex>
         </v-layout>
 
@@ -124,10 +118,7 @@
                   clearable
                 />
               </template>
-              <v-date-picker
-                v-model="visit.DtoVyjazdFrom.Date"
-                @input="menuDatePicker2 = false"
-              />
+              <v-date-picker v-model="visit.DtoVyjazdFrom.Date" @input="menuDatePicker2 = false" />
             </v-menu>
           </v-flex>
 
@@ -185,10 +176,7 @@
                   clearable
                 />
               </template>
-              <v-date-picker
-                v-model="visit.DtoVyjazdTo.Date"
-                @input="menuDatePicker3 = false"
-              />
+              <v-date-picker v-model="visit.DtoVyjazdTo.Date" @input="menuDatePicker3 = false" />
             </v-menu>
           </v-flex>
 
@@ -234,8 +222,7 @@
               item-text="Name"
               item-value="ID"
               multiple
-            >
-            </v-autocomplete>
+            ></v-autocomplete>
           </v-flex>
           <v-flex xs12>
             <v-autocomplete
@@ -247,24 +234,14 @@
               multiple
             >
               <template v-slot:selection="{ item, selected }">
-                <v-chip
-                  :selected="selected"
-                  color="blue-grey"
-                  class="white--text"
-                >
-                  <span
-                    v-text="item.Person.FirstName + ' ' + item.Person.Surname"
-                  ></span>
+                <v-chip :selected="selected" color="blue-grey" class="white--text">
+                  <span v-text="item.Person.FirstName + ' ' + item.Person.Surname"></span>
                 </v-chip>
               </template>
               <template v-slot:item="{ item }">
                 <v-list-tile-content>
-                  <v-list-tile-title
-                    v-text="item.Relationship.Relation"
-                  ></v-list-tile-title>
-                  <v-list-tile-sub-title
-                    v-text="item.Person.FirstName + ' ' + item.Person.Surname"
-                  ></v-list-tile-sub-title>
+                  <v-list-tile-title v-text="item.Relationship.Relation"></v-list-tile-title>
+                  <v-list-tile-sub-title v-text="item.Person.FirstName + ' ' + item.Person.Surname"></v-list-tile-sub-title>
                 </v-list-tile-content>
               </template>
             </v-autocomplete>
@@ -276,22 +253,13 @@
           </v-flex>
 
           <v-flex xs6 md2 sm3>
-            <v-checkbox
-              v-model="visit.IsPlanned"
-              label="Plánovaná"
-            ></v-checkbox>
+            <v-checkbox v-model="visit.IsPlanned" label="Plánovaná"></v-checkbox>
           </v-flex>
           <v-flex xs6 md2 sm3>
-            <v-checkbox
-              v-model="visit.IsZdravotna"
-              label="Zdravotná"
-            ></v-checkbox>
+            <v-checkbox v-model="visit.IsZdravotna" label="Zdravotná"></v-checkbox>
           </v-flex>
           <v-flex xs6 md2 sm3>
-            <v-checkbox
-              v-model="visit.IsSprevadzanie"
-              label="Sprevádzanie"
-            ></v-checkbox>
+            <v-checkbox v-model="visit.IsSprevadzanie" label="Sprevádzanie"></v-checkbox>
           </v-flex>
           <v-flex xs6 md2 sm3>
             <v-checkbox v-model="visit.IsSocial" label="Sociálna"></v-checkbox>
@@ -350,13 +318,11 @@
         </v-layout>
         <v-layout>
           <v-btn color="info" @click="saveData">
-            <v-icon left>save_alt</v-icon>
-            Uložiť
+            <v-icon left>save_alt</v-icon>Uložiť
           </v-btn>
 
           <v-btn color="warning" @click="readData">
-            <v-icon left>refresh</v-icon>
-            Refresh
+            <v-icon left>refresh</v-icon>Refresh
           </v-btn>
         </v-layout>
       </v-container>
@@ -366,15 +332,15 @@
 
 <script>
 export default {
-  name: "VisitHome",
+  name: 'VisitHome',
 
-  props: ["personid", "visitid"],
+  props: ['personid', 'visitid'],
 
   data: () => ({
     visit: {
       DtoDatum: {
-        Date: "",
-        Time: ""
+        Date: '',
+        Time: ''
       },
       Users: [],
       Persons: [],
@@ -394,119 +360,119 @@ export default {
   }),
 
   methods: {
-    sendData: function() {},
+    sendData: function () {},
 
-    userName: function(id) {
+    userName: function (id) {
       for (var i = 0; i < this.users.length; i++) {
         if (this.users[i].ID === id) {
-          return this.users[i].Name;
+          return this.users[i].Name
         }
       }
-      return id;
+      return id
     },
 
-    saveData: function() {
+    saveData: function () {
       if (!this.$refs.form.validate()) {
-        return;
+        return
       }
       this.$axios
-        .post("/r/api/visithome", this.visit)
+        .post('/r/api/visithome', this.visit)
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.visit = response.data;
-            this.$store.commit("message", "Uložené");
+            this.visit = response.data
+            this.$store.commit('message', 'Uložené')
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
 
-    readData: function() {
+    readData: function () {
       this.$axios
-        .get("/r/api/person/" + this.personid)
+        .get('/r/api/person/' + this.personid)
         .then(response => {
-          if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+          if (response.status === 202) {
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.person = response.data;
+            this.person = response.data
           }
         })
         .catch(response => {
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
 
       this.$axios
-        .get("/r/api/users")
+        .get('/r/api/users')
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.users = response.data;
+            this.users = response.data
           }
         })
         .catch(response => {
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
 
       this.$axios
-        .get("/r/api/cars")
+        .get('/r/api/cars')
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.cars = response.data;
+            this.cars = response.data
           }
         })
         .catch(response => {
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
 
-      if (this.visitid === "new") {
-        var today = new Date();
+      if (this.visitid === 'new') {
+        var today = new Date()
         this.visit = {
           DtoDatum: {
             Date:
               today.getFullYear() +
-              "-" +
-              String(today.getMonth() + 1).padStart(2, "0") +
-              "-" +
-              String(today.getDate()).padStart(2, "0"),
-            Time: ""
+              '-' +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              '-' +
+              String(today.getDate()).padStart(2, '0'),
+            Time: ''
           },
           Users: [],
           Persons: [],
           Smer: true
-        };
-        this.visit.Users.push(this.$store.state.id);
+        }
+        this.visit.Users.push(this.$store.state.id)
       } else {
         this.$axios
-          .get("/r/api/visithome/" + this.visitid)
+          .get('/r/api/visithome/' + this.visitid)
           .then(response => {
-            console.log("OK", response);
+            console.log('OK', response)
             if (response.status == 202) {
-              this.$store.commit("alert", "Chyba: " + response.data.Error);
+              this.$store.commit('alert', 'Chyba: ' + response.data.Error)
             } else {
-              this.visit = response.data;
+              this.visit = response.data
             }
           })
           .catch(response => {
-            console.log("WRONG", response);
-            this.$store.commit("alert", "Chyba: " + response);
-          });
+            console.log('WRONG', response)
+            this.$store.commit('alert', 'Chyba: ' + response)
+          })
       }
     }
   },
 
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
-      this.readData();
-    });
+      this.readData()
+    })
   }
-};
+}
 </script>
 
 <style scoped></style>

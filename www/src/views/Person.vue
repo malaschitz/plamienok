@@ -381,10 +381,10 @@
             class="elevation-1"
           >
             <template v-slot:items="props">
-              <td class="text-xs-left">
+              <td class="text-left">
                 {{ props.item.DtoDatum }}
               </td>
-              <td class="text-xs-left">
+              <td class="text-left">
                 <v-icon v-if="props.item.DtoTyp == 'H'">
                   home
                 </v-icon>
@@ -392,11 +392,11 @@
                   phone
                 </v-icon>
               </td>
-              <td class="text-xs-left text-no-wrap">
+              <td class="text-left text-no-wrap">
                 {{ props.item.Popis }}
               </td>
               <td
-                class="text-xs-left text-no-wrap text-truncate"
+                class="text-left text-no-wrap text-truncate"
                 style="max-width: 200px;"
               >
                 {{ props.item.PopisDetail }}
@@ -483,10 +483,10 @@
 </template>
 
 <script>
-import confirm from "../components/Confirm";
+import confirm from '../components/Confirm'
 
 export default {
-  name: "Person",
+  name: 'Person',
 
   components: { confirm: confirm },
 
@@ -499,7 +499,7 @@ export default {
     active: 0,
     valid: false,
 
-    nameRules: [v => !!v || "Meno je vyžadované"],
+    nameRules: [v => !!v || 'Meno je vyžadované'],
 
     emailRules: [
       // eslint-disable-next-line
@@ -508,11 +508,11 @@ export default {
 
     editRelative: {
       person: null,
-      relationship: "",
-      firstname: "",
-      surname: "",
-      phone: "",
-      msg: ""
+      relationship: '',
+      firstname: '',
+      surname: '',
+      phone: '',
+      msg: ''
     },
 
     menuDatePicker1: false,
@@ -527,242 +527,243 @@ export default {
   }),
 
   methods: {
-    readData: function() {
+    readData: function () {
       this.$axios
-        .get("/r/api/person/" + this.$route.params.id)
+        .get('/r/api/person/' + this.$route.params.id)
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.person = response.data;
+            this.person = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
 
       this.$axios
-        .get("/r/api/visits/" + this.$route.params.id)
+        .get('/r/api/visits/' + this.$route.params.id)
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.visits = response.data;
+            this.visits = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
 
       this.$axios
-        .get("/r/api/persons")
+        .get('/r/api/persons')
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.persons = response.data;
+            this.persons = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
 
-    readCodebooks: function() {
+    readCodebooks: function () {
       this.$axios
-        .get("/api/diagnosesAll")
+        .get('/api/diagnosesAll')
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.dgns = response.data;
+            this.dgns = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
 
       this.$axios
-        .get("/api/relationships")
+        .get('/api/relationships')
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.relationships = response.data;
+            this.relationships = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
 
-    saveBase: function() {
+    saveBase: function () {
       if (!this.$refs.baseform.validate()) {
-        return;
+        return
       }
       this.$axios
-        .put("/r/api/person", this.person)
+        .put('/r/api/person', this.person)
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            //OK
-            this.person = response.data;
+            // OK
+            this.person = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
 
-    saveZP: function() {
+    saveZP: function () {
       if (!this.$refs.zuform.validate()) {
-        return;
+        return
       }
       this.$axios
-        .put("/r/api/person", this.person)
+        .put('/r/api/person', this.person)
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            //OK
-            this.person = response.data;
+            // OK
+            this.person = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
 
-    editVisit: function(item) {
-      if (item.DtoTyp == "H") {
-        this.$router.push("/visithome/" + this.person.ID + "/" + item.ID);
+    editVisit: function (item) {
+      if (item.DtoTyp == 'H') {
+        this.$router.push('/visithome/' + this.person.ID + '/' + item.ID)
       } else {
-        this.$router.push("/visitcall/" + this.person.ID + "/" + item.ID);
+        this.$router.push('/visitcall/' + this.person.ID + '/' + item.ID)
       }
     },
 
-    newVisit: function(typ) {
-      if (typ == "H") {
-        this.$router.push("/visithome/" + this.person.ID + "/new");
+    newVisit: function (typ) {
+      if (typ == 'H') {
+        this.$router.push('/visithome/' + this.person.ID + '/new')
       } else {
-        this.$router.push("/visitcall/" + this.person.ID + "/new");
+        this.$router.push('/visitcall/' + this.person.ID + '/new')
       }
     },
 
-    relativeDetail: function(dr) {
-      this.$router.push("/person/" + dr.Person.ID);
+    relativeDetail: function (dr) {
+      this.$router.push('/person/' + dr.Person.ID)
     },
 
-    relativeClose: function(dr) {
+    relativeClose: function (dr) {
       this.$refs.confirm
-        .open("Vymazať  vzťah ?", "Ste si istý ?", { color: "red" })
+        .open('Vymazať  vzťah ?', 'Ste si istý ?', { color: 'red' })
         .then(confirm => {
-          console.log(confirm);
+          console.log(confirm)
           this.$axios
-            .delete("/r/api/person/relative/" + dr.ID)
+            .delete('/r/api/person/relative/' + dr.ID)
             .then(response => {
               if (response.status == 202) {
-                this.$store.commit("alert", "Chyba: " + response.data.Error);
+                this.$store.commit('alert', 'Chyba: ' + response.data.Error)
               } else {
-                this.readData();
+                this.readData()
               }
             })
             .catch(response => {
-              this.$store.commit("alert", "Chyba: " + response);
-            });
-        });
+              this.$store.commit('alert', 'Chyba: ' + response)
+            })
+        })
     },
 
-    relativeAdd: function() {
-      this.editRelative.firstname = "";
-      this.editRelative.surname = "";
-      this.editRelative.msg = "";
-      this.editRelative.phone = "";
-      this.editRelative.relationship = "";
-      this.dialogRelative = true;
+    relativeAdd: function () {
+      this.editRelative.firstname = ''
+      this.editRelative.surname = ''
+      this.editRelative.msg = ''
+      this.editRelative.phone = ''
+      this.editRelative.relationship = ''
+      this.dialogRelative = true
     },
 
-    saveRelative: function() {
-      if (this.editRelative.relationship === "") {
-        this.editRelative.msg = "Chýba zadaný príbuzenský vzťah";
-        this.$store.commit("alert", this.editRelative.msg);
-        return;
+    saveRelative: function () {
+      if (this.editRelative.relationship === '') {
+        this.editRelative.msg = 'Chýba zadaný príbuzenský vzťah'
+        this.$store.commit('alert', this.editRelative.msg)
+        return
       }
       if (this.editRelative.person == null) {
         if (
-          this.editRelative.firstname === "" ||
-          this.editRelative.surname === ""
-        )
+          this.editRelative.firstname === '' ||
+          this.editRelative.surname === ''
+        ) {
           this.editRelative.msg =
-            "Je nutné vybrať osobu zo zoznamu osôb alebo zadať novú";
-        this.$store.commit("alert", this.editRelative.msg);
-        return;
+            'Je nutné vybrať osobu zo zoznamu osôb alebo zadať novú'
+        }
+        this.$store.commit('alert', this.editRelative.msg)
+        return
       }
       this.$axios
-        .post("/r/api/person/relative/" + this.person.ID, this.editRelative)
+        .post('/r/api/person/relative/' + this.person.ID, this.editRelative)
         .then(response => {
           if (response.status == 202) {
-            this.editRelative.msg = response.data.Error;
-            this.$store.commit("alert", this.editRelative.msg);
+            this.editRelative.msg = response.data.Error
+            this.$store.commit('alert', this.editRelative.msg)
           } else {
-            this.dialogRelative = false;
-            this.readData();
+            this.dialogRelative = false
+            this.readData()
           }
         })
         .catch(response => {
-          this.editRelative.msg = response;
-          this.$store.commit("alert", this.editRelative.msg);
-        });
+          this.editRelative.msg = response
+          this.$store.commit('alert', this.editRelative.msg)
+        })
     }
   },
 
-  mounted: function() {
-    console.log("mounted person", this.$route.params.id);
-    this.readCodebooks();
-    this.readData();
+  mounted: function () {
+    console.log('mounted person', this.$route.params.id)
+    this.readCodebooks()
+    this.readData()
   },
 
   computed: {
-    age: function() {
-      var dob = this.person.DtoBirthDate;
+    age: function () {
+      var dob = this.person.DtoBirthDate
       if (dob && dob.length === 10) {
-        var year = Number(dob.substr(0, 4));
-        var month = Number(dob.substr(4, 2)) - 1;
-        var day = Number(dob.substr(6, 2));
-        var today = new Date();
-        var age = today.getFullYear() - year;
+        var year = Number(dob.substr(0, 4))
+        var month = Number(dob.substr(4, 2)) - 1
+        var day = Number(dob.substr(6, 2))
+        var today = new Date()
+        var age = today.getFullYear() - year
         if (
           today.getMonth() < month ||
           (today.getMonth() == month && today.getDate() < day)
         ) {
-          age--;
+          age--
         }
-        return "(" + age + "r)";
+        return '(' + age + 'r)'
       } else {
-        return "";
+        return ''
       }
     }
   },
 
   watch: {
-    $route() {
-      this.readData();
+    $route () {
+      this.readData()
     }
   }
-};
+}
 </script>
 
 <style scoped></style>

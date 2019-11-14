@@ -1,19 +1,13 @@
-<!--
-  - Developed by Richard Malaschitz on 3/4/19 8:04 PM
-  - Last modified 3/4/19 8:04 PM
-  - Copyright (c) 2019. All right reserved.
-  -
-  -->
-
 <template>
-  <v-container fluid>
+  <v-container fluid class="grey lighten-4">
     <v-toolbar flat color="white">
       <v-toolbar-title>Deti, príbuzní, iné osoby</v-toolbar-title>
       <v-spacer />
+
       <v-dialog v-model="dialog" max-width="500px">
-        <v-btn slot="activator" color="primary" dark class="mb-2">
-          Nový
-        </v-btn>
+        <template v-slot:activator="{ on }">
+          <v-btn color="primary" dark class="mb-2" v-on="on">Nový</v-btn>
+        </template>
         <v-card>
           <v-form ref="personform" v-model="valid" lazy-validation>
             <v-card-title>
@@ -54,7 +48,7 @@
                         <v-text-field
                           v-model="editedItem.birthdate"
                           label="Dátum narodenia"
-                          prepend-icon="event"
+                          prepend-icon="mdi-calendar"
                           readonly
                           v-on="on"
                           :rules="[rules.required]"
@@ -73,104 +67,62 @@
 
             <v-card-actions>
               <v-spacer />
-              <v-btn color="blue darken-1" flat @click="close">
-                Zrušiť
-              </v-btn>
-              <v-btn color="blue darken-1" flat @click="save">
-                Uložiť
-              </v-btn>
+              <v-btn color="blue darken-1" flat @click="close">Zrušiť</v-btn>
+              <v-btn color="blue darken-1" flat @click="save">Uložiť</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
       </v-dialog>
     </v-toolbar>
 
-    <v-layout>
-      <v-flex xs12 md4 class="mr-1">
-        <v-text-field
-          v-model="filter.fulltext"
-          label="Hľadať"
-          @change="readData"
-        />
-      </v-flex>
-      <v-flex xs12 md4 class="mr-1">
+    <v-row>
+      <v-col cols="3">
+        <v-text-field v-model="filter.fulltext" label="Hľadať" @change="readData" />
+      </v-col>
+      <v-col cols="3">
         <v-select
           :items="filterClients"
           v-model="filter.clients"
           label="Klienti"
           @change="readData"
         />
-      </v-flex>
-      <v-flex xs12 md4 class="mr-1">
+      </v-col>
+      <v-col cols="3">
         <v-select
           :items="filterOddelenie"
           v-model="filter.oddelenie"
           label="Oddelenie"
           @change="readData"
         />
-      </v-flex>
-      <v-flex xs12 md4 class="mr-1">
-        <v-select
-          :items="filterStav"
-          v-model="filter.stav"
-          label="Stav"
-          @change="readData"
-        />
-      </v-flex>
-    </v-layout>
+      </v-col>
+      <v-col cols="3">
+        <v-select :items="filterStav" v-model="filter.stav" label="Stav" @change="readData" />
+      </v-col>
+    </v-row>
 
     <v-data-table
       :headers="headers"
-      :pagination.sync="pagination"
       :items="persons"
+      item-key="id"
       class="elevation-1"
-      rows-per-page-text="Počet riadkov"
+      footer-props.items-per-page-text="Počet riadkov"
+      footer-props.next-icon="mdi-tank"
     >
-      <template slot="items" slot-scope="props">
-        <td class="text-xs-left">
-          {{ props.item.FirstName }} {{ props.item.Surname }}
-        </td>
-        <td class="text-xs-right">
-          {{ props.item.BirthDate.Day }}. {{ props.item.BirthDate.Month }}.
-          {{ props.item.BirthDate.Year }}
-        </td>
-        <td class="text-xs-left">
-          <v-chip
-            v-if="props.item.IsHC"
-            color="primary"
-            text-color="white"
-            small
-          >
-            HC
-          </v-chip>
-          <v-chip
-            v-if="props.item.IsCGT"
-            color="primary"
-            text-color="white"
-            small
-          >
-            CGT
-          </v-chip>
-          <v-chip
-            v-if="props.item.Death"
-            color="black"
-            text-color="white"
-            small
-          >
-            {{ props.item.Death.Month }}.{{ props.item.Death.Year }}
-          </v-chip>
-        </td>
-        <td>
-          {{ pocetDni(props.item) }}
-        </td>
-        <td class="justify-center layout px-0">
-          <v-icon
-            class="mr-2"
-            @click="$router.push('/person/' + props.item.ID)"
-          >
-            edit
-          </v-icon>
-        </td>
+      <template v-slot:item.Surname="{ item }">{{ item.FirstName }} {{ item.Surname }}</template>
+      <template v-slot:item.Info="{ item }">
+        <v-chip v-if="item.IsHC" color="primary" text-color="white" small>HC</v-chip>
+        <v-chip v-if="item.IsCGT" color="primary" text-color="white" small>CGT</v-chip>
+        <v-chip
+          v-if="item.Death"
+          color="black"
+          text-color="white"
+          small
+        >{{ item.Death.Month }}.{{ item.Death.Year }}</v-chip>
+      </template>
+
+      <template v-slot:item.PocetDni="{ item }">{{ pocetDni(item) }}</template>
+      <template v-slot:item.Akcie="{ item }">
+        <v-icon class="mr-2" @click="$router.push('/person/' + item.ID)">mdi-file-edit</v-icon>
       </template>
     </v-data-table>
   </v-container>
@@ -185,10 +137,10 @@ export default {
   data: () => ({
     headers: [
       { text: "Meno", value: "Surname", align: "left", sortable: false },
-      { text: "Narodený", value: "Birthdate", align: "right", sortable: false },
-      { text: "Info", sortable: false },
-      { text: "Počet dní", sortable: false },
-      { text: "Akcie", sortable: false }
+      { text: "Narodený", value: "BirthDate", align: "right", sortable: false },
+      { text: "Info", value: "Info", sortable: false },
+      { text: "Počet dní", value: "PocetDni", sortable: false },
+      { text: "Akcie", value: "Akcie", sortable: false }
     ],
     persons: [],
     pagination: { rowsPerPage: 10 },
@@ -261,7 +213,7 @@ export default {
           if (response.status == 202) {
             this.$store.commit("alert", "Chyba: " + response.data.Error);
           } else {
-            //OK
+            // OK
             this.close();
             this.$router.push("/person/" + response.data.ID);
           }

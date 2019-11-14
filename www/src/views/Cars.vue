@@ -66,10 +66,10 @@
       rows-per-page-text="Počet riadkov"
     >
       <template slot="items" slot-scope="props">
-        <td class="text-xs-left">
+        <td class="text-left">
           {{ props.item.Name }}
         </td>
-        <td class="text-xs-left">
+        <td class="text-left">
           {{ props.item.Popis }}
         </td>
         <td class="justify-center layout px-0">
@@ -90,146 +90,146 @@
 
 <script>
 export default {
-  name: "Cars",
+  name: 'Cars',
 
   data: () => ({
     headers: [
-      { text: "Skratka", value: "Name", align: "left" },
-      { text: "Popis", value: "Popis" },
-      { text: "Akcie", sortable: false }
+      { text: 'Skratka', value: 'Name', align: 'left' },
+      { text: 'Popis', value: 'Popis' },
+      { text: 'Akcie', sortable: false }
     ],
     cars: [],
     pagination: { rowsPerPage: 10 },
     editedIndex: -1,
     editedItem: {
-      ID: "",
-      Name: "",
-      Popis: ""
+      ID: '',
+      Name: '',
+      Popis: ''
     },
     dialog: false,
     rules: {
-      required: value => !!value || "Required.",
-      max20: value => (value || "").length <= 20 || "Max 20 characters"
+      required: value => !!value || 'Required.',
+      max20: value => (value || '').length <= 20 || 'Max 20 characters'
     },
     valid: true,
     deleted: false
   }),
 
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "Nové auto" : "Editácia auta";
+    formTitle () {
+      return this.editedIndex === -1 ? 'Nové auto' : 'Editácia auta'
     },
 
-    filteredCars() {
-      var a = [];
+    filteredCars () {
+      var a = []
       for (var i = 0; i < this.cars.length; i++) {
-        var u = this.cars[i];
+        var u = this.cars[i]
         if ((this.deleted && u.Deleted) || (!this.deleted && !u.Deleted)) {
-          a.push(u);
+          a.push(u)
         }
       }
-      return a;
+      return a
     }
   },
 
   watch: {
-    dialog(val) {
-      val || this.close();
+    dialog (val) {
+      val || this.close()
     }
   },
 
   methods: {
-    editItem: function(item) {
-      this.editedIndex = this.cars.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+    editItem: function (item) {
+      this.editedIndex = this.cars.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
     },
 
-    deleteItem: function(item) {
-      var conf;
+    deleteItem: function (item) {
+      var conf
       if (!this.deleted) {
-        conf = "Ste si istý, že chcete vymazať auto ?";
+        conf = 'Ste si istý, že chcete vymazať auto ?'
       } else {
-        conf = "Ste si istý, že chcete obnoviť auto ?";
+        conf = 'Ste si istý, že chcete obnoviť auto ?'
       }
       if (confirm(conf)) {
         this.$axios
-          .delete("/r/api/car/" + item.ID)
+          .delete('/r/api/car/' + item.ID)
           .then(response => {
             if (response.status == 202) {
-              this.$store.commit("alert", "Chyba: " + response.data.Error);
+              this.$store.commit('alert', 'Chyba: ' + response.data.Error)
             } else {
-              //OK
-              this.readData();
+              // OK
+              this.readData()
             }
           })
           .catch(response => {
-            console.log("WRONG", response);
-            this.$store.commit("alert", "Chyba: " + response);
-          });
+            console.log('WRONG', response)
+            this.$store.commit('alert', 'Chyba: ' + response)
+          })
       }
     },
 
-    close: function() {
-      this.dialog = false;
+    close: function () {
+      this.dialog = false
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      }, 300);
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
     },
 
-    save: function() {
+    save: function () {
       if (!this.$refs.carform.validate()) {
-        return;
+        return
       }
 
       this.$axios
-        .post("/r/api/car", this.editedItem)
+        .post('/r/api/car', this.editedItem)
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            //OK
-            this.editedItem = response.data;
+            // OK
+            this.editedItem = response.data
 
             if (this.editedIndex > -1) {
-              Object.assign(this.cars[this.editedIndex], this.editedItem);
+              Object.assign(this.cars[this.editedIndex], this.editedItem)
             } else {
-              this.cars.push(this.editedItem);
+              this.cars.push(this.editedItem)
             }
 
-            this.close();
+            this.close()
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
 
-    readData: function() {
+    readData: function () {
       this.$axios
-        .get("/r/api/cars")
+        .get('/r/api/cars')
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.cars = response.data;
+            this.cars = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     }
   },
 
-  mounted: function() {
-    console.log("mounted cars");
-    this.readData();
+  mounted: function () {
+    console.log('mounted cars')
+    this.readData()
   }
-};
+}
 </script>
 
 <style scoped></style>

@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import "../helper.js";
-import PersonTasks from "./PersonTasks.vue";
+import '../helper.js'
+import PersonTasks from './PersonTasks.vue'
 
 export default {
-  name: "Tasks",
+  name: 'Tasks',
   components: {
     PersonTasks
   },
@@ -33,29 +33,29 @@ export default {
   watch: {},
 
   methods: {
-    readData: function() {
+    readData: function () {
       this.$axios
-        .get("/r/api/persons/tasks")
+        .get('/r/api/persons/tasks')
         .then(response => {
-          console.log("OK", response);
+          console.log('OK', response)
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.persons = response.data;
+            this.persons = response.data
           }
         })
         .catch(response => {
-          console.log("WRONG", response);
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          console.log('WRONG', response)
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     }
   },
 
-  mounted: function() {
-    console.log("mounted persons");
-    this.readData();
+  mounted: function () {
+    console.log('mounted persons')
+    this.readData()
   }
-};
+}
 </script>
 
 <style scoped></style>

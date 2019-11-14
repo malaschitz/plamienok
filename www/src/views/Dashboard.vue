@@ -1,63 +1,35 @@
 <template>
-  <v-container grid-list-xl text-xs-center>
-    <v-layout justify-center align-center column>
-      <v-flex>
-        <v-img
-          :src="require('../assets/logo-plamienok.png')"
-          class="my-1"
-          contain
-          width="300"
-        />
-      </v-flex>
+  <v-container class="gray lighten-3">
+    <v-row justify="center" align="center">
+      <v-col cols="12" sm="12" align="center">
+        <v-img :src="require('../assets/logo-plamienok.png')" class="my-1" contain width="300" />
+      </v-col>
+    </v-row>
 
-      <v-flex v-if="!$store.state.logged" ma-3>
-        <h2 class="display-1">
-          LOGIN
-        </h2>
-        <v-card min-width="400" v-if="!forgotMode">
-          <v-alert
-            v-model="showAlert"
-            type="error"
-            prominent
-            :dismissible="true"
-          >
-            {{ alertMessage }}
-          </v-alert>
+    <v-row v-if="!$store.state.logged">
+      <v-col align="center">
+        <h2 class="display-1">LOGIN</h2>
+        <v-card min-width="400" max-width="600" v-if="!forgotMode" class="pa-3">
+          <v-alert v-model="showAlert" type="error" prominent :dismissible="true">{{ alertMessage }}</v-alert>
           <v-form v-model="valid" lazy-validation ref="form" class="ma-2">
-            <v-text-field
-              label="Email"
-              v-model="email"
-              :rules="emailRules"
-              required
-            />
+            <v-text-field label="Email" v-model="email" :rules="emailRules" required />
             <v-text-field
               label="Heslo"
               v-model="password"
               required
-              :append-icon="show1 ? 'visibility_off' : 'visibility'"
+              :append-icon="show1 ? 'mdi-eye-off' : 'mdi-eye'"
               :type="show1 ? 'text' : 'password'"
               name="input-10-1"
               counter
               @click:append="show1 = !show1"
             />
-            <v-btn color="success" @click="login">
-              Prihlásiť
-            </v-btn>
-            <v-btn color="info" @click="forgot">
-              Zabudnuté heslo
-            </v-btn>
+            <v-btn color="success" @click="login" class="ma-3">Prihlásiť</v-btn>
+            <v-btn color="info" @click="forgot" class="ma-3">Zabudnuté heslo</v-btn>
           </v-form>
         </v-card>
 
-        <v-card min-width="400" v-if="forgotMode">
-          <v-alert
-            v-model="showAlert"
-            type="error"
-            prominent
-            :dismissible="true"
-          >
-            {{ alertMessage }}
-          </v-alert>
+        <v-card min-width="400" max-width="600" v-if="forgotMode">
+          <v-alert v-model="showAlert" type="error" prominent :dismissible="true">{{ alertMessage }}</v-alert>
           <v-form v-model="valid" lazy-validation ref="formCode" class="ma-2">
             <v-text-field
               label="Kód z emailu"
@@ -89,69 +61,57 @@
               @click:append="show3 = !show3"
             />
 
-            <v-btn color="success" @click="sendCode6">
-              Poslať
-            </v-btn>
-            <v-btn color="info" @click="back">
-              Späť
-            </v-btn>
+            <v-btn color="success" @click="sendCode6">Poslať</v-btn>
+            <v-btn color="info" @click="back">Späť</v-btn>
           </v-form>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
-    <v-layout justify-center>
-      <v-flex class="ma-3 xs12 sm12 md6 lg6 ma-3">
-        <h3 class="display-1">
-          Plamienok App
-        </h3>
+    <v-row>
+      <v-col align="center">
+        <h3 class="display-1">Plamienok App</h3>
         <p class="subheading font-weight-regular">
           Interná aplikácia pre neziskovú organizáciu Plamienok
           <br />
-          <a href="https://www.plamienok.sk" target="_blank">
-            www.plamienok.sk
-          </a>
+          <a href="https://www.plamienok.sk" target="_blank">www.plamienok.sk</a>
         </p>
-      </v-flex>
-    </v-layout>
-    <v-layout justify-center>
-      <v-flex class="ma-3 xs12 sm12 md6 lg6">
-        <h3 class="display-1">
-          Štatistika
-        </h3>
-        <v-layout justify-center>
-          <v-flex xs12 sm12 md12 lg12>
-            <v-card min-width="300">
-              <v-card-title><h4>Štatistika</h4></v-card-title>
-              <v-divider />
-              <v-list dense>
-                <v-list-tile v-for="stat in stats" :key="stat.Text">
-                  <v-list-tile-content>{{ stat.Text }}:</v-list-tile-content>
-                  <v-list-tile-content class="align-end">
-                    {{ stat.Value }}
-                  </v-list-tile-content>
-                </v-list-tile>
-              </v-list>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
-    <v-layout justify-center>
-      <v-flex class="ma-3 xs12 sm12 md6 lg6">
-        <h3 class="display-1">
-          Aplikácia
-        </h3>
+    <v-row>
+      <v-col align="center">
+        <h3 class="display-1">Štatistika</h3>
+        <v-card min-width="300" max-width="400">
+          <v-card-title>
+            <h4>Štatistika</h4>
+          </v-card-title>
+          <v-divider />
+          <v-list dense>
+            <v-list-item v-for="stat in stats" :key="stat.Text">
+              <v-list-item-content align="left">
+                <v-list-item-title v-text="stat.Text"></v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-content align="right">
+                <v-list-item-title v-text="stat.Value"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col align="center" class="gray lighten-3">
+        <h3 class="display-1">Aplikácia</h3>
 
         <p>
           Aplikácia je Open Source aplikácia.
-          <v-btn to="/about">
-            Viac o aplikácii
-          </v-btn>
+          <br />
+          <v-btn to="/about">Viac o aplikácii</v-btn>
         </p>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

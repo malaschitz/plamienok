@@ -94,25 +94,25 @@
       rows-per-page-text="Počet riadkov"
     >
       <template slot="items" slot-scope="props">
-        <td class="text-xs-left">
+        <td class="text-left">
           {{ props.item.Name }}
         </td>
-        <td class="text-xs-left">
+        <td class="text-left">
           {{ props.item.Email }}
         </td>
-        <td class="text-xs-right">
+        <td class="text-right">
           <v-checkbox v-model="props.item.RoleAdmin" disabled />
         </td>
-        <td class="text-xs-right">
+        <td class="text-right">
           <v-checkbox v-model="props.item.RoleDoctor" disabled />
         </td>
-        <td class="text-xs-right">
+        <td class="text-right">
           <v-checkbox v-model="props.item.RoleNurse" disabled />
         </td>
-        <td class="text-xs-right">
+        <td class="text-right">
           <v-checkbox v-model="props.item.RoleSoc" disabled />
         </td>
-        <td class="text-xs-right">
+        <td class="text-right">
           <v-checkbox v-model="props.item.RolePsych" disabled />
         </td>
         <td class="justify-center layout px-0">
@@ -133,26 +133,26 @@
 
 <script>
 export default {
-  name: "Users",
+  name: 'Users',
 
   data: () => ({
     headers: [
-      { text: "Meno", value: "Name", align: "left" },
-      { text: "Email", value: "Email" },
-      { text: "Admin", value: "RoleAdmin" },
-      { text: "Doktor", value: "RoleDoctor" },
-      { text: "Sestra", value: "RoleNurse" },
-      { text: "Soc. prac.", value: "RoleSoc" },
-      { text: "Psychológ", value: "RolePsych" },
-      { text: "Akcie", sortable: false }
+      { text: 'Meno', value: 'Name', align: 'left' },
+      { text: 'Email', value: 'Email' },
+      { text: 'Admin', value: 'RoleAdmin' },
+      { text: 'Doktor', value: 'RoleDoctor' },
+      { text: 'Sestra', value: 'RoleNurse' },
+      { text: 'Soc. prac.', value: 'RoleSoc' },
+      { text: 'Psychológ', value: 'RolePsych' },
+      { text: 'Akcie', sortable: false }
     ],
     users: [],
     pagination: { rowsPerPage: 10 },
     editedIndex: -1,
     editedItem: {
-      ID: "",
-      Name: "",
-      Email: "",
+      ID: '',
+      Name: '',
+      Email: '',
       RoleAdmin: false,
       RoleNurse: false,
       RoleDoctor: false,
@@ -161,11 +161,11 @@ export default {
     },
     dialog: false,
     rules: {
-      required: value => !!value || "Required.",
-      counter: value => value.length <= 20 || "Max 20 characters",
+      required: value => !!value || 'Required.',
+      counter: value => value.length <= 20 || 'Max 20 characters',
       email: value => {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return pattern.test(value) || "Invalid e-mail.";
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return pattern.test(value) || 'Invalid e-mail.'
       }
     },
     valid: true,
@@ -173,115 +173,115 @@ export default {
   }),
 
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "Nový užívateľ" : "Editácia užívateľa";
+    formTitle () {
+      return this.editedIndex === -1 ? 'Nový užívateľ' : 'Editácia užívateľa'
     },
 
-    filteredUsers() {
-      var a = [];
+    filteredUsers () {
+      var a = []
       for (var i = 0; i < this.users.length; i++) {
-        var u = this.users[i];
+        var u = this.users[i]
         if ((this.deleted && u.Deleted) || (!this.deleted && !u.Deleted)) {
-          a.push(u);
+          a.push(u)
         }
       }
-      return a;
+      return a
     }
   },
 
   watch: {
-    dialog(val) {
-      val || this.close();
+    dialog (val) {
+      val || this.close()
     }
   },
 
   methods: {
-    editItem: function(item) {
-      this.editedIndex = this.users.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+    editItem: function (item) {
+      this.editedIndex = this.users.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
     },
 
-    deleteItem: function(item) {
-      var conf;
+    deleteItem: function (item) {
+      var conf
       if (!this.deleted) {
-        conf = "Ste si istý, že chcete vymazať užívateľa ?";
+        conf = 'Ste si istý, že chcete vymazať užívateľa ?'
       } else {
-        conf = "Ste si istý, že chcete obnoviť užívateľa ?";
+        conf = 'Ste si istý, že chcete obnoviť užívateľa ?'
       }
       if (confirm(conf)) {
         this.$axios
-          .delete("/r/api/user/" + item.ID)
+          .delete('/r/api/user/' + item.ID)
           .then(response => {
             if (response.status == 202) {
-              this.$store.commit("alert", "Chyba: " + response.data.Error);
+              this.$store.commit('alert', 'Chyba: ' + response.data.Error)
             } else {
-              //OK
-              this.readData();
+              // OK
+              this.readData()
             }
           })
           .catch(response => {
-            this.$store.commit("alert", "Chyba: " + response);
-          });
+            this.$store.commit('alert', 'Chyba: ' + response)
+          })
       }
     },
 
-    close: function() {
-      this.dialog = false;
+    close: function () {
+      this.dialog = false
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      }, 300);
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
     },
 
-    save: function() {
+    save: function () {
       if (!this.$refs.userform.validate()) {
-        return;
+        return
       }
 
       this.$axios
-        .post("/r/api/user", this.editedItem)
+        .post('/r/api/user', this.editedItem)
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            //OK
-            this.editedItem = response.data;
+            // OK
+            this.editedItem = response.data
 
             if (this.editedIndex > -1) {
-              Object.assign(this.users[this.editedIndex], this.editedItem);
+              Object.assign(this.users[this.editedIndex], this.editedItem)
             } else {
-              this.users.push(this.editedItem);
+              this.users.push(this.editedItem)
             }
 
-            this.close();
+            this.close()
           }
         })
         .catch(response => {
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     },
 
-    readData: function() {
+    readData: function () {
       this.$axios
-        .get("/r/api/users")
+        .get('/r/api/users')
         .then(response => {
           if (response.status == 202) {
-            this.$store.commit("alert", "Chyba: " + response.data.Error);
+            this.$store.commit('alert', 'Chyba: ' + response.data.Error)
           } else {
-            this.users = response.data;
+            this.users = response.data
           }
         })
         .catch(response => {
-          this.$store.commit("alert", "Chyba: " + response);
-        });
+          this.$store.commit('alert', 'Chyba: ' + response)
+        })
     }
   },
 
-  mounted: function() {
-    this.readData();
+  mounted: function () {
+    this.readData()
   }
-};
+}
 </script>
 
 <style scoped></style>
